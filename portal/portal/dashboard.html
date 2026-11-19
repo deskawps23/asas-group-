@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Leadership Dashboard | ASAS</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      background: #f4fbff;
+      min-height: 100vh;
+    }
+
+    .dash-header {
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid #dceef8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .dash-nav {
+      max-width: 1100px;
+      margin: auto;
+      padding: 14px 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logout-btn {
+      border: 1px solid #dceef8;
+      background: #fff;
+      color: #0284c7;
+
+      padding: 10px 14px;
+      border-radius: 11px;
+
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      max-width: 1100px;
+      margin: auto;
+      padding: 45px 20px 80px;
+    }
+
+    .welcome {
+      padding: 32px;
+
+      border-radius: 26px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffffff,
+          #ddf5ff
+        );
+
+      border: 1px solid #dceef8;
+    }
+
+    .welcome h1 {
+      color: #0b2748;
+      font-size: clamp(31px,5vw,48px);
+    }
+
+    .welcome h1 span {
+      color: #0ea5e9;
+    }
+
+    .welcome p {
+      margin-top: 8px;
+      color: #64748b;
+    }
+
+    .status-grid {
+      margin-top: 22px;
+
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+    }
+
+    .status-card {
+      padding: 18px;
+
+      background: white;
+
+      border: 1px solid #dceef8;
+      border-radius: 16px;
+    }
+
+    .status-card small {
+      display: block;
+
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .status-card strong {
+      display: block;
+
+      margin-top: 6px;
+
+      color: #0b2748;
+      font-size: 16px;
+    }
+
+    .pending {
+      color: #d97706 !important;
+    }
+
+    .verified {
+      color: #059669 !important;
+    }
+
+    .dashboard-grid {
+      margin-top: 22px;
+
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+
+      gap: 20px;
+    }
+
+    .panel {
+      padding: 28px;
+
+      border-radius: 22px;
+
+      background: white;
+
+      border: 1px solid #dceef8;
+
+      box-shadow:
+        0 10px 30px rgba(14,165,233,.06);
+    }
+
+    .panel h2 {
+      color: #0b2748;
+      font-size: 22px;
+    }
+
+    .panel-description {
+      margin-top: 6px;
+      margin-bottom: 22px;
+
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #334e68;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border-radius: 12px;
+      border: 1px solid #d6eaf5;
+
+      background: #fbfdff;
+      color: #0b2748;
+
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 125px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #38bdf8;
+
+      box-shadow:
+        0 0 0 3px rgba(56,189,248,.12);
+    }
+
+    .photo-area {
+      min-height: 230px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      padding: 25px;
+
+      text-align: center;
+
+      border:
+        2px dashed rgba(14,165,233,.30);
+
+      border-radius: 18px;
+
+      background: #f7fcff;
+    }
+
+    .photo-icon {
+      width: 72px;
+      height: 72px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: #e1f6ff;
+      color: #0ea5e9;
+
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .photo-area strong {
+      margin-top: 14px;
+      color: #0b2748;
+    }
+
+    .photo-area p {
+      margin-top: 5px;
+
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .photo-input {
+      margin-top: 15px;
+      max-width: 100%;
+    }
+
+    .action-btn {
+      width: 100%;
+
+      margin-top: 12px;
+      padding: 14px 18px;
+
+      border: none;
+      border-radius: 13px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #0ea5e9,
+          #38bdf8
+        );
+
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .action-btn.secondary {
+      color: #0284c7;
+      background: #eaf8ff;
+    }
+
+    .workflow {
+      margin-top: 20px;
+
+      display: grid;
+      gap: 8px;
+    }
+
+    .workflow div {
+      padding: ;
+
+      background: #f4fbff;
+
+      border: 1px solid #dceef8;
+
+      color: #334e68;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .admin-note {
+      margin-top: 18px;
+      padding: 15px;
+
+      border-radius: 13px;
+
+      background: #fff9e8;
+      border: 1px solid #f8e4a7;
+
+      color: #856404;
+
+      font-size: 11px;
+    }
+
+    @media(max-width:800px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:550px) {
+      .dashboard {
+        padding: 30px 16px 60px;
+      }
+
+      .welcome {
+        padding: 24px 20px;
+      }
+
+      .panel {
+        padding: 22px 18px;
+      }
+
+      .brand-text small {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="dash-header">
+
+    <div class="dash-nav">
+
+      <a href="../index.html" class="brand">
+
+        <span class="brand-mark">A</span>
+
+        <span class="brand-text">
+          <strong>ASAS</strong>
+          <small>Leadership Dashboard</small>
+        </span>
+
+      </a>
+
+      <button
+        type="button"
+        class="logout-btn"
+        id="logoutBtn">
+        Logout
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <main class="dashboard">
+
+    <section class="welcome">
+
+      <span class="section-label">
+        LEADERSHIP ACCOUNT
+      </span>
+
+      <h1>
+        Welcome,
+        <span id="userName">Leadership</span>
+      </h1>
+
+      <p id="userEmail">
+        Memuat informasi akun...
+      </p>
+
+
+      <div class="status-grid">
+
+        <div class="status-card">
+          <small>Email</small>
+          <strong
+            id="emailStatus"
+            class="verified">
+            Verified
+          </strong>
+        </div>
+
+        <div class="status-card">
+          <small>Admin Approval</small>
+          <strong
+            id="approvalStatus"
+            class="pending">
+            Pending
+          </strong>
+        </div>
+
+        <div class="status-card">
+          <small>Publication</small>
+          <strong id="publicationStatus">
+            Not Published
+          </strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <div class="dashboard-grid">
+
+      <!-- PROFILE -->
+
+      <section class="panel">
+
+        <h2>Leadership Profile</h2>
+
+        <p class="panel-description">
+          Lengkapi informasi yang akan diajukan
+          untuk pemeriksaan Admin ASAS.
+        </p>
+
+
+        <form id="profileForm">
+
+          <div class="field">
+
+            <label for="profileName">
+              Nama Lengkap
+            </label>
+
+            <input
+              type="text"
+              id="profileName"
+              required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="profilePosition">
+              Jabatan
+            </label>
+
+            <input
+              type="text"
+              id="profilePosition"
+              placeholder="Contoh: General Manager"
+              required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="profileLevel">
+              Level Leadership
+            </label>
+
+            <select
+              id="profileLevel"
+              required>
+
+              <option value="">
+                Pilih level
+              </option>
+
+              <option value="commissioner">
+                Board of Commissioners
+              </option>
+
+              <option value="director">
+                Board of Directors
+              </option>
+
+              <option value="general_manager">
+                General Manager
+              </option>
+
+              <option value="manager">
+                Manager
+              </option>
+
+              <option value="branch_business_manager">
+                Branch Business Manager
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="businessUnit">
+              Business / Unit
+            </label>
+
+            <input
+              type="text"
+              id="businessUnit"
+              placeholder="Business atau unit kerja">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="branch">
+              Branch
+            </label>
+
+            <input
+              type="text"
+              id="branch"
+              placeholder="Opsional">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="profileBio">
+              Profil Singkat
+            </label>
+
+            <textarea
+              id="profileBio"
+              maxlength="900"
+              placeholder="Profil profesional singkat">
+            </textarea>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="action-btn">
+            Save Profile
+          </button>
+
+        </form>
+
+      </section>
+
+
+      <!-- PHOTO & APPROVAL -->
+
+      <aside>
+
+        <section class="panel">
+
+          <h2>Profile Photo</h2>
+
+          <p class="panel-description">
+            Foto akan diperiksa sebelum
+            dipublikasikan.
+          </p>
+
+
+          <div class="photo-area">
+
+            <div class="photo-icon">
+              +
+            </div>
+
+            <strong>
+              Upload Official Photo
+            </strong>
+
+            <p>
+              Gunakan foto profesional untuk
+              profil Leadership.
+            </p>
+
+            <input
+              type="file"
+              id="profilePhoto"
+              class="photo-input"
+              accept="image/jpeg,image/png,image/webp">
+
+          </div>
+
+
+          <button
+            type="button"
+            class="action-btn"
+            id="submitApproval">
+            Submit for Approval
+          </button>
+
+        </section>
+
+
+        <section
+          class="panel"
+          style="margin-top:20px">
+
+          <h2>Publication Flow</h2>
+
+          <div class="workflow">
+
+            <div>01 · Profile</div>
+            <div>02 · Submitted</div>
+            <div>03 · Admin Review</div>
+            <div>04 · Approved</div>
+            <div>05 · Published</div>
+
+          </div>
+
+
+          <div class="admin-note">
+            Profil hanya akan tampil pada website
+            publik setelah memperoleh persetujuan
+            dan status Published.
+          </div>
+
+        </section>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- Firebase dashboard logic akan dihubungkan berikutnya -->
+
+</body>
+  </html>
+  
