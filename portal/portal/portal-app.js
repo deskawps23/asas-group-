@@ -128,9 +128,8 @@ loginForm?.addEventListener(
         return;
       }
 
-      window.location.href = "dashboard.html";
-
-
+      window.location.href = "portal/dashboard.html";
+      
     } catch (error) {
 
       console.error(error);
