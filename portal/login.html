@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Corporate Portal | ASAS</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 85% 15%,
+          rgba(56,189,248,.28),
+          transparent 30%),
+        linear-gradient(135deg,
+          #ffffff,
+          #e6f7ff);
+    }
+
+    .portal-header {
+      padding: 18px 20px;
+    }
+
+    .portal-header-inner {
+      max-width: 1100px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-home {
+      color: #0284c7;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .portal-main {
+      padding: 45px 20px 80px;
+    }
+
+    .portal-wrapper {
+      max-width: 1050px;
+      margin: auto;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+
+      align-items: center;
+    }
+
+    .portal-intro h1 {
+      margin-top: 18px;
+
+      color: #0b2748;
+
+      font-size: clamp(42px, 6vw, 65px);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    .portal-intro h1 span {
+      color: #0ea5e9;
+    }
+
+    .portal-intro > p {
+      margin-top: 20px;
+      max-width: 520px;
+
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .portal-flow {
+      margin-top: 30px;
+
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 8px;
+    }
+
+    .portal-flow div {
+      padding: 12px 7px;
+
+      text-align: center;
+
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.8);
+
+      border: 1px solid #dceef8;
+
+      color: #0b2748;
+
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+
+    /* LOGIN CARD */
+
+    .portal-card {
+      padding: 30px;
+
+      border-radius: 28px;
+
+      background:
+        rgba(255,255,255,.92);
+
+      border: 1px solid #dceef8;
+
+      box-shadow:
+        0 20px 55px rgba(14,165,233,.15);
+    }
+
+    .portal-card h2 {
+      color: #0b2748;
+      font-size: 27px;
+    }
+
+    .portal-card > p {
+      margin-top: 7px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .portal-tabs {
+      margin-top: 24px;
+
+      padding: 5px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      border-radius: 13px;
+
+      background: #eaf8ff;
+    }
+
+    .portal-tab {
+      border: none;
+      padding: 11px;
+
+      border-radius: 10px;
+
+      background: transparent;
+
+      color: #64748b;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .portal-tab.active {
+      color: #0284c7;
+      background: white;
+
+      box-shadow:
+        0 5px 15px rgba(14,165,233,.12);
+    }
+
+
+    /* FORMS */
+
+    .portal-form {
+      margin-top: 24px;
+    }
+
+    .portal-form.hidden {
+      display: none;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #334e68;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 48px;
+
+      padding: 0 14px;
+
+      border-radius: 12px;
+
+      border: 1px solid #d6eaf5;
+
+      outline: none;
+
+      background: #fbfdff;
+
+      color: #0b2748;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: #38bdf8;
+
+      box-shadow:
+        0 0 0 3px rgba(56,189,248,.12);
+    }
+
+    .portal-submit {
+      width: 100%;
+      min-height: 50px;
+
+      margin-top: 5px;
+
+      border: none;
+      border-radius: 13px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #0ea5e9,
+          #38bdf8
+        );
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 25px rgba(14,165,233,.22);
+    }
+
+    .form-message {
+      margin-top: 15px;
+
+      color: #64748b;
+
+      text-align: center;
+
+      font-size: 11px;
+    }
+
+    .portal-notice {
+      margin-top: 20px;
+      padding: 14px;
+
+      border-radius: 12px;
+
+      background: #f3fbff;
+
+      color: #52697e;
+
+      font-size: 11px;
+
+      border: 1px solid #dceef8;
+    }
+
+
+    /* MOBILE */
+
+    @media(max-width:800px) {
+
+      .portal-wrapper {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+
+      .portal-intro {
+        text-align: center;
+      }
+
+      .portal-intro > p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media(max-width:550px) {
+
+      .portal-header {
+        padding: 14px 18px;
+      }
+
+      .portal-main {
+        padding:
+          32px 17px 60px;
+      }
+
+      .portal-intro h1 {
+        font-size: 43px;
+      }
+
+      .portal-flow {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+      .portal-card {
+        padding: 24px 19px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header class="portal-header">
+
+    <div class="portal-header-inner">
+
+      <a href="../index.html" class="brand">
+
+        <span class="brand-mark">A</span>
+
+        <span class="brand-text">
+          <strong>ASAS</strong>
+          <small>Corporate Portal</small>
+        </span>
+
+      </a>
+
+      <a href="../index.html" class="back-home">
+        ← Public Website
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <main class="portal-main">
+
+    <div class="portal-wrapper">
+
+
+      <!-- INTRO -->
+
+      <section class="portal-intro">
+
+        <span class="section-label">
+          CORPORATE ACCESS
+        </span>
+
+        <h1>
+          ASAS Leadership
+          <span>Portal.</span>
+        </h1>
+
+        <p>
+          Portal khusus Leadership ASAS untuk
+          registrasi, pengelolaan profil, upload
+          foto dan pengajuan informasi sebelum
+          dipublikasikan pada website.
+        </p>
+
+        <div class="portal-flow">
+
+          <div>
+            01<br>Register
+          </div>
+
+          <div>
+            02<br>Profile
+          </div>
+
+          <div>
+            03<br>Approval
+          </div>
+
+          <div>
+            04<br>Published
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- LOGIN / REGISTER CARD -->
+
+      <section class="portal-card">
+
+        <h2>Corporate Portal</h2>
+
+        <p>
+          Masuk menggunakan akun Leadership ASAS
+          atau ajukan pendaftaran baru.
+        </p>
+
+
+        <div class="portal-tabs">
+
+          <button
+            type="button"
+            class="portal-tab active"
+            id="loginTab">
+            Login
+          </button>
+
+          <button
+            type="button"
+            class="portal-tab"
+            id="registerTab">
+            Daftar
+          </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <form
+          class="portal-form"
+          id="loginForm">
+
+          <div class="field">
+
+            <label for="loginEmail">
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="loginEmail"
+              autocomplete="email"
+              placeholder="nama@email.com"
+              required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="loginPassword">
+              Password
+            </label>
+
+            <input
+              type="password"
+              id="loginPassword"
+              autocomplete="current-password"
+              placeholder="Masukkan password"
+              required>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="portal-submit">
+            Login
+          </button>
+
+          <div class="form-message">
+            Akses hanya untuk akun yang terdaftar.
+          </div>
+
+        </form>
+
+
+
+        <!-- REGISTER -->
+
+        <form
+          class="portal-form hidden"
+          id="registerForm">
+
+          <div class="field">
+
+            <label for="fullName">
+              Nama Lengkap
+            </label>
+
+            <input
+              type="text"
+              id="fullName"
+              autocomplete="name"
+              placeholder="Nama lengkap"
+              required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="registerEmail">
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="registerEmail"
+              autocomplete="email"
+              placeholder="nama@email.com"
+              required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="leadershipLevel">
+              Level Leadership
+            </label>
+
+            <select
+              id="leadershipLevel"
+              required>
+
+              <option value="">
+                Pilih level
+              </option>
+
+              <option value="commissioner">
+                Board of Commissioners
+              </option>
+
+              <option value="director">
+                Board of Directors
+              </option>
+
+              <option value="general_manager">
+                General Manager
+              </option>
+
+              <option value="manager">
+                Manager
+              </option>
+
+              <option value="branch_business_manager">
+                Branch Business Manager
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="registerPassword">
+              Password
+            </label>
+
+            <input
+              type="password"
+              id="registerPassword"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="Minimal 8 karakter"
+              required>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="portal-submit">
+            Ajukan Pendaftaran
+          </button>
+
+
+          <div class="portal-notice">
+
+            Pendaftaran tidak membuat profil
+            langsung tampil kepada publik.
+
+            Akun dan profil harus melalui proses
+            verifikasi dan persetujuan Admin ASAS.
+
+          </div>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <script>
+    const loginTab =
+      document.getElementById("loginTab");
+
+    const registerTab =
+      document.getElementById("registerTab");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const registerForm =
+      document.getElementById("registerForm");
+
+
+    function showLogin() {
+
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+
+      loginForm.classList.remove("hidden");
+      registerForm.classList.add("hidden");
+
+    }
+
+
+    function showRegister() {
+
+      registerTab.classList.add("active");
+      loginTab.classList.remove("active");
+
+      registerForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+
+    }
+
+
+    loginTab.addEventListener(
+      "click",
+      showLogin
+    );
+
+
+    registerTab.addEventListener(
+      "click",
+      showRegister
+    );
+
+
+    /*
+      Backend belum diaktifkan.
+
+      Submit sengaja dihentikan untuk mencegah
+      pengguna mengira data sudah tersimpan.
+    */
+
+    loginForm.addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        alert(
+          "Sistem login sedang disiapkan."
+        );
+
+      }
+    );
+
+
+    registerForm.addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        alert(
+          "Sistem registrasi sedang disiapkan."
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+            </html>
+            
