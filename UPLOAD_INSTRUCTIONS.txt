@@ -1,1 +1,0 @@
-Ekstrak ZIP. Upload SEMUA file hasil ekstrak ke root repository GitHub Pages. Commit langsung ke main. Jangan upload ZIP sebagai halaman website.
