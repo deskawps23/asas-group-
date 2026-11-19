@@ -1,1 +1,453 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ASAS Corporate Portal</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap navrow"><a class="brand" href="index.html">ASAS</a><button class="menu">MENU</button><nav class="nav"><a class="on" href="index.html">Home</a><a class="" href="business.html">Businesses</a><a class="" href="leadership.html">Leadership</a><a class="" href="finance.html">Finance</a><a class="" href="procurement.html">Procurement</a><a class="" href="growth.html">Growth</a><a class="" href="people.html">People & Payroll</a><a class="" href="ipo.html">IPO & Disclosure</a><a class="" href="blockchain.html">Blockchain</a><a class="" href="data.html">Data Interoperability</a><a class="" href="data-model.html">Data Model</a><a class="" href="roadmap.html">Roadmap</a><a class="" href="global.html">Global</a><a class="" href="governance.html">Governance</a></nav></div></header><section class="hero"><div class="wrap"><div class="kicker">CORPORATE DATA & DISCLOSURE PORTAL</div><h1>Strategic Assets.<br>Connected Intelligence.</h1><p>Portal terintegrasi untuk business portfolio, growth, workforce, payroll governance, IPO disclosure, blockchain, dan data interoperability.</p><a class="btn" href="business.html">Explore Businesses</a><a class="btn" href="ipo.html">IPO & Disclosure</a></div></section><section class="section "><div class="wrap"><div class="head"><div><div class="kicker">ASAS INSIGHT</div><h2>Executive Snapshot</h2></div><p>Ringkas dan modular, setiap topik membuka dashboard tersendiri.</p></div><div class="metrics"><div class="metric"><b>Rp 150 T</b><span>Strategic Budget</span></div><div class="metric"><b>50,000</b><span>Workforce Target</span></div><div class="metric"><b>20</b><span>Global Markets</span></div><div class="metric"><b>100%</b><span>Data Sync Direction</span></div></div></div></section><section class="section dark"><div class="wrap"><div class="head"><div><div class="kicker">ASAS INSIGHT</div><h2>Connected Modules</h2></div><p>Klik topik yang ingin dianalisis.</p></div><div class="grid"><article class="card"><div class="kicker">PORTFOLIO</div><h3>Businesses</h3><p>Enam lini bisnis terintegrasi.</p><a href="business.html">Open →</a></article><article class="card"><div class="kicker">GROWTH</div><h3>Growth Intelligence</h3><p>Organic dan inorganic growth.</p><a href="growth.html">Open →</a></article><article class="card"><div class="kicker">PEOPLE</div><h3>People & Payroll</h3><p>Workforce dan payroll governance.</p><a href="people.html">Open →</a></article><article class="card"><div class="kicker">MARKET</div><h3>IPO & Disclosure</h3><p>Keterbukaan informasi dan IPO readiness.</p><a href="ipo.html">Open →</a></article><article class="card"><div class="kicker">TRUST</div><h3>Blockchain</h3><p>Traceability, RWA, audit trail.</p><a href="blockchain.html">Open →</a></article><article class="card"><div class="kicker">BIG DATA</div><h3>Data Interoperability</h3><p>Metadata, API, quality, lineage.</p><a href="data.html">Open →</a></article></div></div></section><section class="section"><div class="wrap"><div class="head"><div><div class="kicker">CORPORATE CONTROL</div><h2>Finance & Procurement.</h2></div><p>Dua dashboard tambahan untuk financial discipline dan supply-chain control.</p></div><div class="grid"><article class="card"><h3>Finance Intelligence</h3><p>Revenue, EBITDA, cash flow, budget, consolidation, audit.</p><a href="finance.html">Open Finance →</a></article><article class="card"><h3>Procurement Intelligence</h3><p>Vendor, purchasing, PO, delivery, payment, supply-chain control.</p><a href="procurement.html">Open Procurement →</a></article></div></div></section><section class="section"><div class="wrap"><div class="head"><div><div class="kicker">LIVE DATA SOURCE</div><h2>Excel-Synced Reporting.</h2></div><p>Dashboard hanya membaca record dengan Status = Published. Pembaruan terakhir: <strong data-sync-time>-</strong></p></div><div class="metrics"><div class="metric"><b data-kpi="workforce-actual">-</b><span>Published Workforce Actual</span></div><div class="metric"><b data-kpi="workforce-period">-</b><span>Reporting Period</span></div><div class="metric"><b data-kpi="workforce-achievement">-</b><span>Plan Achievement</span></div><div class="metric"><b>Published</b><span>Official Records Only</span></div></div></div></section><footer><div class="wrap foot"><div>ASAS · Aggregate Strategic Asset Solutions</div><div class="credit">Concept, Design & Development by <strong>deskawps</strong><br><small>Visual in this file was generated with Microsoft Copilot.</small></div></div></footer><script src="script.js"></script><script src="data-loader.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ASAS | Aggregate Strategic Asset Solutions</title>
+
+  <meta name="description"
+    content="ASAS - Aggregate Strategic Asset Solutions. One Vision. Every Sector. Lasting Value.">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="nav-container">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">A</span>
+
+        <span class="brand-text">
+          <strong>ASAS</strong>
+          <small>Aggregate Strategic Asset Solutions</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle"
+        id="menuToggle"
+        aria-label="Buka menu"
+        aria-expanded="false">
+        ☰
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="active">Home</a>
+        <a href="tentang.html">About</a>
+        <a href="business.html">Businesses</a>
+        <a href="growth.html">Growth</a>
+        <a href="leadership.html">Leadership</a>
+        <a href="investor.html">Investor</a>
+        <a href="governance.html">Governance</a>
+        <a href="kontak.html">Contact</a>
+
+        <a href="portal/login.html" class="portal-button">
+          Corporate Portal
+        </a>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-container">
+
+        <div class="hero-content">
+
+          <span class="eyebrow">
+            INTEGRATED CORPORATE ECOSYSTEM
+          </span>
+
+          <h1>
+            Aggregate Strategic
+            <span>Asset Solutions</span>
+          </h1>
+
+          <p class="hero-tagline">
+            One Vision. Every Sector. Lasting Value.
+          </p>
+
+          <p class="hero-description">
+            Sebuah ekosistem korporasi terintegrasi yang
+            menghubungkan bisnis, manusia, aset, teknologi,
+            data dan pertumbuhan dalam satu visi strategis.
+          </p>
+
+          <div class="hero-actions">
+            <a href="business.html" class="btn btn-primary">
+              Explore ASAS
+            </a>
+
+            <a href="tentang.html" class="btn btn-secondary">
+              Corporate Overview
+            </a>
+          </div>
+
+        </div>
+
+        <div class="hero-panel">
+
+          <div class="hero-panel-title">
+            ASAS Corporate Intelligence
+          </div>
+
+          <div class="hero-stat-grid">
+
+            <div class="stat-card">
+              <small>Reporting Period</small>
+              <strong>2027</strong>
+            </div>
+
+            <div class="stat-card">
+              <small>Workforce Actual</small>
+              <strong>1,000</strong>
+            </div>
+
+            <div class="stat-card highlight">
+              <small>Achievement</small>
+              <strong>125%</strong>
+            </div>
+
+            <div class="stat-card">
+              <small>Data Status</small>
+              <strong>Integrated</strong>
+            </div>
+
+          </div>
+
+          <div class="data-flow">
+            <span>Business</span>
+            <span>Finance</span>
+            <span>People</span>
+            <span>Assets</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- CORPORATE OVERVIEW -->
+    <section class="section section-light">
+
+      <div class="section-heading">
+        <span class="section-label">CORPORATE OVERVIEW</span>
+
+        <h2>
+          Satu ekosistem untuk pertumbuhan berkelanjutan
+        </h2>
+
+        <p>
+          ASAS membangun keterhubungan antara strategi,
+          operasional, sumber daya manusia, aset dan teknologi
+          melalui tata kelola data korporasi yang terintegrasi.
+        </p>
+      </div>
+
+      <div class="card-grid">
+
+        <a href="business.html" class="feature-card">
+          <span class="card-number">01</span>
+          <h3>Businesses</h3>
+          <p>
+            Portofolio bisnis dan pengembangan sektor strategis.
+          </p>
+          <span class="card-link">Explore →</span>
+        </a>
+
+        <a href="growth.html" class="feature-card">
+          <span class="card-number">02</span>
+          <h3>Growth</h3>
+          <p>
+            Organic dan inorganic growth dalam satu pandangan.
+          </p>
+          <span class="card-link">View Growth →</span>
+        </a>
+
+        <a href="leadership.html" class="feature-card">
+          <span class="card-number">03</span>
+          <h3>Leadership</h3>
+          <p>
+            Komisaris, Direksi hingga leadership unit bisnis.
+          </p>
+          <span class="card-link">Leadership →</span>
+        </a>
+
+        <a href="governance.html" class="feature-card">
+          <span class="card-number">04</span>
+          <h3>Governance</h3>
+          <p>
+            Corporate governance, approval dan disclosure.
+          </p>
+          <span class="card-link">Governance →</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- INTELLIGENCE -->
+    <section class="section intelligence-section">
+
+      <div class="section-heading">
+        <span class="section-label">ENTERPRISE INTELLIGENCE</span>
+
+        <h2>
+          Informasi korporasi dalam satu pandangan
+        </h2>
+
+        <p>
+          Struktur informasi ASAS dirancang untuk menghubungkan
+          fungsi utama perusahaan tanpa membuat data berdiri sendiri.
+        </p>
+      </div>
+
+      <div class="intelligence-grid">
+
+        <a href="finance.html" class="intelligence-card">
+          <span>Finance</span>
+          <strong>Financial Intelligence</strong>
+          <small>Reporting • Performance • Planning</small>
+        </a>
+
+        <a href="procurement.html" class="intelligence-card">
+          <span>Procurement</span>
+          <strong>Procurement Intelligence</strong>
+          <small>Vendor • Contract • Purchasing</small>
+        </a>
+
+        <a href="people.html" class="intelligence-card">
+          <span>People</span>
+          <strong>People & Payroll</strong>
+          <small>Workforce • Growth • Human Capital</small>
+        </a>
+
+        <a href="ipo.html" class="intelligence-card">
+          <span>Investor</span>
+          <strong>IPO & Disclosure</strong>
+          <small>Governance • Reporting • Investor</small>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- DIGITAL CORE -->
+    <section class="section digital-section">
+
+      <div class="digital-wrapper">
+
+        <div class="digital-copy">
+
+          <span class="section-label">ASAS DIGITAL CORE</span>
+
+          <h2>
+            Data Interoperability.
+            Blockchain. RWA.
+          </h2>
+
+          <p>
+            Infrastruktur digital ASAS diarahkan untuk membangun
+            keterhubungan data, traceability dan pengelolaan
+            informasi korporasi secara terstruktur.
+          </p>
+
+          <div class="digital-buttons">
+
+            <a href="data.html" class="btn btn-primary">
+              Data Interoperability
+            </a>
+
+            <a href="blockchain.html" class="btn btn-secondary">
+              Blockchain & RWA
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="data-core">
+
+          <div class="core-center">
+            <small>INTEGRATED</small>
+            <strong>ASAS</strong>
+            <span>DATA CORE</span>
+          </div>
+
+          <div class="core-items">
+            <span>BUSINESS</span>
+            <span>FINANCE</span>
+            <span>PEOPLE</span>
+            <span>ASSETS</span>
+            <span>IPO</span>
+            <span>RWA</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- LEADERSHIP -->
+    <section class="section section-light">
+
+      <div class="section-heading">
+        <span class="section-label">LEADERSHIP</span>
+
+        <h2>
+          Leadership dalam satu struktur korporasi
+        </h2>
+
+        <p>
+          Profil yang ditampilkan kepada publik merupakan
+          informasi leadership yang telah melalui proses
+          persetujuan dan publikasi.
+        </p>
+      </div>
+
+      <div class="leadership-levels">
+
+        <div>
+          <span>01</span>
+          <strong>Board of Commissioners</strong>
+        </div>
+
+        <div>
+          <span>02</span>
+          <strong>Board of Directors</strong>
+        </div>
+
+        <div>
+          <span>03</span>
+          <strong>General Managers</strong>
+        </div>
+
+        <div>
+          <span>04</span>
+          <strong>Managers</strong>
+        </div>
+
+        <div>
+          <span>05</span>
+          <strong>Branch Business Managers</strong>
+        </div>
+
+      </div>
+
+      <div class="center-action">
+        <a href="leadership.html" class="btn btn-primary">
+          View Leadership
+        </a>
+      </div>
+
+    </section>
+
+
+    <!-- INVESTOR -->
+    <section class="section investor-section">
+
+      <div class="investor-box">
+
+        <div>
+          <span class="section-label">INVESTOR & DISCLOSURE</span>
+
+          <h2>
+            Transparency built into the ecosystem.
+          </h2>
+
+          <p>
+            Informasi investor, corporate governance dan
+            keterbukaan informasi ditempatkan dalam struktur
+            publikasi yang terkontrol.
+          </p>
+        </div>
+
+        <div class="investor-actions">
+          <a href="investor.html" class="btn btn-primary">
+            Investor
+          </a>
+
+          <a href="governance.html" class="btn btn-secondary">
+            Disclosure
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+    <section class="section contact-section">
+
+      <div class="contact-box">
+
+        <span class="section-label">CONTACT ASAS</span>
+
+        <h2>
+          Terhubung dengan ASAS
+        </h2>
+
+        <p>
+          Pengunjung publik dapat menyampaikan pertanyaan,
+          kesan dan pesan melalui kanal komunikasi ASAS.
+        </p>
+
+        <a href="kontak.html" class="btn btn-primary">
+          Contact & Feedback
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+    <div class="footer-container">
+
+      <div class="footer-brand">
+        <strong>ASAS</strong>
+        <span>Aggregate Strategic Asset Solutions</span>
+        <small>One Vision. Every Sector. Lasting Value.</small>
+      </div>
+
+      <div class="footer-links">
+        <a href="tentang.html">About</a>
+        <a href="business.html">Businesses</a>
+        <a href="leadership.html">Leadership</a>
+        <a href="investor.html">Investor</a>
+        <a href="kontak.html">Contact</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© ASAS. All Rights Reserved.</span>
+      <span>Concept, Design & Development by deskawps</span>
+    </div>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+    </html>
+          
