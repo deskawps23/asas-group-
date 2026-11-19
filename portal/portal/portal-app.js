@@ -128,7 +128,8 @@ loginForm?.addEventListener(
         return;
       }
 
-      alert("Login berhasil.");
+      window.location.href = "dashboard.html";
+
 
     } catch (error) {
 
