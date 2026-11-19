@@ -1,0 +1,14 @@
+ASAS V5 EXCEL SYNC
+
+A. Upload website
+1. Upload semua file/folder paket ini ke root GitHub Pages.
+2. Pastikan folder data ikut dan berisi dashboard-data.json.
+3. Commit ke main.
+
+B. Data internal
+1. Simpan ASAS_Master_Reporting_System.xlsx di OneDrive for Business/SharePoint, bukan repository publik.
+2. Direktur/staf hanya mengubah sheet sesuai role.
+3. Hanya Status Published yang tampil di web.
+
+C. Automation
+Ikuti docs/POWER_AUTOMATE_SETUP.md. Koneksi akun dan secret harus dibuat oleh admin organisasi.
