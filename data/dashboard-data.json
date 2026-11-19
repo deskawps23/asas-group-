@@ -1,1 +1,37 @@
 
+{
+  "generatedAt": "2026-11-19T16:40:00+07:00",
+  "source": "ASAS_Master_Reporting_System.xlsx",
+  "publishedOnly": true,
+  "datasets": {
+    "CHRO_People": [
+      {
+        "RecordID": "PPL-2027-001",
+        "Period": "2027",
+        "Scenario": "Actual",
+        "Country": "Indonesia",
+        "BusinessLine": "Corporate",
+        "Metric": "Headcount",
+        "Plan": 800,
+        "Actual": 1000,
+        "Forecast": 1500,
+        "Unit": "people",
+        "DataOwner": "CHRO",
+        "Status": "Published",
+        "LastUpdated": "2027-12-31",
+        "Notes": "Data pengujian integrasi dashboard"
+      }
+    ],
+    "CEO_Corporate": [],
+    "CAO_Acquisition": [],
+    "COO_Operations": [],
+    "Facility_Reporting": [],
+    "CFO_Finance": [],
+    "CTO_Digital": [],
+    "Procurement": [],
+    "Growth": [],
+    "IPO_Disclosure": [],
+    "Blockchain": [],
+    "ESG_Risk": []
+  }
+}
