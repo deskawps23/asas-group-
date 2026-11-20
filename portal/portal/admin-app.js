@@ -29,7 +29,8 @@ onAuthStateChanged(auth, async (user) => {
         "Akses ditolak. Akun ini belum memiliki hak Super Admin."
       );
 
-      window.location.href = "dashboard.html";
+      window.location.href = "/asas-group-/portal/dashboard.html";
+      
       
       return;
     }
@@ -43,7 +44,8 @@ onAuthStateChanged(auth, async (user) => {
       "Verifikasi hak Super Admin gagal. Silakan coba kembali."
     );
 
-    window.location.href = "dashboard.html";
+    window.location.href = "/asas-group-/portal/dashboard.html";
+
   
   }
 
