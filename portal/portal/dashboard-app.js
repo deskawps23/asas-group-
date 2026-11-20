@@ -498,12 +498,11 @@ onAuthStateChanged(
   async user => {
 
     if (!user) {
+  alert("DIAGNOSIS: Sesi login tidak terbaca di Dashboard.");
+  window.location.href = "login.html";
+  return;
+}
 
-      window.location.href =
-        "login.html";
-
-      return;
-    }
 
 
     if (!user.emailVerified) {
