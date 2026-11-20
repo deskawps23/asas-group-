@@ -7,8 +7,13 @@ import {
   getIdTokenResult
 } from
   "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore } from
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from
   "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
 
 import { firebaseConfig } from "./firebase-auth.js";
 const app = initializeApp(firebaseConfig);
