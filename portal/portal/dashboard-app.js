@@ -23,10 +23,8 @@ import { firebaseConfig }
    FIREBASE
    ========================= */
 
-const app = initializeApp(
-  firebaseConfig,
-  "asas-leadership-dashboard"
-);
+const app = initializeApp(firebaseConfig);
+
 
 const auth = getAuth(app);
 const db = getFirestore(app);
