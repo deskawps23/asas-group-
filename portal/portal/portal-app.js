@@ -113,6 +113,7 @@ loginForm?.addEventListener(
 
       button.disabled = true;
       button.textContent = "Memproses...";
+await setPersistence(auth, browserLocalPersistence);
 
       const result =
         await signInWithEmailAndPassword(
