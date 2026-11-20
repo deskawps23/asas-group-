@@ -18,6 +18,7 @@ import { firebaseConfig }
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+alert("DIAGNOSIS: Firebase Login Module aktif.");
 const loginForm =
   document.getElementById("loginForm");
 
