@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Super Admin Portal | ASAS</title>
+
+  <meta
+    name="description"
+    content="Super Admin Portal Aggregate Strategic Asset Solutions"
+  >
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --admin-blue: #155eaf;
+      --admin-blue-dark: #0b3e75;
+      --admin-sky: #eaf6ff;
+      --admin-white: #ffffff;
+      --admin-text: #10243e;
+      --admin-muted: #60748a;
+      --admin-border: #cfe2f2;
+      --admin-warning: #a45b00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--admin-text);
+      background:
+        linear-gradient(180deg, #dff3ff 0%, #f7fbff 45%, #ffffff 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .admin-shell {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      border: 1px solid var(--admin-border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 50px rgba(23, 92, 148, 0.12);
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-mark {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      color: #ffffff;
+      background:
+        linear-gradient(145deg, var(--admin-blue), var(--admin-blue-dark));
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .admin-brand h1 {
+      margin: 0;
+      font-size: clamp(1.05rem, 4vw, 1.35rem);
+    }
+
+    .admin-brand p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 0.86rem;
+    }
+
+    .back-link {
+      color: var(--admin-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .admin-hero {
+      padding: clamp(24px, 6vw, 48px);
+      margin-bottom: 22px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 26px;
+      color: #ffffff;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(255, 255, 255, 0.24),
+          transparent 32%
+        ),
+        linear-gradient(135deg, #1683d8 0%, #105caa 55%, #082f62 100%);
+      box-shadow: 0 20px 55px rgba(9, 67, 120, 0.22);
+    }
+
+    .admin-eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .admin-hero h2 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(1.8rem, 8vw, 3.5rem);
+      line-height: 1.05;
+    }
+
+    .admin-hero p {
+      max-width: 720px;
+      margin: 18px 0 0;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .security-note {
+      padding: 18px;
+      margin-bottom: 22px;
+      border: 1px solid #ffd79a;
+      border-radius: 18px;
+      color: #704100;
+      background: #fff7e8;
+    }
+
+    .security-note strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .admin-card {
+      padding: 22px;
+      border: 1px solid var(--admin-border);
+      border-radius: 20px;
+      background: var(--admin-white);
+      box-shadow: 0 14px 38px rgba(34, 103, 155, 0.09);
+    }
+
+    .admin-card span {
+      color: var(--admin-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .admin-card strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 1.8rem;
+      color: var(--admin-blue-dark);
+    }
+
+    .admin-panel {
+      padding: 22px;
+      border: 1px solid var(--admin-border);
+      border-radius: 22px;
+      background: var(--admin-white);
+      box-shadow: 0 14px 38px rgba(34, 103, 155, 0.09);
+    }
+
+    .admin-panel h3 {
+      margin: 0 0 8px;
+    }
+
+    .admin-panel > p {
+      margin: 0 0 18px;
+      color: var(--admin-muted);
+      line-height: 1.65;
+    }
+
+    .empty-state {
+      padding: 26px 18px;
+      border: 1px dashed #9ec8e7;
+      border-radius: 18px;
+      text-align: center;
+      background: var(--admin-sky);
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--admin-blue-dark);
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: var(--admin-muted);
+      line-height: 1.6;
+    }
+
+    .admin-footer {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--admin-muted);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 760px) {
+      .admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div class="admin-brand">
+        <div class="admin-mark">ASAS</div>
+
+        <div>
+          <h1>Super Admin Portal</h1>
+          <p>Aggregate Strategic Asset Solutions</p>
+        </div>
+      </div>
+
+      <a class="back-link" href="../index.html">Kembali ke Website</a>
+    </header>
+
+    <section class="admin-hero">
+      <p class="admin-eyebrow">ASAS Corporate Access</p>
+
+      <h2>Leadership Review & Publication Control</h2>
+
+      <p>
+        Ruang kerja untuk memeriksa profil Leadership, mengelola proses
+        approval, serta mengendalikan data yang dapat ditampilkan pada
+        halaman publik ASAS.
+      </p>
+    </section>
+
+    <section class="security-note">
+      <strong>Mode aman belum diaktifkan</strong>
+
+      Tombol Approve, Publish, Unpublish, dan Suspend belum tersedia.
+      Fitur tersebut baru akan diaktifkan setelah role Super Admin
+      diamankan menggunakan Firebase Custom Claims dan Firestore
+      Security Rules.
+    </section>
+
+    <section class="admin-grid" aria-label="Ringkasan status">
+      <article class="admin-card">
+        <span>Pending Review</span>
+        <strong>—</strong>
+      </article>
+
+      <article class="admin-card">
+        <span>Approved</span>
+        <strong>—</strong>
+      </article>
+
+      <article class="admin-card">
+        <span>Published</span>
+        <strong>—</strong>
+      </article>
+    </section>
+
+    <section class="admin-panel">
+      <h3>Leadership Review Queue</h3>
+
+      <p>
+        Daftar profil Pending akan tampil di bagian ini setelah akses
+        Super Admin dan Firestore Rules selesai diamankan.
+      </p>
+
+      <div class="empty-state">
+        <strong>Admin data access is locked</strong>
+
+        <p>
+          Halaman ini belum membaca atau mengubah data Firestore.
+          Tidak ada hak admin yang diberikan melalui frontend.
+        </p>
+      </div>
+    </section>
+
+    <footer class="admin-footer">
+      Concept, Design &amp; Development by deskawps
+    </footer>
+  </main>
+</body>
+  </html>
+  
