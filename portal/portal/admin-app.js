@@ -57,3 +57,24 @@ onAuthStateChanged(auth, async (user) => {
   }
 
 });
+
+async function loadLeadershipProfiles() {
+  const snapshot = await getDocs(collection(db, "leadershipProfiles"));
+
+  let pending = 0;
+  let approved = 0;
+  let published = 0;
+
+  snapshot.forEach((profileDoc) => {
+    const data = profileDoc.data();
+
+    if (data.status === "pending") pending++;
+    if (data.status === "approved") approved++;
+    if (data.status === "published") published++;
+  });
+
+  document.getElementById("pendingCount").textContent = pending;
+  document.getElementById("approvedCount").textContent = approved;
+  document.getElementById("publishedCount").textContent = published;
+}
+
