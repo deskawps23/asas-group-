@@ -1,36 +1,64 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const menuToggle = document.getElementById("menuToggle");
-  const mainNav = document.getElementById("mainNav");
+  const navToggle = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelector(".nav-links");
 
-  if (!menuToggle || !mainNav) return;
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
 
-  // Buka / tutup menu mobile
-  menuToggle.addEventListener("click", () => {
-    const isOpen = mainNav.classList.toggle("open");
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
 
-    menuToggle.setAttribute(
-      "aria-expanded",
-      isOpen ? "true" : "false"
-    );
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 
-    menuToggle.textContent = isOpen ? "✕" : "☰";
-  });
+  const orbit = document.querySelector(".nexus-orbit");
 
-  // Tutup menu setelah link dipilih
-  mainNav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mainNav.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.textContent = "☰";
+  if (orbit && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    orbit.addEventListener("pointermove", (event) => {
+      const rect = orbit.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      orbit.style.transform =
+        `perspective(900px) rotateX(${y * -5}deg) rotateY(${x * 5}deg)`;
+    });
+
+    orbit.addEventListener("pointerleave", () => {
+      orbit.style.transform = "";
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.getAttribute("href");
+
+      if (!targetId || targetId === "#") return;
+
+      const target = document.querySelector(targetId);
+
+      if (target) {
+        event.preventDefault();
+        target.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+          block: "start"
+        });
+      }
     });
   });
 
-  // Tutup menu dengan tombol Escape
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      mainNav.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.textContent = "☰";
-    }
-  });
+  console.log("ASAS Nexus initialized");
 });
