@@ -342,3 +342,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 })();
+
+/* BUSINESS SELECTOR SEPARATION */
+(() => {
+  const selector = document.querySelector(".business-network");
+  const focus = document.querySelector(".domain-focus");
+
+  if (!selector || !focus) return;
+
+  if (focus.parentElement === selector) {
+    selector.after(focus);
+  }
+})();
