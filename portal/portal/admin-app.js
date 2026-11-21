@@ -47,7 +47,14 @@ try {
   await loadLeadershipProfiles();
 } catch (loaderError) {
   console.error("Leadership loader failed:", loaderError);
+
+  document.getElementById("reviewQueue").innerHTML =
+    "<strong>Loader error:</strong><br>" +
+    (loaderError.code || "unknown") +
+    "<br>" +
+    loaderError.message;
 }
+
     
     
 
