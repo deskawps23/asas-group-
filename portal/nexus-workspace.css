@@ -189,3 +189,27 @@ body.nexus-active {
     padding:24px;
   }
 }
+
+.nexus-private-photo-preview {
+  display:block;
+  width:180px;
+  height:180px;
+  margin:18px auto;
+  object-fit:cover;
+  border:6px solid #fff;
+  border-radius:50%;
+  box-shadow:0 18px 45px rgba(7,29,51,.14);
+}
+
+.nexus-photo-status {
+  margin:10px auto 18px;
+  padding:10px 14px;
+  max-width:420px;
+  border-radius:14px;
+  color:#075985;
+  background:#eef9ff;
+  text-align:center;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.45;
+}
