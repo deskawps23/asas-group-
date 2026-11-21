@@ -553,7 +553,7 @@ onAuthStateChanged(
 
 
       alert(
-        "Profil belum dapat dimuat dari database."
+        `Profil gagal dimuat: ${error.code || "unknown"}`
       );
     }
   }
