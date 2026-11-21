@@ -46,13 +46,13 @@ const accountEmail =
   document.getElementById("accountEmail");
 
 const fullName =
-  document.getElementById("fullName");
+  document.getElementById("profileName");
 
 const leadershipLevel =
-  document.getElementById("leadershipLevel");
+  document.getElementById("profileLevel");
 
 const position =
-  document.getElementById("position");
+  document.getElementById("profilePosition");
 
 const businessUnit =
   document.getElementById("businessUnit");
@@ -64,7 +64,7 @@ const locationField =
   document.getElementById("location");
 
 const bio =
-  document.getElementById("bio");
+  document.getElementById("profileBio");
 
 const previewName =
   document.getElementById("previewName");
