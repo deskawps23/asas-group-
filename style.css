@@ -1595,3 +1595,33 @@ button{
     margin-top:8px;
   }
 }
+
+
+/* NEXUS ROUTING ALIGNMENT 3.0 */
+:root{
+  --nexus-header-height:68px;
+}
+
+.scene{
+  scroll-margin-top:var(--nexus-header-height);
+}
+
+@media(max-width:560px){
+  html{
+    scroll-padding-top:var(--nexus-header-height);
+  }
+
+  .scene{
+    scroll-margin-top:var(--nexus-header-height);
+    padding-top:72px;
+  }
+
+  .hero-scene{
+    padding-top:72px;
+  }
+
+  .scene-kicker{
+    position:relative;
+    z-index:2;
+  }
+}
