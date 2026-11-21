@@ -199,3 +199,146 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 650);
   }, { passive: true });
 })();
+
+/* BUSINESS DOMAIN DRILLDOWN */
+(() => {
+  const panel = document.getElementById("domainDrilldown");
+  if (!panel) return;
+
+  const details = {
+    land: [
+      "Land Acquisition",
+      "Land Management",
+      "Asset Management",
+      "GIS & Mapping",
+      "Project / Site",
+      "Evidence",
+      "Metadata"
+    ],
+    property: [
+      "Property Development",
+      "Housing & Residential",
+      "Construction",
+      "Asset Management",
+      "Project / Site",
+      "GIS & Mapping",
+      "Metadata"
+    ],
+    healthcare: [
+      "Hospital Development",
+      "Healthcare Facility",
+      "Workforce",
+      "Project / Site",
+      "Service",
+      "Evidence",
+      "Metadata"
+    ],
+    facility: [
+      "Facility Management",
+      "Building Operations",
+      "Maintenance",
+      "Utilities",
+      "Workforce",
+      "Service Evidence",
+      "Metadata"
+    ],
+    aviation: [
+      "Aviation Operations",
+      "Ground Operations",
+      "Facility",
+      "Safety & HSE",
+      "Fleet & Equipment",
+      "Workforce",
+      "Metadata"
+    ],
+    maritime: [
+      "Maritime Services",
+      "Ship Recycling",
+      "Asset Management",
+      "Environment",
+      "Material Recovery",
+      "Project / Site",
+      "Metadata"
+    ]
+  };
+
+  const render = key => {
+    const items = details[key];
+    if (!items) return;
+
+    panel.innerHTML = items
+      .map(item => `<button type="button">${item}</button>`)
+      .join("");
+  };
+
+  document.querySelectorAll(".domain-card").forEach(card => {
+    card.addEventListener("click", () => {
+      render(card.dataset.domain);
+    });
+  });
+
+  render("land");
+})();
+
+/* NEXUS BUSINESS DETAIL */
+(() => {
+  const overlay = document.getElementById("businessDetail");
+  const panel = document.getElementById("domainDrilldown");
+  const title = document.getElementById("businessDetailTitle");
+  const domain = document.getElementById("businessDetailDomain");
+  const content = document.getElementById("businessDetailContent");
+
+  if (!overlay || !panel || !title || !content) return;
+
+  let activeDomain = "Land & Assets";
+
+  document.querySelectorAll(".domain-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const strong = card.querySelector("strong");
+      if (strong) activeDomain = strong.textContent.trim();
+    });
+  });
+
+  const showContent = label => {
+    content.innerHTML = `
+      <strong>Menunggu Integrasi Data</strong>
+      <p>
+        ${label} akan menampilkan data terverifikasi,
+        metadata, evidence dan hubungan Nexus yang
+        tersedia sesuai role serta kewenangan pengguna.
+      </p>
+    `;
+  };
+
+  panel.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    title.textContent = button.textContent.trim();
+    domain.textContent = activeDomain.toUpperCase();
+    showContent(button.textContent.trim());
+
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  });
+
+  document.querySelectorAll("[data-close-detail]").forEach(button => {
+    button.addEventListener("click", () => {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    });
+  });
+
+  document.querySelectorAll("[data-detail-tab]").forEach(button => {
+    button.addEventListener("click", () => {
+      showContent(button.textContent.trim());
+    });
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !overlay.hidden) {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+  });
+})();

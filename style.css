@@ -1419,3 +1419,125 @@ button{
     gap:6px;
   }
 }
+
+/* BUSINESS DRILLDOWN */
+.domain-drilldown{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-top:14px;
+  padding:4px 0 7px;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;
+}
+
+.domain-drilldown::-webkit-scrollbar{
+  display:none;
+}
+
+.domain-drilldown button{
+  flex:0 0 auto;
+  scroll-snap-align:start;
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  color:#39748f;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* NEXUS BUSINESS DETAIL OVERLAY */
+.business-detail[hidden]{
+  display:none;
+}
+
+.business-detail{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+}
+
+.business-detail-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(5,24,45,.32);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.business-detail-panel{
+  position:absolute;
+  left:50%;
+  bottom:16px;
+  transform:translateX(-50%);
+  width:min(720px,calc(100% - 24px));
+  max-height:82svh;
+  overflow:auto;
+  padding:26px 22px;
+  border:1px solid rgba(80,180,230,.24);
+  border-radius:30px;
+  background:rgba(248,253,255,.96);
+  box-shadow:0 30px 100px rgba(4,45,85,.24);
+}
+
+.business-detail-close{
+  position:absolute;
+  top:14px;
+  right:16px;
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:#fff;
+  color:var(--navy);
+  font-size:22px;
+}
+
+.business-detail-panel h2{
+  margin:8px 42px 12px 0;
+  font-size:clamp(30px,8vw,48px);
+  line-height:1;
+}
+
+.business-detail-panel>p:not(.scene-kicker){
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.detail-path{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin:18px 0;
+  scrollbar-width:none;
+}
+
+.detail-path::-webkit-scrollbar{
+  display:none;
+}
+
+.detail-path button{
+  flex:0 0 auto;
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:#39748f;
+  font-size:9px;
+  font-weight:800;
+}
+
+.detail-content{
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:linear-gradient(145deg,#fff,#f0faff);
+}
+
+.detail-content p{
+  margin-bottom:0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}

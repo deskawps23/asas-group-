@@ -189,6 +189,16 @@
       <p id="domainFlow">
         Business → People → Geography → Asset → Project → Data
       </p>
+
+      <div id="domainDrilldown" class="domain-drilldown" aria-live="polite">
+        <button type="button">Land Acquisition</button>
+        <button type="button">Land Management</button>
+        <button type="button">Asset Management</button>
+        <button type="button">GIS & Mapping</button>
+        <button type="button">Project / Site</button>
+        <button type="button">Evidence</button>
+        <button type="button">Metadata</button>
+      </div>
     </div>
   </div>
 
@@ -785,6 +795,51 @@
 
 </div>
 
+
+<div id="businessDetail" class="business-detail" hidden>
+  <div class="business-detail-backdrop" data-close-detail></div>
+
+  <section class="business-detail-panel"
+           role="dialog"
+           aria-modal="true"
+           aria-labelledby="businessDetailTitle">
+
+    <button type="button"
+            class="business-detail-close"
+            data-close-detail
+            aria-label="Tutup detail">×</button>
+
+    <p class="scene-kicker" id="businessDetailDomain">
+      BUSINESS DOMAIN
+    </p>
+
+    <h2 id="businessDetailTitle">
+      Land Acquisition
+    </h2>
+
+    <p id="businessDetailDescription">
+      Detail capability ASAS Nexus.
+    </p>
+
+    <div class="detail-path">
+      <button type="button" data-detail-tab="overview">Overview</button>
+      <button type="button" data-detail-tab="geo">Nexus Geo</button>
+      <button type="button" data-detail-tab="project">Project / Site</button>
+      <button type="button" data-detail-tab="evidence">Evidence</button>
+      <button type="button" data-detail-tab="metadata">Metadata</button>
+    </div>
+
+    <div class="detail-content" id="businessDetailContent">
+      <strong>Menunggu Integrasi Data</strong>
+      <p>
+        Informasi terverifikasi akan ditampilkan ketika sumber data
+        terkait telah terhubung ke ASAS Nexus.
+      </p>
+    </div>
+  </section>
+</div>
+
 <script src="script.js"></script>
+
 </body>
 </html>
