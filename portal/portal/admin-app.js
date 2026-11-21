@@ -90,8 +90,13 @@ if (status === "published") published++;
     
   });
 
-  document.getElementById("pendingCount").textContent = pending;
-  document.getElementById("approvedCount").textContent = approved;
-  document.getElementById("publishedCount").textContent = published;
+  const pendingEl = document.getElementById("pendingCount");
+const approvedEl = document.getElementById("approvedCount");
+const publishedEl = document.getElementById("publishedCount");
+
+if (pendingEl) pendingEl.textContent = pending;
+if (approvedEl) approvedEl.textContent = approved;
+if (publishedEl) publishedEl.textContent = published;
+  
 }
 
