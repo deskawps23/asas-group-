@@ -55,8 +55,9 @@ try {
     console.error("Admin verification failed:", error);
 
     alert(
-      "Verifikasi hak Super Admin gagal. Silakan coba kembali."
-    );
+  "Admin error: " + error.code + " | " + error.message
+);
+
 
     window.location.href = "/asas-group-/portal/dashboard.html";
 
