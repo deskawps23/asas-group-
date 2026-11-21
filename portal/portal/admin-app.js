@@ -75,10 +75,12 @@ async function loadLeadershipProfiles() {
 
   snapshot.forEach((profileDoc) => {
     const data = profileDoc.data();
+const status = String(data.status || "").trim().toLowerCase();
 
-    if (data.status === "pending") pending++;
-    if (data.status === "approved") approved++;
-    if (data.status === "published") published++;
+if (status === "pending") pending++;
+if (status === "approved") approved++;
+if (status === "published") published++;
+    
   });
 
   document.getElementById("pendingCount").textContent = pending;
