@@ -133,3 +133,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("ASAS Nexus 2.0 initialized");
 });
+
+/* NEXUS GLIDE 2.2 */
+(() => {
+  if (!window.matchMedia("(max-width: 560px)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const scenes = [...document.querySelectorAll(".scene")];
+  if (!scenes.length) return;
+
+  let startY = 0;
+  let startX = 0;
+  let locked = false;
+
+  const nearestScene = () => {
+    let best = 0;
+    let distance = Infinity;
+
+    scenes.forEach((scene, index) => {
+      const d = Math.abs(scene.getBoundingClientRect().top - 68);
+      if (d < distance) {
+        distance = d;
+        best = index;
+      }
+    });
+
+    return best;
+  };
+
+  document.addEventListener("touchstart", event => {
+    if (locked || !event.touches.length) return;
+
+    startY = event.touches[0].clientY;
+    startX = event.touches[0].clientX;
+  }, { passive: true });
+
+  document.addEventListener("touchend", event => {
+    if (locked || !event.changedTouches.length) return;
+
+    const endY = event.changedTouches[0].clientY;
+    const endX = event.changedTouches[0].clientX;
+
+    const dy = startY - endY;
+    const dx = startX - endX;
+
+    if (Math.abs(dx) > Math.abs(dy)) return;
+    if (Math.abs(dy) < 45) return;
+
+    const current = nearestScene();
+    const next = dy > 0
+      ? Math.min(current + 1, scenes.length - 1)
+      : Math.max(current - 1, 0);
+
+    if (next === current) return;
+
+    locked = true;
+
+    scenes[next].scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    window.setTimeout(() => {
+      locked = false;
+    }, 650);
+  }, { passive: true });
+})();
