@@ -553,10 +553,7 @@ onAuthStateChanged(
 
 
       alert(
-        `Profil gagal dimuat
-Nama: ${error?.name || "unknown"}
-Kode: ${error?.code || "unknown"}
-Pesan: ${error?.message || String(error)}`
+        "Profil belum dapat dimuat dari database."
       );
     }
   }
