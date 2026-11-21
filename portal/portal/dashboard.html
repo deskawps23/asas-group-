@@ -615,30 +615,53 @@
         </section>
 
 
-        <section
-          class="panel"
-          style="margin-top:20px">
+        
+      <section class="panel" id="publicationFlow" style="margin-top:20px">
+        <h2>Publication Flow</h2>
 
-          <h2>Publication Flow</h2>
+        <div class="workflow">
+          <div>01 · Profile</div>
+          <div>02 · Submitted</div>
+          <div>03 · Admin Review</div>
+          <div>04 · Approved</div>
+          <div>05 · Published</div>
+        </div>
 
-          <div class="workflow">
-
-            <div>01 · Profile</div>
-            <div>02 · Submitted</div>
-            <div>03 · Admin Review</div>
-            <div>04 · Approved</div>
-            <div>05 · Published</div>
-
+        <div
+          id="adminWorkflowSummary"
+          style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px"
+          aria-label="Publication workflow summary"
+        >
+          <div class="admin-note" style="margin:0;text-align:center">
+            <strong id="pendingCount">0</strong><br>
+            <span>Pending</span>
           </div>
 
-
-          <div class="admin-note">
-            Profil hanya akan tampil pada website
-            publik setelah memperoleh persetujuan
-            dan status Published.
+          <div class="admin-note" style="margin:0;text-align:center">
+            <strong id="approvedCount">0</strong><br>
+            <span>Approved</span>
           </div>
 
-        </section>
+          <div class="admin-note" style="margin:0;text-align:center">
+            <strong id="publishedCount">0</strong><br>
+            <span>Published</span>
+          </div>
+        </div>
+
+        <div class="admin-note" style="margin-top:18px">
+          Profil hanya akan tampil pada website publik setelah memperoleh
+          persetujuan dan berstatus Published.
+        </div>
+
+        <div
+          id="reviewQueue"
+          style="display:grid;gap:12px;margin-top:18px"
+          aria-live="polite"
+        >
+          <div class="admin-note">Memeriksa hak akses Super Admin...</div>
+        </div>
+      </section>
+
 
       </aside>
 
@@ -649,6 +672,7 @@
 
   <!-- Firebase dashboard logic akan dihubungkan berikutnya -->
 <script type="module" src="dashboard-app.js?v=2"></script>
+  <script type="module" src="admin-app.js?v=1"></script>
   
 
 </body>
