@@ -43,6 +43,8 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     console.log("Super Admin access verified.");
+await loadLeadershipProfiles();
+    
 
   } catch (error) {
     console.error("Admin verification failed:", error);
