@@ -77,14 +77,23 @@ async function loadLeadershipProfiles() {
   const snapshot = await getDocs(collection(db, "leadershipProfiles"));
 
   let pending = 0;
-  let approved = 0;
-  let published = 0;
+let approved = 0;
+let published = 0;
+const pendingProfiles = [];
+  
 
   snapshot.forEach((profileDoc) => {
     const data = profileDoc.data();
 const status = String(data.status || "").trim().toLowerCase();
 
-if (status === "pending") pending++;
+if (status === "pending") {
+  pending++;
+  pendingProfiles.push({
+    id: profileDoc.id,
+    ...data
+  });
+}
+    
 if (status === "approved") approved++;
 if (status === "published") published++;
     
@@ -97,6 +106,19 @@ const publishedEl = document.getElementById("publishedCount");
 if (pendingEl) pendingEl.textContent = pending;
 if (approvedEl) approvedEl.textContent = approved;
 if (publishedEl) publishedEl.textContent = published;
-  
+  const reviewQueue = document.getElementById("reviewQueue");
+
+if (reviewQueue) {
+  if (pendingProfiles.length === 0) {
+    reviewQueue.innerHTML = "<strong>Tidak ada profil Pending.</strong>";
+  } else {
+    reviewQueue.innerHTML = pendingProfiles.map((profile) => `
+      <article>
+        <strong>${profile.fullName || profile.name || "Leadership Profile"}</strong>
+        <p>${profile.position || profile.role || "Posisi belum diisi"}</p>
+        <small>Status: Pending</small>
+      </article>
+    `).join("");
+  }
 }
 
