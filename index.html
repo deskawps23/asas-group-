@@ -581,32 +581,120 @@
   <div class="scene-index"><span>08</span><span class="index-line"></span><span>DATA</span></div>
 </section>
 
-<section id="intelligence" class="scene" data-scene="09">
-  <div class="scene-copy">
+<section id="intelligence"
+  class="scene intelligence-scene intelligence-v3"
+  data-scene="09"
+  data-label="NEXUS INTELLIGENCE">
+
+  <div class="scene-copy intelligence-copy">
     <p class="scene-kicker">NEXUS INTELLIGENCE</p>
-    <h2>Intelligence supports. <span>People decide.</span></h2>
+
+    <h2>
+      Intelligence supports.
+      <span>People decide.</span>
+    </h2>
+
     <p class="lead">
-      AI membantu membaca hubungan data, metadata, geografi, bisnis,
-      manusia dan konteks operasional untuk menghasilkan analisis dan rekomendasi.
-      Keputusan penting tetap berada pada manusia yang memiliki kewenangan.
+      Data, metadata, geografi dan konteks bisnis dipertemukan
+      untuk membantu analisis dan rekomendasi.
+      Keputusan penting tetap berada pada manusia yang berwenang.
     </p>
   </div>
 
-  <div class="nexus-panel decision-flow">
-    <div>DATA + METADATA + GEO + CONTEXT</div>
-    <b>→</b>
-    <div>NEXUS INTELLIGENCE</div>
-    <b>→</b>
-    <div>ANALYSIS & RECOMMENDATION</div>
-    <b>→</b>
-    <div class="human">HUMAN DECISION</div>
+  <div class="intel-space" aria-label="Nexus Intelligence interactive network">
+
+    <button type="button"
+      class="intel-node intel-data"
+      data-intel-action="data">
+      DATA
+    </button>
+
+    <button type="button"
+      class="intel-node intel-meta"
+      data-intel-action="metadata">
+      META
+    </button>
+
+    <button type="button"
+      class="intel-node intel-geo"
+      data-intel-action="geo">
+      GEO
+    </button>
+
+    <button type="button"
+      class="intel-node intel-business"
+      data-intel-action="business">
+      BUSINESS
+    </button>
+
+    <button type="button"
+      class="intel-node intel-people"
+      data-intel-action="people">
+      PEOPLE
+    </button>
+
+    <button type="button"
+      class="intel-node intel-assets"
+      data-intel-action="assets">
+      ASSETS
+    </button>
+
+    <div class="intel-orbit intel-orbit-a"></div>
+    <div class="intel-orbit intel-orbit-b"></div>
+
+    <button type="button"
+      class="intel-living-core"
+      data-intel-action="core"
+      aria-label="Buka Nexus Intelligence">
+      <small>ASAS NEXUS</small>
+      <strong>INTELLIGENCE</strong>
+      <span>Tap to explore</span>
+    </button>
+
+    <div class="intel-energy-line"></div>
+
+    <div class="intel-process">
+      <button type="button" data-intel-action="analysis">
+        <small>01</small>
+        <strong>ANALYZE</strong>
+      </button>
+
+      <span class="intel-process-line"></span>
+
+      <button type="button" data-intel-action="recommendation">
+        <small>02</small>
+        <strong>RECOMMEND</strong>
+      </button>
+
+      <span class="intel-process-line"></span>
+
+      <button type="button"
+        class="intel-human"
+        data-intel-action="decision">
+        <small>03</small>
+        <strong>HUMAN DECISION</strong>
+      </button>
+    </div>
+
+    <div id="intelContext"
+      class="intel-context"
+      aria-live="polite">
+      <small>ACTIVE INTELLIGENCE</small>
+      <strong>Connected Context</strong>
+      <p>Sentuh node untuk menjelajahi hubungan Nexus.</p>
+    </div>
+
   </div>
 
-  <p class="status-note">
+  <p class="status-note intelligence-status">
     Actual · Historical · Forecast · Simulation · Synthetic
   </p>
 
-  <div class="scene-index"><span>09</span><span class="index-line"></span><span>INTELLIGENCE</span></div>
+  <div class="scene-index">
+    <span>09</span>
+    <span class="index-line"></span>
+    <span>INTELLIGENCE</span>
+  </div>
 </section>
 
 <section id="core" class="scene core-scene" data-scene="10">

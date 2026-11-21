@@ -295,3 +295,107 @@ document.addEventListener("DOMContentLoaded", () => {
     selector.after(focus);
   }
 })();
+
+/* NEXUS INTELLIGENCE 3.0 INTERACTION */
+(() => {
+  const context = document.getElementById("intelContext");
+  const core = document.querySelector(".intel-living-core");
+  const nodes = document.querySelectorAll("[data-intel-action]");
+
+  if (!context || !core || !nodes.length) return;
+
+  const routes = {
+    data: "#data",
+    geo: "#geo",
+    people: "#people",
+    business: "#business"
+  };
+
+  const messages = {
+    metadata: [
+      "Metadata Intelligence",
+      "Source · Owner · Geography · Time · Quality · Classification · Lineage · Version"
+    ],
+    assets: [
+      "Asset Intelligence",
+      "Hubungan aset, proyek, wilayah, evidence dan metadata menunggu integrasi data terverifikasi."
+    ],
+    core: [
+      "Connected Intelligence",
+      "Data, geografi, bisnis dan manusia dipertemukan untuk mendukung analisis yang dapat ditelusuri."
+    ],
+    analysis: [
+      "Analysis Workspace",
+      "Analisis akan tersedia berdasarkan data, metadata, geography dan konteks yang telah diverifikasi."
+    ],
+    recommendation: [
+      "Nexus Recommendation",
+      "Rekomendasi intelligence tersedia setelah parameter dan sumber data terhubung."
+    ],
+    decision: [
+      "Human Decision",
+      "AI memberikan rekomendasi. Manusia yang berwenang meninjau, menyetujui dan mengambil keputusan."
+    ]
+  };
+
+  const activate = button => {
+    nodes.forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+    core.classList.add("pulse");
+
+    window.setTimeout(() => {
+      core.classList.remove("pulse");
+    }, 480);
+  };
+
+  const showContext = action => {
+    const message = messages[action];
+    if (!message) return;
+
+    context.innerHTML = `
+      <small>ACTIVE INTELLIGENCE</small>
+      <strong>${message[0]}</strong>
+      <p>${message[1]}</p>
+    `;
+
+    context.classList.add("active");
+
+    window.setTimeout(() => {
+      context.classList.remove("active");
+    }, 4200);
+  };
+
+  const goToScene = selector => {
+    const target = document.querySelector(selector);
+    if (!target) return;
+
+    const header = document.querySelector(".nexus-header");
+    const offset = header ? header.offsetHeight : 68;
+
+    window.setTimeout(() => {
+      window.scrollTo({
+        top: Math.max(
+          0,
+          window.scrollY +
+          target.getBoundingClientRect().top -
+          offset
+        ),
+        behavior: "smooth"
+      });
+    }, 220);
+  };
+
+  nodes.forEach(button => {
+    button.addEventListener("click", () => {
+      const action = button.dataset.intelAction;
+      activate(button);
+
+      if (routes[action]) {
+        goToScene(routes[action]);
+        return;
+      }
+
+      showContext(action);
+    });
+  });
+})();
