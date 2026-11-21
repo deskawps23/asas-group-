@@ -399,3 +399,160 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+
+/* NEXUS LIVING MIND MAP 1.0 */
+(() => {
+  const overlay = document.getElementById("businessDetail");
+  const drilldown = document.getElementById("domainDrilldown");
+  const title = document.getElementById("businessDetailTitle");
+  const domain = document.getElementById("businessDetailDomain");
+  const content = document.getElementById("businessDetailContent");
+
+  if (!overlay || !drilldown || !title || !domain || !content) return;
+
+  const maps = {
+    "Land Acquisition": [
+      { label:"Nexus Geo", route:"#geo" },
+      { label:"Location / Parcel" },
+      { label:"Project / Site" },
+      { label:"Field Evidence" },
+      { label:"Documents" },
+      { label:"Metadata" },
+      { label:"Client View" }
+    ],
+    "GIS & Mapping": [
+      { label:"Nexus Geo", route:"#geo" },
+      { label:"Thematic Layer" },
+      { label:"Point / Line / Polygon" },
+      { label:"Survey" },
+      { label:"Spatial Evidence" },
+      { label:"Metadata" }
+    ],
+    "Asset Management": [
+      { label:"Asset Profile" },
+      { label:"Location", route:"#geo" },
+      { label:"Utilization" },
+      { label:"Project Link" },
+      { label:"Evidence" },
+      { label:"Metadata" }
+    ]
+  };
+
+  let currentParent = "Land & Assets";
+
+  const renderMindMap = focus => {
+    const children = maps[focus] || [
+      { label:"Overview" },
+      { label:"Nexus Geo", route:"#geo" },
+      { label:"Project / Site" },
+      { label:"Evidence" },
+      { label:"Metadata" }
+    ];
+
+    domain.textContent = currentParent.toUpperCase();
+    title.textContent = focus;
+
+    content.innerHTML = `
+      <div class="mind-breadcrumb">
+        <button type="button" data-mind-back>← ${currentParent}</button>
+        <span>/</span>
+        <strong>${focus}</strong>
+      </div>
+
+      <div class="living-mindmap">
+        <button type="button"
+          class="mind-parent"
+          data-mind-back>
+          ${currentParent}
+        </button>
+
+        <button type="button"
+          class="mind-focus">
+          <small>CURRENT FOCUS</small>
+          <strong>${focus}</strong>
+        </button>
+
+        <div class="mind-branches">
+          ${children.map((child, index) => `
+            <button type="button"
+              class="mind-child"
+              data-mind-label="${child.label}"
+              data-mind-route="${child.route || ""}"
+              style="--mind-index:${index}">
+              ${child.label}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+
+      <p class="mind-status">
+        Pilih cabang untuk mengikuti logika ASAS Nexus.
+      </p>
+    `;
+
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  };
+
+  drilldown.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    const activeDomain = document.getElementById("domainTitle");
+    currentParent = activeDomain
+      ? activeDomain.textContent.trim()
+      : "Business Domain";
+
+    window.setTimeout(() => {
+      renderMindMap(button.textContent.trim());
+    }, 0);
+  });
+
+  content.addEventListener("click", event => {
+    const back = event.target.closest("[data-mind-back]");
+
+    if (back) {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const child = event.target.closest("[data-mind-label]");
+    if (!child) return;
+
+    const label = child.dataset.mindLabel;
+    const route = child.dataset.mindRoute;
+
+    child.classList.add("active");
+
+    if (route) {
+      const target = document.querySelector(route);
+
+      if (target) {
+        overlay.hidden = true;
+        document.body.style.overflow = "";
+
+        const header = document.querySelector(".nexus-header");
+        const offset = header ? header.offsetHeight : 68;
+
+        window.setTimeout(() => {
+          window.scrollTo({
+            top: Math.max(
+              0,
+              window.scrollY +
+              target.getBoundingClientRect().top -
+              offset
+            ),
+            behavior:"smooth"
+          });
+        }, 180);
+      }
+
+      return;
+    }
+
+    window.setTimeout(() => {
+      renderMindMap(label);
+    }, 180);
+  });
+})();

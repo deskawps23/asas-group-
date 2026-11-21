@@ -1907,3 +1907,158 @@ button{
     transition:none;
   }
 }
+
+/* NEXUS LIVING MIND MAP 1.0 - MOBILE */
+@media(max-width:560px){
+
+  .mind-breadcrumb{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:10px;
+    color:#6689a2;
+    font-size:9px;
+  }
+
+  .mind-breadcrumb button{
+    border:0;
+    background:transparent;
+    color:#0879bd;
+    font-size:9px;
+    font-weight:850;
+  }
+
+  .living-mindmap{
+    position:relative;
+    min-height:360px;
+    overflow:hidden;
+    border-radius:24px;
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(0,203,234,.17),
+        transparent 31%),
+      linear-gradient(rgba(8,124,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(8,124,255,.04) 1px,transparent 1px);
+    background-size:auto,28px 28px,28px 28px;
+  }
+
+  .mind-focus{
+    position:absolute;
+    z-index:5;
+    left:50%;
+    top:50%;
+    width:138px;
+    height:138px;
+    transform:translate(-50%,-50%);
+    display:grid;
+    place-content:center;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:50%;
+    background:radial-gradient(circle,#fff,#dcf8ff);
+    color:#0872b8;
+    box-shadow:
+      0 0 0 16px rgba(0,203,234,.05),
+      0 0 62px rgba(0,190,230,.22);
+    animation:mind-breathe 3.8s ease-in-out infinite;
+  }
+
+  .mind-focus small{
+    color:#6c91a8;
+    font-size:7px;
+    letter-spacing:.12em;
+  }
+
+  .mind-focus strong{
+    margin-top:5px;
+    font-size:14px;
+  }
+
+  .mind-parent{
+    position:absolute;
+    z-index:4;
+    left:50%;
+    top:6%;
+    transform:translateX(-50%);
+    padding:7px 11px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:rgba(255,255,255,.54);
+    color:#7590a3;
+    font-size:8px;
+    font-weight:850;
+  }
+
+  .mind-branches{
+    position:absolute;
+    inset:0;
+  }
+
+  .mind-child{
+    position:absolute;
+    z-index:6;
+    width:112px;
+    min-height:39px;
+    padding:6px 7px;
+    border:1px solid rgba(25,145,215,.17);
+    border-radius:999px;
+    background:rgba(255,255,255,.82);
+    color:#39728d;
+    font-size:8px;
+    font-weight:850;
+    box-shadow:0 8px 24px rgba(20,100,170,.08);
+    transition:.22s ease;
+    animation:mind-node-in .36s ease both;
+    animation-delay:calc(var(--mind-index) * 55ms);
+  }
+
+  .mind-child:nth-child(1){left:5%;top:24%}
+  .mind-child:nth-child(2){right:5%;top:24%}
+  .mind-child:nth-child(3){left:1%;top:48%}
+  .mind-child:nth-child(4){right:1%;top:48%}
+  .mind-child:nth-child(5){left:7%;bottom:16%}
+  .mind-child:nth-child(6){right:7%;bottom:16%}
+  .mind-child:nth-child(7){
+    left:50%;
+    bottom:3%;
+    transform:translateX(-50%);
+  }
+
+  .mind-child:active,
+  .mind-child.active{
+    color:#fff;
+    background:linear-gradient(135deg,var(--azure),var(--cyan));
+    box-shadow:0 0 28px rgba(0,180,230,.34);
+  }
+
+  .mind-status{
+    margin:10px 0 0;
+    text-align:center;
+    color:#69869b;
+    font-size:9px;
+  }
+}
+
+@keyframes mind-breathe{
+  0%,100%{
+    box-shadow:
+      0 0 0 13px rgba(0,203,234,.04),
+      0 0 42px rgba(0,190,230,.18);
+  }
+  50%{
+    box-shadow:
+      0 0 0 18px rgba(0,203,234,.07),
+      0 0 72px rgba(0,190,230,.3);
+  }
+}
+
+@keyframes mind-node-in{
+  from{
+    opacity:0;
+    filter:blur(3px);
+  }
+  to{
+    opacity:1;
+    filter:blur(0);
+  }
+}
