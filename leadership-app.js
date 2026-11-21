@@ -41,11 +41,11 @@ function createLeadershipCard(profile) {
   card.className = "leadership-card";
 
   const name = escapeHTML(profile.fullName || "ASAS Leadership");
-  const position = escapeHTML(profile.position || "");
-  const unit = escapeHTML(profile.businessUnit || "");
+  const position = escapeHTML(profile.positionTitle || "");
+  const unit = escapeHTML(profile.businessDomain || "");
   const branch = escapeHTML(profile.branch || "");
   const location = escapeHTML(profile.location || "");
-  const bio = escapeHTML(profile.bio || "");
+  const bio = escapeHTML(profile.publicBio || "");
 
   card.innerHTML = `
     <div class="leadership-card-content">
@@ -79,7 +79,7 @@ async function loadPublishedLeadership() {
 
   try {
     const leadershipQuery = query(
-      collection(db, "leadershipProfiles"),
+      collection(db, "publicLeadership"),
       where("status", "==", "published")
     );
 
