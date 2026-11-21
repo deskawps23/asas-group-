@@ -43,7 +43,12 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     console.log("Super Admin access verified.");
-await loadLeadershipProfiles();
+try {
+  await loadLeadershipProfiles();
+} catch (loaderError) {
+  console.error("Leadership loader failed:", loaderError);
+}
+    
     
 
   } catch (error) {
