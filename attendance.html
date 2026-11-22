@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+
+  <title>Attendance | ASAS Nexus</title>
+
+  <meta
+    name="description"
+    content="Authenticated manpower attendance capture for ASAS Nexus."
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="attendance.css?v=1">
+</head>
+
+<body>
+  <main>
+
+    <section class="attendance-hero">
+      <div class="attendance-shell">
+
+        <div class="attendance-kicker">
+          ASAS NEXUS · PEOPLE · ATTENDANCE
+        </div>
+
+        <h1 class="attendance-title">
+          Attendance from where the work happens.
+        </h1>
+
+        <p class="attendance-intro">
+          Ambil foto attendance dan lokasi perangkat pada saat
+          Check In atau Check Out. Data ini ditujukan untuk
+          workspace internal, bukan halaman publik.
+        </p>
+
+        <div class="attendance-core">
+          <div class="attendance-core-label">ATTENDANCE CAPTURE</div>
+
+          <h2>Photo + location + time.</h2>
+
+          <p>
+            Lokasi harus diberikan oleh perangkat pada saat capture.
+            Foto dan coordinates tidak dipublikasikan ke halaman
+            People atau Leadership publik.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="attendance-section">
+      <div class="attendance-shell">
+
+        <div class="attendance-section-head">
+          <small>1 · ATTENDANCE TYPE</small>
+          <h2>Pilih jenis attendance.</h2>
+        </div>
+
+        <div class="attendance-type-switch">
+          <button
+            type="button"
+            id="attendanceCheckIn"
+            data-type="check-in"
+          >
+            Check In
+          </button>
+
+          <button
+            type="button"
+            id="attendanceCheckOut"
+            data-type="check-out"
+          >
+            Check Out
+          </button>
+        </div>
+
+
+        <div class="attendance-section-head attendance-step">
+          <small>2 · LOCATION</small>
+          <h2>Ambil lokasi perangkat.</h2>
+        </div>
+
+        <button
+          type="button"
+          id="attendanceLocation"
+          class="attendance-primary"
+        >
+          Ambil Lokasi
+        </button>
+
+
+        <div class="attendance-location-card">
+          <div>
+            <small>STATUS</small>
+            <strong id="attendanceLocationStatus">
+              Lokasi belum diambil.
+            </strong>
+          </div>
+
+          <div class="attendance-location-grid">
+            <div>
+              <small>LATITUDE</small>
+              <strong id="attendanceLat">—</strong>
+            </div>
+
+            <div>
+              <small>LONGITUDE</small>
+              <strong id="attendanceLng">—</strong>
+            </div>
+
+            <div>
+              <small>ACCURACY</small>
+              <strong id="attendanceAccuracy">—</strong>
+              <span>meter</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="attendance-section-head attendance-step">
+          <small>3 · PHOTO</small>
+          <h2>Ambil foto attendance.</h2>
+        </div>
+
+        <label class="attendance-camera-button" for="attendancePhoto">
+          Buka Kamera
+        </label>
+
+        <input
+          id="attendancePhoto"
+          type="file"
+          accept="image/*"
+          capture="user"
+          hidden
+        >
+
+        <div
+          id="attendancePhotoPreviewWrap"
+          class="attendance-photo-preview"
+          hidden
+        >
+          <img
+            id="attendancePhotoPreview"
+            alt="Preview foto attendance"
+          >
+        </div>
+
+
+        <div class="attendance-section-head attendance-step">
+          <small>4 · PREVIEW</small>
+          <h2>Periksa attendance.</h2>
+        </div>
+
+        <div class="attendance-preview-card">
+          <div>
+            <small>TYPE</small>
+            <strong id="attendancePreviewType">Belum dipilih</strong>
+          </div>
+
+          <div>
+            <small>CAPTURED AT</small>
+            <strong id="attendanceCapturedAt">—</strong>
+          </div>
+
+          <div>
+            <small>LOCATION</small>
+            <strong id="attendancePreviewLocation">
+              Belum tersedia
+            </strong>
+          </div>
+        </div>
+
+
+        <button
+          type="button"
+          id="attendanceSubmit"
+          class="attendance-submit"
+          disabled
+        >
+          Kirim Attendance
+        </button>
+
+        <p class="attendance-note">
+          Preview ini belum berarti foto sudah tersimpan di Firebase
+          Storage. Penyimpanan foto production akan diaktifkan setelah
+          Storage private tersedia.
+        </p>
+
+        <p
+          id="attendanceStatus"
+          class="attendance-status"
+          aria-live="polite"
+        >
+          Lengkapi type, lokasi, dan foto.
+        </p>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="attendance-footer">
+    <div class="attendance-shell">
+      <div>ASAS · Aggregate Strategic Asset Solutions</div>
+      <div>
+        Concept, Design & Development by <strong>deskawps</strong>
+      </div>
+    </div>
+  </footer>
+
+  <script src="attendance-capture.js?v=1"></script>
+</body>
+</html>
