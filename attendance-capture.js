@@ -22,6 +22,7 @@
   let photoFile = null;
   let photoUrl = null;
   let capturedAt = null;
+  const MAX_LOCATION_ACCURACY_METERS = 30;
 
   function setStatus(message) {
     statusEl.textContent = message;
@@ -31,10 +32,18 @@
     const ready =
       Boolean(attendanceType) &&
       Boolean(locationData) &&
+      Number.isFinite(locationData?.accuracy) &&
+      locationData.accuracy <= MAX_LOCATION_ACCURACY_METERS &&
       Boolean(photoFile) &&
       Boolean(capturedAt);
 
     submitBtn.disabled = !ready;
+
+    if (locationData && Number.isFinite(locationData.accuracy) && locationData.accuracy > MAX_LOCATION_ACCURACY_METERS) {
+      setStatus(`Akurasi lokasi ±${locationData.accuracy.toFixed(1)} m belum memenuhi batas ${MAX_LOCATION_ACCURACY_METERS} m. Pindah ke area lebih terbuka, lalu pilih Perbarui Lokasi.`);
+      return;
+    }
+
 
     if (ready) {
       setStatus(
