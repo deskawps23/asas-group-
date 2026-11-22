@@ -321,6 +321,13 @@
   }
 
   measureBtn.addEventListener("click", () => {
+    if (!measuring && map.getZoom() < 17) {
+      setStatus(
+        "Perbesar peta ke area bidang terlebih dahulu. Minimum zoom 17."
+      );
+      return;
+    }
+
     if (finished) {
       resetMeasurement();
     }
