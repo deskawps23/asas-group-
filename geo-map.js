@@ -24,6 +24,7 @@
   const finishBtn = document.getElementById("geoFinish");
   const undoBtn = document.getElementById("geoUndo");
   const resetBtn = document.getElementById("geoReset");
+  const editBtn = document.getElementById("geoEdit");
   const exportBtn = document.getElementById("geoExport");
 
   const statusEl = document.getElementById("geoMeasureStatus");
@@ -33,7 +34,9 @@
 
   let measuring = false;
   let finished = false;
+  let editing = false;
   let points = [];
+  let vertexMarkers = [];
 
   let lineLayer = null;
   let polygonLayer = null;
@@ -69,6 +72,7 @@
     finishBtn.disabled = !measuring || points.length < 3;
     undoBtn.disabled = !measuring || points.length === 0;
     resetBtn.disabled = points.length === 0;
+    editBtn.disabled = !finished || points.length < 3;
     exportBtn.disabled = !finished || points.length < 3;
   }
 
@@ -199,11 +203,55 @@
     perimeterEl.textContent = formatNumber(perimeter);
   }
 
+  function clearVertexMarkers() {
+    vertexMarkers.forEach((marker) => map.removeLayer(marker));
+    vertexMarkers = [];
+  }
+
+  function renderVertexMarkers() {
+    clearVertexMarkers();
+
+    if (!editing || !finished) return;
+
+    vertexMarkers = points.map((latlng, index) => {
+      const marker = L.marker(latlng, {
+        draggable: true
+      }).addTo(map);
+
+      marker.on("drag", (event) => {
+        points[index] = event.target.getLatLng();
+
+        if (polygonLayer) {
+          polygonLayer.setLatLngs(points);
+        }
+
+        updateMeasurements();
+      });
+
+      marker.on("dragend", (event) => {
+        points[index] = event.target.getLatLng();
+
+        if (polygonLayer) {
+          polygonLayer.setLatLngs(points);
+        }
+
+        updateMeasurements();
+        setStatus(
+          `Vertex ${index + 1} diperbarui. Luas dihitung ulang.`
+        );
+      });
+
+      return marker;
+    });
+  }
+
   function resetMeasurement() {
     measuring = false;
     finished = false;
+    editing = false;
     points = [];
 
+    clearVertexMarkers();
     clearGeometryLayers();
     updateMeasurements();
 
@@ -280,6 +328,32 @@
     setStatus(
       "Polygon selesai. Luas digital telah dihitung."
     );
+
+    setButtons();
+  });
+
+  editBtn.addEventListener("click", () => {
+    if (!finished || points.length < 3) return;
+
+    editing = !editing;
+
+    editBtn.textContent = editing
+      ? "Selesai Edit"
+      : "Edit Vertex";
+
+    if (editing) {
+      renderVertexMarkers();
+      setStatus(
+        "Mode Edit Vertex aktif. Geser marker pada sudut polygon."
+      );
+    } else {
+      clearVertexMarkers();
+      renderGeometry();
+      updateMeasurements();
+      setStatus(
+        "Edit Vertex selesai. Luas digital telah dihitung ulang."
+      );
+    }
 
     setButtons();
   });
