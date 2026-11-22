@@ -9,7 +9,7 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="asas-tokens.css?v=2">
-  <link rel="stylesheet" href="facility.css?v=2">
+  <link rel="stylesheet" href="facility.css?v=10">
 </head>
 
 <body>
@@ -30,11 +30,15 @@
       <section class="facility-hero" id="home">
         <span class="eyebrow">FACILITY SERVICES</span>
 
-        <h1>Butuh bantuan hari ini?</h1>
+        <div class="pilot-badge">
+          <span class="pilot-dot" aria-hidden="true"></span>
+          <span>PILOT BERTAHAP · ZONA 1</span>
+        </div>
+
+        <h1>Anda yang Utama</h1>
 
         <p>
-          Cleaning, laundry &amp; garment care, maintenance,
-          serta kebutuhan fasilitas dalam satu layanan.
+          Jasa Setrika yang datang kepada Anda. Pilih lokasi dan waktu yang nyaman, lalu biarkan kami membantu proses berikutnya.
         </p>
 
         <div class="hero-actions">
@@ -51,9 +55,9 @@
       <section class="app-section" id="services">
         <div class="section-heading">
           <span class="section-kicker">LAYANAN</span>
-          <h2>Pilih kebutuhan</h2>
+          <h2>Layanan yang siap membantu</h2>
           <p>
-            Ketersediaan layanan mengikuti service catalog yang aktif.
+            Jasa Setrika sudah tersedia. Layanan lainnya sedang kami persiapkan secara bertahap.
           </p>
         </div>
 
@@ -95,7 +99,7 @@
         <div class="mode-list">
           <button class="mode-card mode-primary" type="button" data-mode="one-time">
             <span>Tanpa kontrak</span>
-            <strong>Pesan Sekarang</strong>
+            <strong>Pesan Jasa Setrika</strong>
             <p>Untuk satu kebutuhan layanan.</p>
           </button>
 
@@ -103,15 +107,6 @@
             <span>Rutin</span>
             <strong>Layanan Terjadwal</strong>
             <p>Untuk kebutuhan layanan yang berulang.</p>
-          </button>
-
-          <button class="mode-card" type="button" data-mode="enterprise">
-            <span>Corporate</span>
-            <strong>Solusi Perusahaan</strong>
-            <p>
-              Untuk perusahaan, site, scope layanan,
-              atau kebutuhan kontrak.
-            </p>
           </button>
         </div>
       </section>
@@ -151,40 +146,70 @@
           <span>Data order simulasi tidak digunakan.</span>
         </div>
       </section>
-
-      <section class="enterprise-section" id="enterprise">
-        <span class="section-kicker">UNTUK PERUSAHAAN</span>
-
-        <h2>Facility untuk kebutuhan perusahaan.</h2>
-
+    <section class="service-promise-section" id="promise">
+      <div class="section-heading">
+        <span class="section-kicker">4 JANJI PELAYANAN ASAS</span>
+        <h2>Anda yang utama dalam setiap pelayanan.</h2>
         <p>
-          Ajukan konteks perusahaan, lokasi atau site,
-          layanan yang dibutuhkan, dan scope awal untuk
-          proses qualification Facility.
+          ASAS hadir untuk membuat proses lebih mudah,
+          lebih jelas, dan lebih nyaman bagi Anda.
+        </p>
+      </div>
+
+      <div class="service-promise-grid">
+        <article class="service-promise">
+          <span class="promise-letter">A</span>
+          <div>
+            <h3>Anda yang Utama</h3>
+            <p>Kebutuhan dan kenyamanan Anda menjadi prioritas.</p>
+          </div>
+        </article>
+
+        <article class="service-promise">
+          <span class="promise-letter">S</span>
+          <div>
+            <h3>Siap Membantu</h3>
+            <p>Kami hadir ketika Anda membutuhkan bantuan.</p>
+          </div>
+        </article>
+
+        <article class="service-promise">
+          <span class="promise-letter">A</span>
+          <div>
+            <h3>Amanah dalam Pelayanan</h3>
+            <p>Kepercayaan dan pesanan Anda kami jaga.</p>
+          </div>
+        </article>
+
+        <article class="service-promise">
+          <span class="promise-letter">S</span>
+          <div>
+            <h3>Sampai Tuntas</h3>
+            <p>Kami menemani proses layanan hingga selesai.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="help-section" id="help">
+      <div class="help-card">
+        <span class="section-kicker">KAMI SIAP MEMBANTU</span>
+        <h2>Ada yang ingin ditanyakan?</h2>
+        <p>
+          WhatsApp tersedia sebagai jalur bantuan cadangan
+          selama proses Jasa Setrika.
         </p>
 
-        <button class="btn btn-enterprise" type="button" data-action="enterprise">
-          Ajukan Kebutuhan Perusahaan
-        </button>
-
-        <small>
-          Klasifikasi account dan kebutuhan kontrak
-          ditentukan melalui proses internal Facility.
-        </small>
-      </section>
-
-      <section class="trust-section">
-        <span class="section-kicker">ONE ASAS</span>
-        <h2>Satu layanan, satu alur yang dapat ditelusuri.</h2>
-
-        <div class="trust-flow">
-          <span>Request</span>
-          <span>Assignment</span>
-          <span>Service</span>
-          <span>Evidence</span>
-          <span>Completion</span>
-        </div>
-      </section>
+        <a
+          class="btn btn-help"
+          href="https://wa.me/6285695272863"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Hubungi Admin via WhatsApp
+        </a>
+      </div>
+    </section>
     </main>
 
     <footer class="app-footer">
@@ -202,11 +227,11 @@
       <button type="button" data-nav="home">Beranda</button>
       <button type="button" data-nav="services">Layanan</button>
       <button type="button" data-nav="orders">Order</button>
-      <button type="button" data-nav="enterprise">Perusahaan</button>
+      <button type="button" data-nav="help">Bantuan</button>
     </nav>
 
   </div>
 
-  <script type="module" src="facility.js?v=7"></script>
+  <script type="module" src="facility.js?v=10"></script>
 </body>
 </html>
