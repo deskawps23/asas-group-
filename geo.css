@@ -397,3 +397,28 @@ main{
     grid-template-columns:1fr;
   }
 }
+
+/* GEO EDIT VERTEX */
+
+.geo-vertex-icon{
+  background:transparent;
+  border:0;
+}
+
+.geo-vertex-handle{
+  display:block;
+  width:16px;
+  height:16px;
+  margin:4px;
+  box-sizing:border-box;
+  border:3px solid #ffffff;
+  border-radius:50%;
+  background:#d92c38;
+  box-shadow:
+    0 0 0 2px rgba(217,44,56,.35),
+    0 2px 8px rgba(0,0,0,.35);
+}
+
+.geo-vertex-icon:active .geo-vertex-handle{
+  transform:scale(1.18);
+}

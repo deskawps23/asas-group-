@@ -215,7 +215,13 @@
 
     vertexMarkers = points.map((latlng, index) => {
       const marker = L.marker(latlng, {
-        draggable: true
+        draggable: true,
+        icon: L.divIcon({
+          className: "geo-vertex-icon",
+          html: '<span class="geo-vertex-handle"></span>',
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        })
       }).addTo(map);
 
       marker.on("drag", (event) => {
