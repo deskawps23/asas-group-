@@ -225,6 +225,7 @@ function scrollToSection(id) {
         <div class="estimate-field">
           <label class="estimate-label" for="ironing-pickup-address">Alamat Penjemputan</label>
           <textarea id="ironing-pickup-address" class="estimate-input" rows="2" placeholder="Nama jalan, kampung/kelurahan, patokan" required></textarea>
+          <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button type="button" id="share-ironing-location" class="btn-secondary">Bagikan Lokasi Saya</button><span id="ironing-location-status" style="font-size:0.85rem;">Belum membagikan lokasi (opsional, bisa isi alamat manual).</span></div><div id="ironing-location-preview" style="font-size:0.85rem;margin-top:4px;"></div>
         </div>
         <button type="button" id="submit-ironing-order" class="btn-primary">Ajukan Pesanan Setrika</button>
         <div id="ironing-submit-status" aria-live="polite" style="margin-top:8px;font-size:13px;"></div>
@@ -317,6 +318,54 @@ const ZONA_1_DISTRICTS = [
 const submitOrderBtn = bookingStage.querySelector("#submit-ironing-order");
 const submitStatusEl = bookingStage.querySelector("#ironing-submit-status");
 
+let ironingLocationData = null;
+const shareLocationBtn = bookingStage.querySelector("#share-ironing-location");
+const locationStatusEl = bookingStage.querySelector("#ironing-location-status");
+const locationPreviewEl = bookingStage.querySelector("#ironing-location-preview");
+
+if (shareLocationBtn) {
+  shareLocationBtn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      if (locationStatusEl) locationStatusEl.textContent = "Perangkat tidak mendukung GPS/Geolocation. Silakan isi alamat manual.";
+      return;
+    }
+    shareLocationBtn.disabled = true;
+    shareLocationBtn.textContent = "Mengambil lokasi...";
+    if (locationStatusEl) locationStatusEl.textContent = "Mencari titik koordinat perangkat...";
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const acc = Number.isFinite(position.coords.accuracy) ? position.coords.accuracy : null;
+        const mapsUrl = `https://www.google.com/maps?q=${lat.toFixed(6)},${lng.toFixed(6)}`;
+        ironingLocationData = {
+          latitude: lat,
+          longitude: lng,
+          accuracy: acc,
+          mapsUrl,
+          capturedAtIso: new Date().toISOString()
+        };
+        if (locationStatusEl) locationStatusEl.textContent = "Lokasi perangkat berhasil diambil.";
+        if (locationPreviewEl) {
+          const accText = acc !== null ? ` · ±${acc.toFixed(1)} m` : "";
+          locationPreviewEl.innerHTML = `${lat.toFixed(6)}, ${lng.toFixed(6)}${accText} · <a href="${mapsUrl}" target="_blank" rel="noopener">Buka di Maps</a>`;
+        }
+        shareLocationBtn.disabled = false;
+        shareLocationBtn.textContent = "Perbarui Lokasi Saya";
+      },
+      (err) => {
+        shareLocationBtn.disabled = false;
+        shareLocationBtn.textContent = "Bagikan Lokasi Saya";
+        if (locationStatusEl) {
+          locationStatusEl.textContent = `Gagal mengambil lokasi (${err.message || "izin ditolak/timeout"}). Anda tetap bisa mengisi alamat manual.`;
+        }
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+    );
+  });
+}
+
 if (submitOrderBtn) {
   submitOrderBtn.addEventListener("click", async () => {
     const districtEl = bookingStage.querySelector("#ironing-district");
@@ -353,7 +402,8 @@ if (submitOrderBtn) {
     try {
       const docRef = await addDoc(collection(db, "serviceOrders"), {
         serviceType: "IRONING",
-        status: "REQUESTED",
+        pickupLocation: ironingLocationData || null,
+          status: "REQUESTED",
         zone: "ZONA_1_PANDEGLANG",
         district,
         weightKg: requestedWeight,
