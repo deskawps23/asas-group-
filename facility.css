@@ -709,3 +709,171 @@ a:focus-visible {
   background: var(--asas-blue-100);
   box-shadow: inset 0 0 0 1px var(--asas-blue-200);
 }
+
+/* PILOT SERVICE AVAILABILITY */
+
+.service-card-active {
+  position: relative;
+  background:
+    linear-gradient(
+      145deg,
+      var(--asas-blue-100),
+      #ffffff
+    );
+  border-color: var(--asas-blue-300);
+}
+
+.service-card-active::after {
+  content: "AKTIF";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  padding: 5px 8px;
+
+  color: #ffffff;
+  background: var(--asas-success);
+
+  border-radius: var(--asas-radius-pill);
+
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.service-card.is-unavailable {
+  opacity: 0.58;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.service-card.is-unavailable .service-number {
+  color: var(--asas-text-muted);
+  background: var(--asas-background-soft);
+}
+
+/* IRONING PILOT PRICING */
+
+.service-card .service-price {
+  display: inline-flex;
+  width: auto;
+  margin-top: 12px;
+  padding: 6px 10px;
+
+  color: var(--asas-navy);
+  background: var(--asas-blue-100);
+
+  border: 1px solid var(--asas-blue-200);
+  border-radius: var(--asas-radius-pill);
+
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.service-card .service-delivery {
+  margin-top: 6px;
+
+  color: var(--asas-success);
+
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+/* IRONING ESTIMATE CALCULATOR */
+
+.estimate-card {
+  display: grid;
+  gap: 14px;
+}
+
+.estimate-card > strong {
+  color: var(--asas-navy);
+  font-size: 1.12rem;
+}
+
+.estimate-card > p {
+  margin: 0;
+  color: var(--asas-text-secondary);
+}
+
+.estimate-label {
+  color: var(--asas-navy);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.estimate-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.estimate-input {
+  width: min(100%, 180px);
+  min-height: var(--asas-touch-min);
+
+  padding: 11px 13px;
+
+  color: var(--asas-navy);
+  background: #ffffff;
+
+  border: 1px solid var(--asas-border-strong);
+  border-radius: var(--asas-radius-md);
+
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 850;
+}
+
+.estimate-input-row > span {
+  color: var(--asas-text-secondary);
+  font-weight: 800;
+}
+
+.estimate-breakdown {
+  display: grid;
+  gap: 9px;
+
+  padding: 15px;
+
+  background: var(--asas-blue-25);
+  border: 1px solid var(--asas-border);
+  border-radius: var(--asas-radius-lg);
+}
+
+.estimate-breakdown > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+  color: var(--asas-text-secondary);
+}
+
+.estimate-breakdown strong {
+  color: var(--asas-navy);
+  text-align: right;
+}
+
+.estimate-total {
+  margin-top: 4px;
+  padding-top: 11px;
+  border-top: 1px solid var(--asas-border-strong);
+}
+
+.estimate-total span,
+.estimate-total strong {
+  color: var(--asas-red);
+  font-weight: 900;
+}
+
+.estimate-note {
+  padding: 11px 13px;
+
+  color: var(--asas-text-secondary);
+  background: var(--asas-warning-soft);
+
+  border-radius: var(--asas-radius-md);
+
+  font-size: 0.77rem;
+  line-height: 1.5;
+}

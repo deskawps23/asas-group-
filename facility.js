@@ -40,12 +40,55 @@
 
     bookingStage.innerHTML = serviceName
       ? `
-        <strong>${serviceName}</strong>
-        <p>
-          Pickup & Delivery tersedia untuk pilot
-          Jasa Setrika Pandeglang Zona 1.
-          Lengkapi detail pemesanan untuk melanjutkan.
-        </p>
+        <div class="estimate-card">
+          <strong>${serviceName}</strong>
+          <p>Pickup &amp; Delivery · Pandeglang Zona 1</p>
+
+          <label class="estimate-label" for="estimated-weight">
+            Estimasi berat
+          </label>
+
+          <div class="estimate-input-row">
+            <input
+              id="estimated-weight"
+              class="estimate-input"
+              type="number"
+              inputmode="decimal"
+              min="0.1"
+              max="100"
+              step="0.1"
+              value="3"
+            >
+            <span>kg</span>
+          </div>
+
+          <div class="estimate-breakdown">
+            <div>
+              <span>Berat ditagihkan</span>
+              <strong id="billable-weight">3 kg</strong>
+            </div>
+
+            <div>
+              <span>Jasa Setrika</span>
+              <strong id="service-cost">Rp15.000</strong>
+            </div>
+
+            <div>
+              <span>Antar-jemput</span>
+              <strong>Rp5.000</strong>
+            </div>
+
+            <div class="estimate-total">
+              <span>Estimasi Total</span>
+              <strong id="estimated-total">Rp20.000</strong>
+            </div>
+          </div>
+
+          <p class="estimate-note">
+            Minimum 3 kg. Berat pada booking adalah estimasi.
+            Tagihan final mengikuti berat terverifikasi di hub.
+          </p>
+        </div>
       `
       : `
         <p>
@@ -53,6 +96,64 @@
           Booking production belum diaktifkan.
         </p>
       `;
+
+    if (serviceName) {
+      const weightInput =
+        bookingStage.querySelector("#estimated-weight");
+
+      const billableWeightEl =
+        bookingStage.querySelector("#billable-weight");
+
+      const serviceCostEl =
+        bookingStage.querySelector("#service-cost");
+
+      const estimatedTotalEl =
+        bookingStage.querySelector("#estimated-total");
+
+      const formatRupiah = (value) =>
+        new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0
+        }).format(value);
+
+      const updateEstimate = () => {
+        let requestedWeight =
+          Number.parseFloat(weightInput.value);
+
+        if (!Number.isFinite(requestedWeight)) {
+          requestedWeight = 3;
+        }
+
+        requestedWeight =
+          Math.min(Math.max(requestedWeight, 0.1), 100);
+
+        const billableWeight =
+          Math.max(requestedWeight, 3);
+
+        const serviceCost =
+          billableWeight * 5000;
+
+        const deliveryCost = 5000;
+        const total = serviceCost + deliveryCost;
+
+        billableWeightEl.textContent =
+          `${billableWeight.toLocaleString("id-ID")} kg`;
+
+        serviceCostEl.textContent =
+          formatRupiah(serviceCost);
+
+        estimatedTotalEl.textContent =
+          formatRupiah(total);
+      };
+
+      weightInput.addEventListener(
+        "input",
+        updateEstimate
+      );
+
+      updateEstimate();
+    }
 
     bookingPanel.scrollIntoView({
       behavior: "smooth",
