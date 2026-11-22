@@ -1,0 +1,119 @@
+:root {
+  /* ASAS NEXUS DESIGN TOKENS v2 */
+
+  /* Primary / Navy */
+  --asas-primary: #24577f;
+  --asas-primary-hover: #1d496b;
+  --asas-primary-active: #173f67;
+
+  --asas-navy: #173f67;
+  --asas-navy-medium: #24577f;
+  --asas-navy-soft: #356d97;
+
+  /* Light Blue */
+  --asas-blue-25: #f7fbff;
+  --asas-blue-50: #eaf6ff;
+  --asas-blue-100: #d6eeff;
+  --asas-blue-200: #b9e0ff;
+  --asas-blue-300: #8dcbf5;
+
+  /* Surfaces */
+  --asas-background: #eaf6ff;
+  --asas-background-soft: #f7fbff;
+  --asas-surface: #ffffff;
+  --asas-surface-soft: #f5faff;
+  --asas-surface-blue: #d6eeff;
+  --asas-surface-selected: #b9e0ff;
+
+  /* Text */
+  --asas-text: #15324a;
+  --asas-text-strong: #173f67;
+  --asas-text-secondary: #526b7e;
+  --asas-text-muted: #64748b;
+  --asas-text-on-navy: #ffffff;
+
+  /* Borders */
+  --asas-border: #dce6ee;
+  --asas-border-strong: #bfd4e3;
+  --asas-divider: #e5edf3;
+
+  /* ASAS Accent */
+  --asas-red: #d92d3a;
+  --asas-red-hover: #bc2431;
+  --asas-red-soft: #fff0f2;
+
+  /* Semantic */
+  --asas-success: #138a68;
+  --asas-success-soft: #e5f7f1;
+
+  --asas-warning: #d89024;
+  --asas-warning-soft: #fff7e8;
+
+  --asas-danger: #c4323f;
+  --asas-danger-soft: #fff0f2;
+
+  --asas-info: #2878ad;
+  --asas-info-soft: #e8f5ff;
+
+  /* Shadows */
+  --asas-shadow-xs: 0 1px 2px rgba(23, 63, 103, 0.05);
+  --asas-shadow-sm: 0 4px 14px rgba(23, 63, 103, 0.08);
+  --asas-shadow-md: 0 10px 28px rgba(23, 63, 103, 0.12);
+  --asas-shadow-lg: 0 18px 48px rgba(23, 63, 103, 0.16);
+
+  /* Radius */
+  --asas-radius-xs: 8px;
+  --asas-radius-sm: 12px;
+  --asas-radius-md: 16px;
+  --asas-radius-lg: 20px;
+  --asas-radius-xl: 24px;
+  --asas-radius-pill: 999px;
+
+  /* Spacing */
+  --asas-space-1: 4px;
+  --asas-space-2: 8px;
+  --asas-space-3: 12px;
+  --asas-space-4: 16px;
+  --asas-space-5: 20px;
+  --asas-space-6: 24px;
+  --asas-space-8: 32px;
+  --asas-space-10: 40px;
+  --asas-space-12: 48px;
+  --asas-space-16: 64px;
+
+  /* Typography */
+  --asas-font: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --asas-font-size-xs: 0.75rem;
+  --asas-font-size-sm: 0.875rem;
+  --asas-font-size-md: 1rem;
+  --asas-font-size-lg: 1.125rem;
+  --asas-font-size-xl: 1.375rem;
+  --asas-font-size-2xl: 1.75rem;
+  --asas-font-size-3xl: 2.25rem;
+
+  --asas-line-tight: 1.2;
+  --asas-line-normal: 1.5;
+  --asas-line-relaxed: 1.7;
+
+  /* Layout */
+  --asas-content-max: 1180px;
+  --asas-mobile-gutter: 18px;
+  --asas-desktop-gutter: 32px;
+
+  /* Touch */
+  --asas-touch-min: 48px;
+
+  /* Motion */
+  --asas-duration-fast: 140ms;
+  --asas-duration-normal: 220ms;
+  --asas-duration-slow: 320ms;
+  --asas-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Layering */
+  --asas-z-base: 1;
+  --asas-z-sticky: 20;
+  --asas-z-overlay: 50;
+  --asas-z-modal: 100;
+}

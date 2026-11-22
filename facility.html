@@ -2,232 +2,209 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#05070a">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf6ff">
 
-  <title>Operations | ASAS Nexus</title>
-
-  <meta
-    name="description"
-    content="Operations exploration surface of ASAS Nexus."
-  >
+  <title>Facility Services | ASAS Nexus</title>
 
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="facility.css?v=1">
+  <link rel="stylesheet" href="asas-tokens.css?v=2">
+  <link rel="stylesheet" href="facility.css?v=2">
 </head>
 
 <body>
-  <main>
+  <div class="facility-app">
 
-    <section class="operations-hero">
-      <div class="operations-shell">
+    <header class="app-header">
+      <a class="app-brand" href="index.html">
+        <strong>ASAS</strong>
+        <span>Facility Services</span>
+      </a>
 
-        <div class="operations-kicker">
-          ASAS NEXUS · BUSINESS · OPERATIONS
-        </div>
+      <button class="header-order" type="button" data-action="orders">
+        Order Saya
+      </button>
+    </header>
 
-        <h1 class="operations-title">
-          Explore operations as a connected system.
-        </h1>
+    <main>
+      <section class="facility-hero" id="home">
+        <span class="eyebrow">FACILITY SERVICES</span>
 
-        <p class="operations-intro">
-          Telusuri operating model, process, service delivery,
-          asset & facility, supply interface, serta control &
-          evidence sebagai konteks yang saling terhubung.
+        <h1>Butuh bantuan hari ini?</h1>
+
+        <p>
+          Cleaning, laundry &amp; garment care, maintenance,
+          serta kebutuhan fasilitas dalam satu layanan.
         </p>
 
-        <div class="operations-core">
-          <div class="operations-core-label">OPERATIONS CORE</div>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" data-action="book-now">
+            Pesan Sekarang
+          </button>
 
-          <h2>Context before activity.</h2>
+          <button class="btn btn-secondary" type="button" data-action="orders">
+            Lihat Order Saya
+          </button>
+        </div>
+      </section>
 
+      <section class="app-section" id="services">
+        <div class="section-heading">
+          <span class="section-kicker">LAYANAN</span>
+          <h2>Pilih kebutuhan</h2>
           <p>
-            ASAS Nexus tidak menampilkan project, workload,
-            utilization, SLA angka, aktivitas operasional,
-            atau performa yang belum memiliki sumber data nyata.
+            Ketersediaan layanan mengikuti service catalog yang aktif.
           </p>
         </div>
 
-      </div>
-    </section>
+        <div class="service-grid">
+          <button class="service-card" type="button" data-service="cleaning">
+            <span class="service-number">01</span>
+            <strong>Cleaning</strong>
+            <span>Rumah · Kantor · Area fasilitas</span>
+          </button>
 
+          <button class="service-card" type="button" data-service="garment-care">
+            <span class="service-number">02</span>
+            <strong>Laundry &amp; Garment Care</strong>
+            <span>Laundry · Setrika · Garment care</span>
+          </button>
 
-    <section class="operations-section">
-      <div class="operations-shell">
+          <button class="service-card" type="button" data-service="maintenance">
+            <span class="service-number">03</span>
+            <strong>Maintenance</strong>
+            <span>Kebutuhan maintenance fasilitas</span>
+          </button>
 
-        <div class="operations-section-head">
-          <small>EXPLORE OPERATIONS</small>
-          <h2>Select an operating context.</h2>
+          <button class="service-card" type="button" data-service="building">
+            <span class="service-number">04</span>
+            <strong>Building &amp; Facility</strong>
+            <span>Kantor · Gedung · Site</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="app-section order-mode-section" id="order-mode">
+        <div class="section-heading">
+          <span class="section-kicker">CARA MEMESAN</span>
+          <h2>Sesuai kebutuhan Anda</h2>
         </div>
 
-        <div class="operations-nodes">
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Cleaning Services"
-            data-context="Layanan kebersihan untuk kebutuhan rumah, kantor, gedung, dan fasilitas sesuai service catalog yang aktif."
-            data-route=""
-            data-action="Explore Business Context"
-          >
-            <small>OPERATING MODEL</small>
-            <strong>Cleaning Services</strong>
-            <span>Structure, responsibility, and business context.</span>
+        <div class="mode-list">
+          <button class="mode-card mode-primary" type="button" data-mode="one-time">
+            <span>Tanpa kontrak</span>
+            <strong>Pesan Sekarang</strong>
+            <p>Untuk satu kebutuhan layanan.</p>
           </button>
 
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Laundry & Garment Care"
-            data-context="Layanan laundry dan perawatan pakaian dengan pilihan fulfillment yang tersedia, termasuk on-site atau pickup & delivery jika diaktifkan."
-            data-route=""
-            data-action="Explore Business Context"
-          >
-            <small>PROCESS CONTEXT</small>
-            <strong>Laundry & Garment Care</strong>
-            <span>Process relationship and operating context.</span>
+          <button class="mode-card" type="button" data-mode="scheduled">
+            <span>Rutin</span>
+            <strong>Layanan Terjadwal</strong>
+            <p>Untuk kebutuhan layanan yang berulang.</p>
           </button>
 
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Maintenance Services"
-            data-context="Permintaan layanan maintenance untuk kebutuhan fasilitas sesuai scope dan service catalog yang aktif."
-            data-route=""
-            data-action="Explore Business Context"
-          >
-            <small>SERVICE DELIVERY</small>
-            <strong>Maintenance Services</strong>
-            <span>Service and connected operating context.</span>
+          <button class="mode-card" type="button" data-mode="enterprise">
+            <span>Corporate</span>
+            <strong>Solusi Perusahaan</strong>
+            <p>
+              Untuk perusahaan, site, scope layanan,
+              atau kebutuhan kontrak.
+            </p>
           </button>
+        </div>
+      </section>
 
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Building & Facility Operations"
-            data-context="Layanan operasional fasilitas untuk kebutuhan kantor, gedung, dan site dengan scope yang tervalidasi."
-            data-route=""
-            data-action="Explore Growth & Portfolio"
-          >
-            <small>ASSET & FACILITY</small>
-            <strong>Building & Facility Operations</strong>
-            <span>Asset, facility, and portfolio context.</span>
-          </button>
-
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Enterprise Services"
-            data-context="Jalur layanan untuk kebutuhan organisasi dan kontrak Facility berdasarkan scope dan ketentuan yang disepakati."
-            data-route=""
-            data-action="Explore Procurement & Supply"
-          >
-            <small>SUPPLY INTERFACE</small>
-            <strong>Enterprise Services</strong>
-            <span>Procurement, supply, and operating context.</span>
-          </button>
-
-
-          <button
-            type="button"
-            class="operations-node"
-            aria-pressed="false"
-            data-title="Service Catalog"
-            data-context="Jelajahi layanan Facility yang telah disetujui dan diaktifkan untuk pemesanan tanpa menampilkan layanan, harga, SLA, atau coverage yang belum tersedia."
-            data-route=""
-            data-action="Explore Governance & Trust"
-          >
-            <small>CONTROL & EVIDENCE</small>
-            <strong>Service Catalog</strong>
-            <span>Governance, audit, and operating evidence context.</span>
-          </button>
-
+      <section class="booking-panel" id="booking-panel" hidden>
+        <div class="section-heading">
+          <span class="section-kicker">PESAN LAYANAN</span>
+          <h2 id="booking-title">Mulai pesanan</h2>
         </div>
 
+        <div class="booking-steps" aria-label="Tahapan booking">
+          <span>01 Layanan</span>
+          <span>02 Cara layanan</span>
+          <span>03 Lokasi</span>
+          <span>04 Jadwal</span>
+          <span>05 Detail</span>
+          <span>06 Review</span>
+        </div>
 
-        <div
-          class="operations-reveal"
-          id="operationsReveal"
-          aria-live="polite"
-        >
-          <h3 id="operationsRevealTitle">Operations Context</h3>
+        <div id="booking-stage" class="booking-stage" aria-live="polite">
+          <p>Pilih layanan untuk memulai.</p>
+        </div>
+      </section>
 
-          <p id="operationsRevealText">
-            Pilih satu domain untuk mengungkap konteks operasi.
+      <section class="app-section orders-section" id="orders">
+        <div class="section-heading">
+          <span class="section-kicker">ORDER SAYA</span>
+          <h2>Pantau layanan</h2>
+          <p>
+            Order aktual akan tampil setelah workflow
+            pemesanan production tersedia.
           </p>
-
-          <a
-            class="operations-route"
-            id="operationsRevealRoute"
-            href="#"
-          >
-            Explore
-          </a>
         </div>
 
-      </div>
-    </section>
-
-
-    <section class="operations-section">
-      <div class="operations-shell">
-
-        <div class="operations-section-head">
-          <small>CONNECTED OPERATIONS</small>
-          <h2>Operations connects execution to control.</h2>
+        <div class="empty-state" id="orders-state">
+          <strong>Belum ada order untuk ditampilkan.</strong>
+          <span>Data order simulasi tidak digunakan.</span>
         </div>
+      </section>
 
-        <div class="operations-context">
+      <section class="enterprise-section" id="enterprise">
+        <span class="section-kicker">UNTUK PERUSAHAAN</span>
 
-          <a href="finance.html?v=2499bee">
-            <strong>Operations ↔ Finance</strong>
-            <span>
-              Hubungkan operating context dengan Finance & Control.
-            </span>
-          </a>
+        <h2>Facility untuk kebutuhan perusahaan.</h2>
 
-          <a href="procurement.html?v=0682c13">
-            <strong>Operations ↔ Procurement</strong>
-            <span>
-              Explore hubungan operasi dengan procurement
-              dan supply context.
-            </span>
-          </a>
+        <p>
+          Ajukan konteks perusahaan, lokasi atau site,
+          layanan yang dibutuhkan, dan scope awal untuk
+          proses qualification Facility.
+        </p>
 
-          <a href="governance.html?v=e7c9284">
-            <strong>Operations ↔ Governance</strong>
-            <span>
-              Hubungkan execution dengan control, audit,
-              dan evidence.
-            </span>
-          </a>
+        <button class="btn btn-enterprise" type="button" data-action="enterprise">
+          Ajukan Kebutuhan Perusahaan
+        </button>
 
+        <small>
+          Klasifikasi account dan kebutuhan kontrak
+          ditentukan melalui proses internal Facility.
+        </small>
+      </section>
+
+      <section class="trust-section">
+        <span class="section-kicker">ONE ASAS</span>
+        <h2>Satu layanan, satu alur yang dapat ditelusuri.</h2>
+
+        <div class="trust-flow">
+          <span>Request</span>
+          <span>Assignment</span>
+          <span>Service</span>
+          <span>Evidence</span>
+          <span>Completion</span>
         </div>
+      </section>
+    </main>
 
-      </div>
-    </section>
+    <footer class="app-footer">
+      <span>ASAS Nexus · Facility Services</span>
 
-  </main>
+      <small>
+        Concept, Design &amp; Development by
+        <strong class="deskawps">
+          <span class="deska">deska</span><span class="wps">wps</span>
+        </strong>
+      </small>
+    </footer>
 
+    <nav class="bottom-nav" aria-label="Facility navigation">
+      <button type="button" data-nav="home">Beranda</button>
+      <button type="button" data-nav="services">Layanan</button>
+      <button type="button" data-nav="orders">Order</button>
+      <button type="button" data-nav="enterprise">Perusahaan</button>
+    </nav>
 
-  <footer class="operations-footer">
-    <div class="operations-shell">
-      <div>ASAS · Aggregate Strategic Asset Solutions</div>
-      <div>
-        Concept, Design & Development by <strong>deskawps</strong>
-      </div>
-    </div>
-  </footer>
+  </div>
 
-  <script src="facility.js?v=1"></script>
+  <script src="facility.js?v=2"></script>
 </body>
 </html>

@@ -1,35 +1,117 @@
 (() => {
-  const nodes = document.querySelectorAll(".operations-node");
-  const nodeGroup = document.querySelector(".operations-nodes");
-  const reveal = document.getElementById("operationsReveal");
-  const revealTitle = document.getElementById("operationsRevealTitle");
-  const revealText = document.getElementById("operationsRevealText");
-  const revealRoute = document.getElementById("operationsRevealRoute");
+  const bookingPanel = document.querySelector("#booking-panel");
+  const bookingTitle = document.querySelector("#booking-title");
+  const bookingStage = document.querySelector("#booking-stage");
 
-  if (!nodes.length || !nodeGroup || !reveal) return;
+  const services = {
+    cleaning: "Cleaning",
+    "garment-care": "Laundry & Garment Care",
+    maintenance: "Maintenance",
+    building: "Building & Facility"
+  };
 
-  function activateNode(node) {
-    nodes.forEach((item) => {
-      const active = item === node;
-      item.classList.toggle("is-active", active);
-      item.setAttribute("aria-pressed", active ? "true" : "false");
-    });
+  function scrollToSection(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
 
-    nodeGroup.classList.add("has-active");
-
-    revealTitle.textContent = node.dataset.title || "";
-    revealText.textContent = node.dataset.context || "";
-    revealRoute.href = node.dataset.route || "#";
-    revealRoute.textContent = node.dataset.action || "Explore";
-
-    reveal.classList.add("is-visible");
-    reveal.scrollIntoView({
+    target.scrollIntoView({
       behavior: "smooth",
-      block: "nearest"
+      block: "start"
     });
   }
 
-  nodes.forEach((node) => {
-    node.addEventListener("click", () => activateNode(node));
+  function openBooking(serviceKey = "") {
+    if (!bookingPanel || !bookingTitle || !bookingStage) return;
+
+    bookingPanel.hidden = false;
+
+    const serviceName = services[serviceKey];
+
+    bookingTitle.textContent = serviceName
+      ? `Pesan ${serviceName}`
+      : "Mulai pesanan";
+
+    bookingStage.innerHTML = serviceName
+      ? `
+        <strong>${serviceName}</strong>
+        <p>
+          Pilih mode layanan untuk melanjutkan.
+          Booking production belum diaktifkan.
+        </p>
+      `
+      : `
+        <p>
+          Pilih layanan untuk memulai.
+          Booking production belum diaktifkan.
+        </p>
+      `;
+
+    bookingPanel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  document.querySelectorAll("[data-service]").forEach((button) => {
+    button.addEventListener("click", () => {
+      openBooking(button.dataset.service || "");
+    });
+  });
+
+  document.querySelectorAll("[data-mode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.mode;
+
+      if (mode === "enterprise") {
+        scrollToSection("enterprise");
+        return;
+      }
+
+      openBooking();
+
+      if (bookingStage) {
+        bookingStage.innerHTML =
+          mode === "scheduled"
+            ? `
+              <strong>Layanan Terjadwal</strong>
+              <p>
+                Pilih layanan terlebih dahulu.
+                Availability production belum diaktifkan.
+              </p>
+            `
+            : `
+              <strong>Pesan Sekarang</strong>
+              <p>
+                Pilih layanan untuk memulai pesanan tanpa kontrak.
+                Booking production belum diaktifkan.
+              </p>
+            `;
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.dataset.action;
+
+      if (action === "book-now") {
+        scrollToSection("services");
+      }
+
+      if (action === "orders") {
+        scrollToSection("orders");
+      }
+
+      if (action === "enterprise") {
+        scrollToSection("enterprise");
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-nav]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.nav;
+      if (target) scrollToSection(target);
+    });
   });
 })();
