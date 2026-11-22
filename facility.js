@@ -103,7 +103,10 @@ function renderRequestedOrders(wrap, snap) {
   });
 }
 
+let activeUser = null;
+
 onAuthStateChanged(auth, async (user) => {
+  activeUser = user || null;
   const wrap = ensureAdminOrdersContainer();
   if (unsubscribeOrders) {
     unsubscribeOrders();
@@ -400,22 +403,103 @@ if (submitOrderBtn) {
     if (submitStatusEl) submitStatusEl.textContent = "Menyimpan pesanan...";
 
     try {
-      const docRef = await addDoc(collection(db, "serviceOrders"), {
-        serviceType: "IRONING",
-        pickupLocation: ironingLocationData || null,
-          status: "REQUESTED",
-        zone: "ZONA_1_PANDEGLANG",
-        district,
-        weightKg: requestedWeight,
-        billableWeightKg: billableWeight,
-        serviceCost,
-        deliveryCost,
-        estimatedTotal,
-        customerName,
-        customerPhone,
-        pickupAddress,
-        createdAt: serverTimestamp()
-      });
+      const user =
+        activeUser || auth.currentUser;
+
+      if (!user) {
+        if (submitStatusEl) {
+          submitStatusEl.textContent =
+            "Masuk sebentar untuk melanjutkan. " +
+            "Pesanan Anda akan tersimpan dan mudah dipantau.";
+        }
+
+        window.location.href =
+          "portal/login.html?next=../facility.html";
+
+        return;
+      }
+
+      const locationSource =
+        ironingLocationData || {};
+
+      const latitude =
+        Number(locationSource.latitude);
+
+      const longitude =
+        Number(locationSource.longitude);
+
+      const hasValidLocation =
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude);
+
+      const canonicalAddress =
+        `${pickupAddress} | Kecamatan ${district}`
+          .slice(0, 500);
+
+      const pickup = {
+        address: canonicalAddress,
+        requestedAt: new Date(),
+
+        ...(hasValidLocation
+          ? {
+              latitude,
+              longitude
+            }
+          : {})
+      };
+
+      const customerNotes = [
+        `Nama: ${customerName}`,
+        `Kontak: ${customerPhone}`,
+        `Kecamatan: ${district}`,
+        `Estimasi berat: ${requestedWeight.toLocaleString("id-ID")} kg`,
+        `Estimasi total: ${formatRupiah(estimatedTotal)}`
+      ]
+        .join("\n")
+        .slice(0, 1000);
+
+      const docRef = await addDoc(
+        collection(
+          db,
+          "serviceOrders"
+        ),
+        {
+          ownerUid: user.uid,
+
+          serviceCategory:
+            "LAUNDRY_GARMENT_CARE",
+
+          serviceType:
+            "IRONING",
+
+          orderMode:
+            "ONE_TIME",
+
+          engagementType:
+            "SAM_NON_CONTRACT",
+
+          fulfillmentMode:
+            "PICKUP_DELIVERY",
+
+          marketArea:
+            "PANDEGLANG",
+
+          serviceZone:
+            "ZONE_1",
+
+          pickup,
+          customerNotes,
+
+          status:
+            "REQUESTED",
+
+          createdAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+        }
+      );
 
       if (submitStatusEl) {
         submitStatusEl.textContent = `Pesanan tersimpan (ID: ${docRef.id}) · Status: REQUESTED · Total: ${formatRupiah(estimatedTotal)}`;

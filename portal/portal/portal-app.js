@@ -132,7 +132,17 @@ await setPersistence(auth, browserLocalPersistence);
         return;
       }
 
-    window.location.href = "dashboard.html";
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get("next");
+
+    const allowedNext = new Set([
+      "../facility.html"
+    ]);
+
+    window.location.href =
+      allowedNext.has(next)
+        ? next
+        : "dashboard.html";
       
       
       

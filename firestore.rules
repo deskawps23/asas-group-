@@ -150,7 +150,8 @@ service cloud.firestore {
 
       allow get, list: if isOrderOwner() || isAdmin();
 
-      allow update, delete: if false;
+      allow update: if isAdmin() && request.resource.data.ownerUid == resource.data.ownerUid && resource.data.status == "REQUESTED" && request.resource.data.status in ["APPROVED", "CANCELLED"];
+      allow delete: if false;
     }
 
     match /{document=**} {
