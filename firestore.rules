@@ -53,6 +53,106 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    match /serviceOrders/{orderId} {
+      function isOrderOwner() {
+        return request.auth != null
+          && resource.data.ownerUid == request.auth.uid;
+      }
+
+      function isLaundryOrderCreate() {
+        let data = request.resource.data;
+        let pickup = data.pickup;
+
+        return request.auth != null
+
+          && data.keys().hasAll([
+            "ownerUid",
+            "serviceCategory",
+            "serviceType",
+            "orderMode",
+            "engagementType",
+            "fulfillmentMode",
+            "marketArea",
+            "serviceZone",
+            "pickup",
+            "customerNotes",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ])
+
+          && data.keys().hasOnly([
+            "ownerUid",
+            "serviceCategory",
+            "serviceType",
+            "orderMode",
+            "engagementType",
+            "fulfillmentMode",
+            "marketArea",
+            "serviceZone",
+            "pickup",
+            "customerNotes",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ])
+
+          && data.ownerUid == request.auth.uid
+          && data.serviceCategory == "LAUNDRY_GARMENT_CARE"
+          && data.marketArea == "PANDEGLANG"
+          && data.serviceZone == "ZONE_1"
+
+          && data.serviceType == "IRONING"
+
+          && data.orderMode == "ONE_TIME"
+          && data.engagementType == "SAM_NON_CONTRACT"
+          && data.fulfillmentMode == "PICKUP_DELIVERY"
+          && data.status == "REQUESTED"
+
+          && data.createdAt == request.time
+          && data.updatedAt == request.time
+
+          && data.customerNotes is string
+          && data.customerNotes.size() <= 1000
+
+          && pickup is map
+
+          && pickup.keys().hasAll([
+            "address",
+            "requestedAt"
+          ])
+
+          && pickup.keys().hasOnly([
+            "address",
+            "requestedAt",
+            "latitude",
+            "longitude"
+          ])
+
+          && pickup.address is string
+          && pickup.address.size() >= 5
+          && pickup.address.size() <= 500
+
+          && pickup.requestedAt is timestamp
+
+          && (
+            !("latitude" in pickup)
+            || pickup.latitude is number
+          )
+
+          && (
+            !("longitude" in pickup)
+            || pickup.longitude is number
+          );
+      }
+
+      allow create: if isLaundryOrderCreate();
+
+      allow get, list: if isOrderOwner() || isAdmin();
+
+      allow update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
