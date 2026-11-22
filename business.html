@@ -7,146 +7,203 @@
   <title>Business | ASAS Nexus</title>
   <meta name="description" content="Business exploration surface of ASAS Nexus.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="business.css?v=2">
 </head>
 
 <body>
+
   <main>
+    <section class="business-hero">
+      <div class="business-shell">
+        <div class="business-kicker">ASAS NEXUS · BUSINESS</div>
 
-    <section class="section">
-      <div class="wrap">
-        <div class="head">
-          <div>
-            <div class="kicker">ASAS NEXUS · BUSINESS</div>
-            <h1>Explore the business as a connected system.</h1>
-          </div>
+        <h1 class="business-title">
+          Business is a connected system.
+        </h1>
+
+        <p class="business-intro">
+          Explore operasi, kontrol, pertumbuhan, tata kelola,
+          dan konteks bisnis PT ASAS sebagai hubungan yang saling
+          terhubung, bukan halaman yang berdiri sendiri.
+        </p>
+
+        <div class="business-core">
+          <div class="business-core-label">BUSINESS CORE</div>
+          <h2>Explore context, then move deeper.</h2>
           <p>
-            Telusuri operasi, kontrol, pertumbuhan, tata kelola,
-            dan keterhubungan bisnis PT ASAS tanpa memisahkan
-            konteksnya.
+            Pilih satu domain. Nexus akan memusatkan konteks,
+            mengungkap hubungan yang relevan, lalu membuka route
+            eksplorasi berikutnya.
           </p>
-        </div>
-
-        <div class="grid">
-          <article class="card">
-            <div class="kicker">OPERATIONS</div>
-            <h3>Operations</h3>
-            <p>
-              Masuk ke konteks operasional dan hubungan proses bisnis
-              yang tersedia di ASAS Nexus.
-            </p>
-            <a class="btn" href="roadmap.html">Explore Operations</a>
-          </article>
-
-          <article class="card">
-            <div class="kicker">FINANCE & CONTROL</div>
-            <h3>Finance & Control</h3>
-            <p>
-              Jelajahi arsitektur finance, control, audit,
-              dan keterhubungan proses keuangan.
-            </p>
-            <a class="btn" href="finance.html">Explore Finance</a>
-          </article>
-
-          <article class="card">
-            <div class="kicker">PROCUREMENT & SUPPLY</div>
-            <h3>Procurement & Supply</h3>
-            <p>
-              Telusuri procurement sebagai bagian dari rantai proses
-              bisnis dan kontrol yang terhubung.
-            </p>
-            <a class="btn" href="procurement.html">Explore Procurement</a>
-          </article>
-
-          <article class="card">
-            <div class="kicker">GROWTH & PORTFOLIO</div>
-            <h3>Growth & Portfolio</h3>
-            <p>
-              Jelajahi arah pertumbuhan dan konteks portofolio tanpa
-              menggunakan proyeksi atau indikator yang tidak bersumber.
-            </p>
-            <a class="btn" href="growth.html">Explore Growth</a>
-          </article>
-
-          <article class="card">
-            <div class="kicker">GOVERNANCE & TRUST</div>
-            <h3>Governance & Trust</h3>
-            <p>
-              Masuk ke tata kelola, kontrol, dan struktur kepercayaan
-              yang menopang proses bisnis.
-            </p>
-            <a class="btn" href="governance.html">Explore Governance</a>
-          </article>
-
-          <article class="card">
-            <div class="kicker">CAPITAL CONTEXT</div>
-            <h3>Investor & Capital</h3>
-            <p>
-              Telusuri konteks investor dan kesiapan korporasi melalui
-              informasi yang memang tersedia.
-            </p>
-            <a class="btn" href="investor.html">Explore Investor Context</a>
-          </article>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap">
-        <div class="head">
-          <div>
-            <div class="kicker">CONNECTED BUSINESS CONTEXT</div>
-            <h2>Business does not stand alone.</h2>
-          </div>
-          <p>
-            Business terhubung dengan People, Geo, Data,
-            Intelligence, Trust, dan Impact melalui ASAS Nexus.
-          </p>
+    <section class="business-section">
+      <div class="business-shell">
+
+        <div class="business-section-head">
+          <small>EXPLORE BUSINESS</small>
+          <h2>Select a business context.</h2>
         </div>
 
-        <div class="grid">
-          <article class="card">
-            <h3>Finance ↔ Procurement</h3>
-            <p>
-              Hubungan proses finance dan procurement dapat ditelusuri
+        <div class="business-nodes">
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Operations"
+            data-context="Telusuri konteks operasional dan hubungan proses bisnis yang tersedia dalam ASAS Nexus."
+            data-route="roadmap.html"
+            data-action="Explore Operations"
+          >
+            <small>OPERATIONS</small>
+            <strong>Operations</strong>
+            <span>Process, direction, and operational context.</span>
+          </button>
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Finance & Control"
+            data-context="Jelajahi konteks finance, control, audit, dan hubungan proses keuangan yang tersedia."
+            data-route="finance.html"
+            data-action="Explore Finance"
+          >
+            <small>FINANCE & CONTROL</small>
+            <strong>Finance & Control</strong>
+            <span>Financial process, control, and audit context.</span>
+          </button>
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Procurement & Supply"
+            data-context="Telusuri procurement sebagai bagian dari rantai proses dan kontrol bisnis yang saling terhubung."
+            data-route="procurement.html"
+            data-action="Explore Procurement"
+          >
+            <small>PROCUREMENT & SUPPLY</small>
+            <strong>Procurement & Supply</strong>
+            <span>Procurement and connected process context.</span>
+          </button>
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Growth & Portfolio"
+            data-context="Jelajahi konteks pertumbuhan dan portofolio melalui informasi yang memang tersedia tanpa indikator buatan."
+            data-route="growth.html"
+            data-action="Explore Growth"
+          >
+            <small>GROWTH & PORTFOLIO</small>
+            <strong>Growth & Portfolio</strong>
+            <span>Direction, portfolio, and growth context.</span>
+          </button>
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Governance & Trust"
+            data-context="Masuk ke konteks tata kelola, kontrol, dan struktur kepercayaan yang menopang proses bisnis."
+            data-route="governance.html"
+            data-action="Explore Governance"
+          >
+            <small>GOVERNANCE & TRUST</small>
+            <strong>Governance & Trust</strong>
+            <span>Governance, control, and trust context.</span>
+          </button>
+
+          <button
+            type="button"
+            class="business-node"
+            aria-pressed="false"
+            data-title="Investor & Capital"
+            data-context="Telusuri konteks investor dan kesiapan korporasi hanya melalui informasi yang memang tersedia."
+            data-route="investor.html"
+            data-action="Explore Investor Context"
+          >
+            <small>CAPITAL CONTEXT</small>
+            <strong>Investor & Capital</strong>
+            <span>Investor and corporate readiness context.</span>
+          </button>
+
+        </div>
+
+        <div
+          class="business-reveal"
+          id="businessReveal"
+          aria-live="polite"
+        >
+          <h3 id="businessRevealTitle">Business Context</h3>
+          <p id="businessRevealText">
+            Pilih satu domain untuk mengungkap konteks.
+          </p>
+          <a
+            class="business-route"
+            id="businessRevealRoute"
+            href="#"
+          >
+            Explore
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="business-section">
+      <div class="business-shell">
+
+        <div class="business-section-head">
+          <small>CONNECTED BUSINESS CONTEXT</small>
+          <h2>Business does not stand alone.</h2>
+        </div>
+
+        <div class="business-context">
+
+          <a href="finance-procurement-model.html">
+            <strong>Finance ↔ Procurement</strong>
+            <span>
+              Explore hubungan proses finance dan procurement
               melalui model yang sudah tersedia.
-            </p>
-            <a class="btn" href="finance-procurement-model.html">
-              Open Connected Model
-            </a>
-          </article>
+            </span>
+          </a>
 
-          <article class="card">
-            <h3>Corporate Direction</h3>
-            <p>
-              Telusuri arah dan konteks korporasi tanpa memisahkan
+          <a href="roadmap.html">
+            <strong>Corporate Direction</strong>
+            <span>
+              Explore arah dan konteks korporasi tanpa memisahkan
               strategi dari governance.
-            </p>
-            <a class="btn" href="roadmap.html">Open Roadmap</a>
-          </article>
+            </span>
+          </a>
 
-          <article class="card">
-            <h3>Leadership Context</h3>
-            <p>
-              Hubungkan perspektif bisnis dengan Leadership yang telah
-              dipublikasikan secara aman.
-            </p>
-            <a class="btn" href="leadership.html">Explore Leadership</a>
-          </article>
+          <a href="leadership.html">
+            <strong>Leadership Context</strong>
+            <span>
+              Hubungkan perspektif Business dengan Leadership
+              yang telah dipublikasikan secara aman.
+            </span>
+          </a>
+
         </div>
       </div>
     </section>
-
   </main>
 
-  <footer>
-    <div class="wrap foot">
+  <footer class="business-footer">
+    <div class="business-shell">
       <div>ASAS · Aggregate Strategic Asset Solutions</div>
-      <div class="credit">
+      <div>
         Concept, Design & Development by <strong>deskawps</strong>
       </div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="business.js?v=2"></script>
 </body>
 </html>
