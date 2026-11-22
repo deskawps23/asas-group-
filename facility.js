@@ -77,67 +77,247 @@ async function handleOrderDecision(orderId, nextStatus) {
 }
 
 function renderRequestedOrders(wrap, snap) {
-  const emptyState = document.getElementById("orders-state");
-  const items = [];
-  snap.forEach((d) => {
-    const data = { id: d.id, ...d.data() };
-    if (isIroningPilotZona1(data)) items.push(data);
-  });
-  if (!items.length) {
-    wrap.innerHTML = "<p><strong>Pilot Zona 1 Pandeglang (6 Kec. - Jasa Setrika):</strong> Tidak ada order REQUESTED.</p>";
-    if (emptyState) emptyState.hidden = false;
+  if (!wrap) return;
+
+  const docs = snap?.docs || [];
+
+  if (!docs.length) {
+    wrap.innerHTML = `
+      <div class="admin-control-head">
+        <div>
+          <span class="admin-kicker">SUPER ADMIN · ZONA 1</span>
+          <h3>Panel Kendali Jasa Setrika</h3>
+          <p>Belum ada pesanan baru yang menunggu review.</p>
+        </div>
+      </div>
+      <div class="admin-empty">
+        Semua pesanan baru akan muncul di sini secara real-time.
+      </div>
+    `;
     return;
   }
-  if (emptyState) emptyState.hidden = true;
-  wrap.innerHTML = items.map((item) => {
-    const label = item.serviceName || "Jasa Setrika";
-    const kec = item.kecamatan || item.subdistrict || item.district || item.serviceZone || "ZONE_1";
-    const owner = item.ownerUid || "-";
-    return `<div class="admin-order-card" data-order-id="${item.id}" style="border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-top:10px;"><div><strong>${label}</strong> (${kec}) — <span class="order-status">${item.status || "REQUESTED"}</span></div><div style="font-size:12px;opacity:.8;">ID: ${item.id} | Owner: ${owner}</div><div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn-approve-order" data-id="${item.id}">Setujui (APPROVED)</button><button type="button" class="btn-cancel-order" data-id="${item.id}">Batalkan (CANCELLED)</button></div></div>`;
-  }).join("");
-  wrap.querySelectorAll(".btn-approve-order").forEach((btn) => {
-    btn.addEventListener("click", () => handleOrderDecision(btn.dataset.id, "APPROVED"));
+
+  const escapeHtml = (value) =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  const extractNote = (notes, prefix) => {
+    const line = String(notes || "")
+      .split("\n")
+      .find((value) =>
+        value.trim().startsWith(prefix)
+      );
+
+    return line
+      ? line.slice(prefix.length).trim()
+      : "";
+  };
+
+  const cards = docs.map((docSnap) => {
+    const item = {
+      id: docSnap.id,
+      ...docSnap.data()
+    };
+
+    const notes =
+      String(item.customerNotes || "");
+
+    const customerName =
+      extractNote(notes, "Nama:") ||
+      "Customer";
+
+    const customerPhone =
+      extractNote(notes, "Kontak:");
+
+    const district =
+      extractNote(notes, "Kecamatan:") ||
+      item.serviceZone ||
+      "Zona 1";
+
+    const estimatedWeight =
+      extractNote(notes, "Estimasi berat:");
+
+    const estimatedTotal =
+      extractNote(notes, "Estimasi total:");
+
+    const address =
+      String(item.pickup?.address || "");
+
+    const latitude =
+      Number(item.pickup?.latitude);
+
+    const longitude =
+      Number(item.pickup?.longitude);
+
+    const hasLocation =
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude);
+
+    const mapsUrl = hasLocation
+      ? `https://www.google.com/maps?q=${encodeURIComponent(
+          `${latitude},${longitude}`
+        )}`
+      : "";
+
+    const whatsappUrl = customerPhone
+      ? `https://wa.me/${customerPhone.replace(/\D/g, "")}`
+      : "";
+
+    return `
+      <article
+        class="admin-order-card"
+        data-order-id="${escapeHtml(item.id)}"
+      >
+        <div class="admin-order-top">
+          <div>
+            <span class="admin-kicker">
+              PESANAN BARU
+            </span>
+            <h4>${escapeHtml(customerName)}</h4>
+          </div>
+
+          <span class="admin-status">
+            Menunggu Review
+          </span>
+        </div>
+
+        <div class="admin-order-id">
+          Order ID
+          <strong>${escapeHtml(item.id)}</strong>
+        </div>
+
+        <div class="admin-order-details">
+          <div>
+            <span>Kecamatan</span>
+            <strong>${escapeHtml(district)}</strong>
+          </div>
+
+          <div>
+            <span>Alamat pickup</span>
+            <strong>${escapeHtml(address || "Belum tersedia")}</strong>
+          </div>
+
+          <div>
+            <span>Estimasi berat</span>
+            <strong>${escapeHtml(estimatedWeight || "Belum tersedia")}</strong>
+          </div>
+
+          <div>
+            <span>Perkiraan biaya</span>
+            <strong>${escapeHtml(estimatedTotal || "Belum tersedia")}</strong>
+          </div>
+        </div>
+
+        <div class="admin-order-links">
+          ${
+            hasLocation
+              ? `
+                <a
+                  class="admin-link"
+                  href="${mapsUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buka di Maps
+                </a>
+              `
+              : `
+                <span class="admin-link is-muted">
+                  Lokasi GPS tidak dibagikan
+                </span>
+              `
+          }
+
+          ${
+            whatsappUrl
+              ? `
+                <a
+                  class="admin-link"
+                  href="${whatsappUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Hubungi Customer
+                </a>
+              `
+              : ""
+          }
+        </div>
+
+        <div class="admin-order-actions">
+          <button
+            type="button"
+            class="btn-approve-order"
+            data-id="${escapeHtml(item.id)}"
+          >
+            Setujui Pesanan
+          </button>
+
+          <button
+            type="button"
+            class="btn-cancel-order"
+            data-id="${escapeHtml(item.id)}"
+          >
+            Belum Dapat Dilayani
+          </button>
+        </div>
+      </article>
+    `;
   });
-  wrap.querySelectorAll(".btn-cancel-order").forEach((btn) => {
-    btn.addEventListener("click", () => handleOrderDecision(btn.dataset.id, "CANCELLED"));
-  });
+
+  wrap.innerHTML = `
+    <div class="admin-control-head">
+      <div>
+        <span class="admin-kicker">
+          SUPER ADMIN · JASA SETRIKA
+        </span>
+        <h3>Panel Kendali Zona 1</h3>
+        <p>
+          Review pesanan baru dan tentukan proses berikutnya.
+        </p>
+      </div>
+
+      <span class="admin-order-count">
+        ${docs.length} menunggu
+      </span>
+    </div>
+
+    <div class="admin-order-list">
+      ${cards.join("")}
+    </div>
+  `;
+
+  wrap
+    .querySelectorAll(".btn-approve-order")
+    .forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () =>
+          handleOrderDecision(
+            btn.dataset.id,
+            "APPROVED"
+          )
+      );
+    });
+
+  wrap
+    .querySelectorAll(".btn-cancel-order")
+    .forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () =>
+          handleOrderDecision(
+            btn.dataset.id,
+            "CANCELLED"
+          )
+      );
+    });
 }
 
-let activeUser = null;
-
-onAuthStateChanged(auth, async (user) => {
-  activeUser = user || null;
-  const wrap = ensureAdminOrdersContainer();
-  if (unsubscribeOrders) {
-    unsubscribeOrders();
-    unsubscribeOrders = null;
-  }
-  if (!user) {
-    if (wrap) {
-      wrap.hidden = true;
-      wrap.innerHTML = "";
-    }
-    return;
-  }
-  const tokenResult = await getIdTokenResult(user);
-  const isSuperAdmin = Boolean(tokenResult.claims && tokenResult.claims.admin === true);
-  if (!isSuperAdmin || !wrap) {
-    if (wrap) {
-      wrap.hidden = true;
-      wrap.innerHTML = "";
-    }
-    return;
-  }
-  wrap.hidden = false;
-  const q = query(
-    collection(db, "serviceOrders"),
-    where("serviceType", "==", "IRONING"),
-    where("status", "==", "REQUESTED")
-  );
-  unsubscribeOrders = onSnapshot(q, (snap) => renderRequestedOrders(wrap, snap), (err) => {
-    console.error("Gagal memuat serviceOrders:", err);
-  });
-});
 
 function scrollToSection(id) {
     const target = document.getElementById(id);
@@ -502,14 +682,19 @@ if (submitOrderBtn) {
       );
 
       if (submitStatusEl) {
-        submitStatusEl.textContent = `Pesanan tersimpan (ID: ${docRef.id}) · Status: REQUESTED · Total: ${formatRupiah(estimatedTotal)}`;
+        submitStatusEl.textContent =
+          `Pesanan sudah kami terima ✓ Order ID: ${docRef.id}. ` +
+          `Perkiraan total ${formatRupiah(estimatedTotal)}. ` +
+          "Pesanan Anda sedang kami review.";
       }
       if (nameEl) nameEl.value = "";
       if (phoneEl) phoneEl.value = "";
       if (addressEl) addressEl.value = "";
     } catch (err) {
       console.error("Gagal menyimpan pesanan IRONING:", err);
-      if (submitStatusEl) submitStatusEl.textContent = `Gagal mengirim pesanan: ${err.message || err}`;
+      if (submitStatusEl) submitStatusEl.textContent =
+          "Kami belum berhasil mengirim pesanan. " +
+          "Periksa koneksi lalu coba sekali lagi.";
     } finally {
       submitOrderBtn.disabled = false;
     }
