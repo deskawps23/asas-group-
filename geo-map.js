@@ -27,6 +27,7 @@
   const undoBtn = document.getElementById("geoUndo");
   const resetBtn = document.getElementById("geoReset");
   const editBtn = document.getElementById("geoEdit");
+  const fitBtn = document.getElementById("geoFit");
   const exportBtn = document.getElementById("geoExport");
 
   const statusEl = document.getElementById("geoMeasureStatus");
@@ -123,6 +124,7 @@
     undoBtn.disabled = !measuring || points.length === 0;
     resetBtn.disabled = points.length === 0;
     editBtn.disabled = !finished || points.length < 3;
+    fitBtn.disabled = !finished || points.length < 3;
     exportBtn.disabled = !finished || points.length < 3;
   }
 
@@ -412,6 +414,26 @@
     }
 
     setButtons();
+  });
+
+  fitBtn.addEventListener("click", () => {
+    if (!finished || points.length < 3) return;
+
+    const bounds = L.latLngBounds(points);
+
+    if (!bounds.isValid()) {
+      setStatus("Bidang belum memiliki bounds yang valid.");
+      return;
+    }
+
+    map.fitBounds(bounds, {
+      padding: [36, 36],
+      maxZoom: 20
+    });
+
+    setStatus(
+      "Peta difokuskan kembali ke bidang yang sedang diukur."
+    );
   });
 
   resetBtn.addEventListener("click", resetMeasurement);
