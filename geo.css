@@ -422,3 +422,37 @@ main{
 .geo-vertex-icon:active .geo-vertex-handle{
   transform:scale(1.18);
 }
+
+/* GEO BASEMAP SWITCH */
+
+.geo-basemap-switch{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin:0 0 12px;
+  padding:5px;
+  border:1px solid var(--geo-line);
+  border-radius:16px;
+  background:var(--geo-surface);
+}
+
+.geo-basemap-switch button{
+  min-height:44px;
+  border:1px solid transparent;
+  border-radius:12px;
+  background:transparent;
+  color:var(--geo-muted);
+  font:inherit;
+  font-weight:700;
+  touch-action:manipulation;
+}
+
+.geo-basemap-switch button.is-active{
+  border-color:rgba(217,44,56,.55);
+  background:var(--geo-surface-2);
+  color:var(--geo-text);
+}
+
+.geo-basemap-switch button:active{
+  transform:scale(.98);
+}

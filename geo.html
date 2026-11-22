@@ -13,7 +13,7 @@
   >
 
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="geo.css?v=3">
+  <link rel="stylesheet" href="geo.css?v=4">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=1">
 </head>
 
@@ -68,6 +68,15 @@
           Ketuk titik-titik batas tanah secara berurutan dan
           selesaikan polygon untuk menghitung luas digital.
         </p>
+
+        <div class="geo-basemap-switch" aria-label="Basemap">
+          <button type="button" id="geoMapStandard" class="is-active">
+            Standard
+          </button>
+          <button type="button" id="geoMapSatellite">
+            Satellite
+          </button>
+        </div>
 
         <div class="geo-map-toolbar">
           <button type="button" id="geoLocate">Lokasi Saya</button>
@@ -302,6 +311,6 @@
 
   <script src="geo.js?v=1"></script>
   <script src="vendor/leaflet/leaflet.js?v=1"></script>
-  <script src="geo-map.js?v=6"></script>
+  <script src="geo-map.js?v=7"></script>
 </body>
 </html>

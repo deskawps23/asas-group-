@@ -19,6 +19,8 @@
     return;
   }
 
+  const standardBtn = document.getElementById("geoMapStandard");
+  const satelliteBtn = document.getElementById("geoMapSatellite");
   const locateBtn = document.getElementById("geoLocate");
   const measureBtn = document.getElementById("geoMeasure");
   const finishBtn = document.getElementById("geoFinish");
@@ -49,14 +51,62 @@
     attributionControl: true
   });
 
-  L.tileLayer(
+  const standardLayer = L.tileLayer(
     "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       maxZoom: 19,
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }
-  ).addTo(map);
+  );
+
+  const satelliteLayer = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      maxZoom: 19,
+      attribution:
+        'Powered by Esri | Sources: Esri and imagery providers'
+    }
+  );
+
+  standardLayer.addTo(map);
+
+  function setBasemap(mode) {
+    const useSatellite = mode === "satellite";
+
+    if (useSatellite) {
+      if (map.hasLayer(standardLayer)) {
+        map.removeLayer(standardLayer);
+      }
+      if (!map.hasLayer(satelliteLayer)) {
+        satelliteLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(satelliteLayer)) {
+        map.removeLayer(satelliteLayer);
+      }
+      if (!map.hasLayer(standardLayer)) {
+        standardLayer.addTo(map);
+      }
+    }
+
+    standardBtn.classList.toggle("is-active", !useSatellite);
+    satelliteBtn.classList.toggle("is-active", useSatellite);
+
+    setStatus(
+      useSatellite
+        ? "Basemap Satellite aktif."
+        : "Basemap Standard aktif."
+    );
+  }
+
+  standardBtn.addEventListener("click", () => {
+    setBasemap("standard");
+  });
+
+  satelliteBtn.addEventListener("click", () => {
+    setBasemap("satellite");
+  });
 
   /*
    * Tidak menggunakan koordinat contoh.
