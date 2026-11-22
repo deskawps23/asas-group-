@@ -1,3 +1,234 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Procurement & Supply Chain | ASAS</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap navrow"><a class="brand" href="index.html">ASAS</a><button class="menu">MENU</button><nav class="nav"><a class="" href="index.html">Home</a><a class="" href="business.html">Businesses</a><a class="" href="leadership.html">Leadership</a><a class="" href="finance.html">Finance</a><a class="on" href="procurement.html">Procurement</a><a class="" href="growth.html">Growth</a><a class="" href="people.html">People & Payroll</a><a class="" href="ipo.html">IPO & Disclosure</a><a class="" href="blockchain.html">Blockchain</a><a class="" href="data.html">Data Interoperability</a><a class="" href="data-model.html">Data Model</a><a class="" href="roadmap.html">Roadmap</a><a class="" href="global.html">Global</a><a class="" href="governance.html">Governance</a></nav></div></header><section class="pagehero"><div class="wrap"><div class="kicker">ASAS CORPORATE DATA PORTAL</div><h1>Procurement & Supply Chain</h1><p>Dashboard procurement untuk demand, vendor, sourcing, PO, delivery, payment, budget, dan audit trail.</p></div></section><section class="section"><div class="wrap"><div class="head"><div><div class="kicker">SUPPLY CHAIN CONTROL</div><h2>Procurement Intelligence.</h2></div><p>Procurement & Supply Chain sebagai controlled workflow dari demand, sourcing, vendor, purchase commitment, delivery, hingga payment evidence.</p></div><div class="grid"><article class="card"><h3>Demand Planning</h3><p>Purchase request berdasarkan asset, project, business line, dan budget.</p><a href="growth.html">Project Demand →</a></article><article class="card"><h3>Vendor Management</h3><p>Vendor master, category, country, qualification, performance, dan compliance.</p><a href="governance.html">Compliance →</a></article><article class="card"><h3>Sourcing</h3><p>RFQ/RFP, bid comparison, approval, negotiation, dan award trail.</p><a href="data.html">Data Trail →</a></article><article class="card"><h3>Purchase Order</h3><p>PO value, approval status, cost center, budget, project, dan asset.</p><a href="finance.html">Finance Control →</a></article><article class="card"><h3>Delivery & SLA</h3><p>Receipt, quality, delivery status, exception, dan service-level evidence.</p><a href="business.html">Operations →</a></article><article class="card"><h3>Payment & Audit</h3><p>Three-way control direction: order, receipt, invoice/payment evidence.</p><a href="finance.html">Payment View →</a></article></div></div></section>
-<section class="section dark"><div class="wrap"><div class="head"><div><div class="kicker">PROCURE-TO-PAY</div><h2>Controlled Procurement Flow.</h2></div><p>Alur dirancang agar procurement terhubung dengan budget, project, vendor, finance, audit, dan risk controls.</p></div><div class="flow"><div class="node"><b>Purchase Request</b></div><div class="node"><b>Sourcing</b></div><div class="node"><b>Approval / PO</b></div><div class="node"><b>Delivery</b></div><div class="node"><b>Invoice / Payment</b></div></div></div></section>
-<section class="section"><div class="wrap"><div class="head"><div><div class="kicker">PROCUREMENT METRICS</div><h2>What Management Should See.</h2></div><p>Nilai aktual akan diambil dari database setelah backend aktif.</p></div><div class="metrics"><div class="metric"><b>Budget</b><span>Available vs committed</span></div><div class="metric"><b>Spend</b><span>By sector/vendor/country</span></div><div class="metric"><b>Cycle Time</b><span>Request to PO</span></div><div class="metric"><b>Vendor SLA</b><span>Quality & delivery</span></div></div></div></section><section class="section"><div class="wrap"><div class="head"><div><div class="kicker">DATA MODEL</div><h2>Finance & Procurement ERD.</h2></div><p>Lihat relasi database dan Procure-to-Pay architecture.</p></div><a class="btn" href="finance-procurement-model.html">Open Data Model</a></div></section><footer><div class="wrap foot"><div>ASAS · Aggregate Strategic Asset Solutions</div><div class="credit">Concept, Design & Development by <strong>deskawps</strong><br><small>Visual in this file was generated with Microsoft Copilot.</small></div></div></footer><script src="script.js"></script><script src="data-loader.js"></script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+
+  <title>Procurement & Supply | ASAS Nexus</title>
+
+  <meta
+    name="description"
+    content="Procurement and supply exploration surface of ASAS Nexus."
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="procurement.css?v=1">
+</head>
+
+<body>
+  <main>
+
+    <section class="procurement-hero">
+      <div class="procurement-shell">
+
+        <div class="procurement-kicker">
+          ASAS NEXUS · BUSINESS · PROCUREMENT & SUPPLY
+        </div>
+
+        <h1 class="procurement-title">
+          Explore procurement as a connected control flow.
+        </h1>
+
+        <p class="procurement-intro">
+          Telusuri demand, vendor context, sourcing, purchasing,
+          delivery, dan audit sebagai rangkaian proses yang terhubung
+          dengan Finance, Governance, dan Business.
+        </p>
+
+        <div class="procurement-core">
+          <div class="procurement-core-label">PROCUREMENT CORE</div>
+
+          <h2>Context before transactions.</h2>
+
+          <p>
+            ASAS Nexus tidak menampilkan vendor, purchase order,
+            nilai transaksi, saving, atau SLA yang tidak berasal
+            dari sumber data nyata.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="procurement-section">
+      <div class="procurement-shell">
+
+        <div class="procurement-section-head">
+          <small>EXPLORE PROCUREMENT</small>
+          <h2>Select a procurement context.</h2>
+        </div>
+
+        <div class="procurement-nodes">
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Demand & Planning"
+            data-context="Telusuri konteks kebutuhan dan perencanaan sebelum proses sourcing atau purchasing dimulai."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>DEMAND & PLANNING</small>
+            <strong>Demand & Planning</strong>
+            <span>Needs, planning, and connected business context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Vendor Context"
+            data-context="Jelajahi struktur dan konteks pengelolaan vendor tanpa menampilkan vendor atau penilaian yang tidak bersumber."
+            data-route="governance.html"
+            data-action="Explore Governance"
+          >
+            <small>VENDOR CONTEXT</small>
+            <strong>Vendor Context</strong>
+            <span>Vendor governance and relationship context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Sourcing"
+            data-context="Telusuri sourcing sebagai bagian dari procurement control flow dan proses pengambilan keputusan."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>SOURCING</small>
+            <strong>Sourcing</strong>
+            <span>Sourcing process and decision context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Purchase Control"
+            data-context="Explore konteks purchase control tanpa membuat purchase order atau nilai transaksi simulasi."
+            data-route="finance.html?v=2499bee"
+            data-action="Explore Finance & Control"
+          >
+            <small>PURCHASE CONTROL</small>
+            <strong>Purchase Control</strong>
+            <span>Purchase process and financial control context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Delivery & SLA"
+            data-context="Telusuri delivery dan SLA sebagai struktur proses tanpa menggunakan performa atau target angka yang belum bersumber."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>DELIVERY & SLA</small>
+            <strong>Delivery & SLA</strong>
+            <span>Delivery, commitment, and process context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="procurement-node"
+            aria-pressed="false"
+            data-title="Payment & Audit"
+            data-context="Hubungkan payment dan audit dengan Finance & Control serta governance evidence."
+            data-route="finance.html?v=2499bee"
+            data-action="Explore Finance & Control"
+          >
+            <small>PAYMENT & AUDIT</small>
+            <strong>Payment & Audit</strong>
+            <span>Financial control, evidence, and audit context.</span>
+          </button>
+
+        </div>
+
+
+        <div
+          class="procurement-reveal"
+          id="procurementReveal"
+          aria-live="polite"
+        >
+          <h3 id="procurementRevealTitle">Procurement Context</h3>
+
+          <p id="procurementRevealText">
+            Pilih satu domain untuk mengungkap konteks procurement.
+          </p>
+
+          <a
+            class="procurement-route"
+            id="procurementRevealRoute"
+            href="#"
+          >
+            Explore
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="procurement-section">
+      <div class="procurement-shell">
+
+        <div class="procurement-section-head">
+          <small>CONNECTED CONTROL</small>
+          <h2>Procurement connects demand to control.</h2>
+        </div>
+
+        <div class="procurement-context">
+
+          <a href="finance-procurement-model.html">
+            <strong>Procurement ↔ Finance</strong>
+            <span>
+              Explore hubungan proses procurement dan finance
+              melalui model yang sudah tersedia.
+            </span>
+          </a>
+
+          <a href="governance.html">
+            <strong>Governance & Trust</strong>
+            <span>
+              Hubungkan procurement dengan governance,
+              evidence, dan struktur kontrol.
+            </span>
+          </a>
+
+          <a href="business.html">
+            <strong>Business Context</strong>
+            <span>
+              Kembali ke Business Living Surface untuk berpindah
+              ke konteks bisnis lainnya.
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="procurement-footer">
+    <div class="procurement-shell">
+      <div>ASAS · Aggregate Strategic Asset Solutions</div>
+      <div>
+        Concept, Design & Development by <strong>deskawps</strong>
+      </div>
+    </div>
+  </footer>
+
+  <script src="procurement.js?v=1"></script>
+</body>
+</html>
