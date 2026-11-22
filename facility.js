@@ -54,6 +54,11 @@
 
   document.querySelectorAll("[data-service]").forEach((button) => {
     button.addEventListener("click", () => {
+      document.querySelectorAll("[data-service]").forEach((item) => {
+        item.classList.remove("is-selected");
+      });
+
+      button.classList.add("is-selected");
       openBooking(button.dataset.service || "");
     });
   });
@@ -110,6 +115,12 @@
 
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => {
+      document.querySelectorAll("[data-nav]").forEach((item) => {
+        item.classList.remove("is-active");
+      });
+
+      button.classList.add("is-active");
+
       const target = button.dataset.nav;
       if (target) scrollToSection(target);
     });

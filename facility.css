@@ -674,3 +674,38 @@ a:focus-visible {
     transition: none !important;
   }
 }
+
+/* INTERACTION STATES */
+
+.service-card.is-selected {
+  color: var(--asas-navy);
+  background:
+    linear-gradient(
+      145deg,
+      var(--asas-blue-100),
+      #ffffff
+    );
+
+  border-color: var(--asas-navy-medium);
+
+  box-shadow:
+    0 0 0 3px rgba(36, 87, 127, 0.08),
+    var(--asas-shadow-md);
+
+  transform: translateY(-3px);
+}
+
+.service-card.is-selected .service-number {
+  color: #ffffff;
+  background: var(--asas-navy-medium);
+}
+
+.service-card.is-selected strong {
+  color: var(--asas-navy);
+}
+
+.bottom-nav button.is-active {
+  color: var(--asas-navy);
+  background: var(--asas-blue-100);
+  box-shadow: inset 0 0 0 1px var(--asas-blue-200);
+}
