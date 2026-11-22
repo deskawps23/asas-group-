@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+
+  <title>People | ASAS Nexus</title>
+
+  <meta
+    name="description"
+    content="People exploration surface of ASAS Nexus."
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="people.css?v=1">
+</head>
+
+<body>
+  <main>
+
+    <section class="people-hero">
+      <div class="people-shell">
+
+        <div class="people-kicker">
+          ASAS NEXUS · PEOPLE
+        </div>
+
+        <h1 class="people-title">
+          Explore people as an organizational system.
+        </h1>
+
+        <p class="people-intro">
+          Telusuri organisasi, published leadership,
+          People & Culture dalam konteks CHRO, capability,
+          governance, dan organization matrix sebagai hubungan
+          yang saling terhubung.
+        </p>
+
+        <div class="people-core">
+          <div class="people-core-label">PEOPLE CORE</div>
+
+          <h2>Structure before metrics.</h2>
+
+          <p>
+            ASAS Nexus tidak menampilkan headcount, payroll,
+            engagement score, talent score, personal account data,
+            atau workforce KPI yang belum memiliki sumber data nyata.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="people-section">
+      <div class="people-shell">
+
+        <div class="people-section-head">
+          <small>EXPLORE PEOPLE</small>
+          <h2>Select a people context.</h2>
+        </div>
+
+        <div class="people-nodes">
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="Organization"
+            data-context="Telusuri struktur organisasi sebagai konteks fungsi dan hubungan, tanpa menjadikan jumlah jabatan legacy sebagai data aktif."
+            data-route="organisasi.html"
+            data-action="Explore Organization"
+          >
+            <small>ORGANIZATION</small>
+            <strong>Organization</strong>
+            <span>Structure, function, and organizational context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="Published Leadership"
+            data-context="Explore Leadership yang telah melewati publication workflow dan tersedia sebagai record publik yang tersanitasi."
+            data-route="leadership.html"
+            data-action="Explore Published Leadership"
+          >
+            <small>PUBLISHED LEADERSHIP</small>
+            <strong>Published Leadership</strong>
+            <span>Public leadership context from published records.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="People & Culture"
+            data-context="People & Culture ditempatkan dalam konteks CHRO sebagai fungsi People, bukan sebagai direktorat terpisah."
+            data-route="organisasi.html"
+            data-action="Explore Organization Context"
+          >
+            <small>CHRO · PEOPLE & CULTURE</small>
+            <strong>People & Culture</strong>
+            <span>People and culture context within CHRO.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="Capability"
+            data-context="Jelajahi capability sebagai konteks organisasi tanpa membuat skill score, talent rating, atau workforce metric simulasi."
+            data-route="people.html"
+            data-action="Stay in People Context"
+          >
+            <small>CAPABILITY</small>
+            <strong>Capability</strong>
+            <span>Capability context without fabricated scoring.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="People Governance"
+            data-context="Hubungkan People dengan governance dan control tanpa mengekspos payroll, akun, atau data personal privat."
+            data-route="governance.html?v=e7c9284"
+            data-action="Explore Governance & Trust"
+          >
+            <small>PEOPLE GOVERNANCE</small>
+            <strong>People Governance</strong>
+            <span>Governance, control, and privacy context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="people-node"
+            aria-pressed="false"
+            data-title="Organization Matrix"
+            data-context="Telusuri organization matrix sebagai model hubungan organisasi tanpa menggunakan jumlah node atau posisi yang belum tervalidasi."
+            data-route="organisasi.html"
+            data-action="Explore Organization Matrix"
+          >
+            <small>ORGANIZATION MATRIX</small>
+            <strong>Organization Matrix</strong>
+            <span>Connected organizational structure context.</span>
+          </button>
+
+        </div>
+
+
+        <div
+          class="people-reveal"
+          id="peopleReveal"
+          aria-live="polite"
+        >
+          <h3 id="peopleRevealTitle">People Context</h3>
+
+          <p id="peopleRevealText">
+            Pilih satu domain untuk mengungkap konteks People.
+          </p>
+
+          <a
+            class="people-route"
+            id="peopleRevealRoute"
+            href="#"
+          >
+            Explore
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="people-section">
+      <div class="people-shell">
+
+        <div class="people-section-head">
+          <small>CONNECTED PEOPLE</small>
+          <h2>People connects organization to governance.</h2>
+        </div>
+
+        <div class="people-context">
+
+          <a href="organisasi.html">
+            <strong>People ↔ Organization</strong>
+            <span>
+              Explore struktur, fungsi, dan organization matrix.
+            </span>
+          </a>
+
+          <a href="leadership.html">
+            <strong>People ↔ Leadership</strong>
+            <span>
+              Explore Published Leadership tanpa membawa
+              private Leadership Account.
+            </span>
+          </a>
+
+          <a href="governance.html?v=e7c9284">
+            <strong>People ↔ Governance</strong>
+            <span>
+              Hubungkan People dengan governance,
+              control, privacy, dan trust.
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="people-footer">
+    <div class="people-shell">
+      <div>ASAS · Aggregate Strategic Asset Solutions</div>
+      <div>
+        Concept, Design & Development by <strong>deskawps</strong>
+      </div>
+    </div>
+  </footer>
+
+  <script src="people.js?v=1"></script>
+</body>
+</html>
