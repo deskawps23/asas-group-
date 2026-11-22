@@ -13,7 +13,13 @@
   >
 
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="geo.css?v=1">
+  <link rel="stylesheet" href="geo.css?v=2">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
 </head>
 
 <body>
@@ -52,6 +58,74 @@
       </div>
     </section>
 
+
+
+    <section class="geo-map-section">
+      <div class="geo-shell">
+
+        <div class="geo-section-head">
+          <small>GEO WORKSPACE</small>
+          <h2>Measure land directly on the map.</h2>
+        </div>
+
+        <p class="geo-map-intro">
+          Geser dan zoom peta, lalu aktifkan Ukur Bidang.
+          Ketuk titik-titik batas tanah secara berurutan dan
+          selesaikan polygon untuk menghitung luas digital.
+        </p>
+
+        <div class="geo-map-toolbar">
+          <button type="button" id="geoLocate">Lokasi Saya</button>
+          <button type="button" id="geoMeasure">Ukur Bidang</button>
+          <button type="button" id="geoFinish" disabled>Selesai</button>
+          <button type="button" id="geoUndo" disabled>Undo</button>
+          <button type="button" id="geoReset" disabled>Reset</button>
+        </div>
+
+        <div
+          id="geoMap"
+          class="geo-map"
+          aria-label="ASAS Nexus interactive geospatial map"
+        ></div>
+
+        <div class="geo-measure-panel" aria-live="polite">
+          <div>
+            <small>STATUS</small>
+            <strong id="geoMeasureStatus">Peta siap.</strong>
+          </div>
+
+          <div class="geo-measure-grid">
+            <div>
+              <small>LUAS</small>
+              <strong id="geoAreaSqm">—</strong>
+              <span>m²</span>
+            </div>
+
+            <div>
+              <small>HEKTARE</small>
+              <strong id="geoAreaHa">—</strong>
+              <span>ha</span>
+            </div>
+
+            <div>
+              <small>KELILING</small>
+              <strong id="geoPerimeter">—</strong>
+              <span>m</span>
+            </div>
+          </div>
+
+          <button type="button" id="geoExport" disabled>
+            Export GeoJSON
+          </button>
+        </div>
+
+        <p class="geo-map-disclaimer">
+          Pengukuran digital untuk analisis. Bukan hasil ukur
+          kadastral resmi ATR/BPN.
+        </p>
+
+      </div>
+    </section>
 
     <section class="geo-section">
       <div class="geo-shell">
@@ -231,5 +305,11 @@
   </footer>
 
   <script src="geo.js?v=1"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9coqIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script src="geo-map.js?v=2"></script>
 </body>
 </html>

@@ -256,3 +256,144 @@ main{
     transition:none;
   }
 }
+
+/* GEO WORKSPACE V2 */
+
+.geo-map-section{
+  padding:28px 20px 48px;
+}
+
+.geo-map-intro{
+  margin:0 0 18px;
+  color:var(--geo-muted);
+  line-height:1.65;
+}
+
+.geo-map-toolbar{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:12px;
+}
+
+.geo-map-toolbar button,
+.geo-measure-panel button{
+  min-height:46px;
+  border:1px solid var(--geo-line);
+  border-radius:14px;
+  background:var(--geo-surface);
+  color:var(--geo-text);
+  font:inherit;
+  font-weight:700;
+  touch-action:manipulation;
+}
+
+.geo-map-toolbar button:disabled,
+.geo-measure-panel button:disabled{
+  opacity:.38;
+}
+
+#geoMeasure{
+  border-color:rgba(217,44,56,.58);
+}
+
+.geo-map{
+  width:100%;
+  height:min(62vh,560px);
+  min-height:420px;
+  overflow:hidden;
+  border:1px solid var(--geo-line);
+  border-radius:22px;
+  background:#10151d;
+  z-index:1;
+}
+
+.geo-map.is-measuring{
+  outline:2px solid rgba(217,44,56,.55);
+  outline-offset:2px;
+}
+
+.geo-measure-panel{
+  margin-top:12px;
+  padding:17px;
+  border:1px solid var(--geo-line);
+  border-radius:20px;
+  background:var(--geo-surface);
+}
+
+.geo-measure-panel small{
+  color:var(--geo-muted);
+  font-size:.67rem;
+  letter-spacing:.12em;
+}
+
+#geoMeasureStatus{
+  display:block;
+  margin-top:5px;
+}
+
+.geo-measure-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:16px 0;
+}
+
+.geo-measure-grid > div{
+  min-width:0;
+  padding:12px 8px;
+  border:1px solid var(--geo-line);
+  border-radius:14px;
+  background:var(--geo-surface-2);
+}
+
+.geo-measure-grid strong,
+.geo-measure-grid span{
+  display:block;
+}
+
+.geo-measure-grid strong{
+  margin-top:5px;
+  overflow-wrap:anywhere;
+  font-size:1rem;
+}
+
+.geo-measure-grid span{
+  margin-top:2px;
+  color:var(--geo-muted);
+  font-size:.72rem;
+}
+
+#geoExport{
+  width:100%;
+}
+
+.geo-map-disclaimer{
+  margin:12px 2px 0;
+  color:var(--geo-muted);
+  font-size:.78rem;
+  line-height:1.55;
+}
+
+/* Leaflet inside ASAS Nexus */
+.geo-map .leaflet-control-zoom a{
+  background:#0b1017;
+  color:#fff;
+  border-color:rgba(255,255,255,.12);
+}
+
+.geo-map .leaflet-control-attribution{
+  background:rgba(5,7,10,.82);
+  color:#aab4c4;
+  font-size:9px;
+}
+
+.geo-map .leaflet-control-attribution a{
+  color:#fff;
+}
+
+@media (max-width:380px){
+  .geo-measure-grid{
+    grid-template-columns:1fr;
+  }
+}
