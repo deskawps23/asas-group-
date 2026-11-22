@@ -1416,3 +1416,146 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ASAS FACILITY FINAL V12 */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    linear-gradient(
+      180deg,
+      #f8fcff 0%,
+      #ffffff 38%,
+      #f4faff 100%
+    );
+}
+
+.service-card,
+.service-promise,
+.booking-panel,
+.order-card,
+.help-card {
+  transition:
+    transform 220ms cubic-bezier(.22,1,.36,1),
+    box-shadow 220ms cubic-bezier(.22,1,.36,1),
+    border-color 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover,
+  .service-promise:hover,
+  .order-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 16px 36px rgba(20,64,105,.11);
+  }
+}
+
+.service-card:active,
+.service-promise:active,
+.order-card:active {
+  transform: scale(.985);
+}
+
+/* Admin help */
+
+.help-card .btn-help {
+  min-height: 54px;
+  width: 100%;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 18px;
+
+  border-radius: 16px;
+
+  font-weight: 900;
+  text-decoration: none;
+}
+
+/* Super Admin operational cards */
+
+.admin-order-card {
+  overflow: hidden;
+  border: 1px solid #d9e8f3;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow:
+    0 12px 30px rgba(20,64,105,.08);
+}
+
+.btn-approve-order,
+.btn-cancel-order,
+.admin-link {
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  font: inherit;
+  font-weight: 900;
+}
+
+.btn-approve-order {
+  color: #fff;
+  background: #176f55;
+  border: 0;
+}
+
+.btn-cancel-order {
+  color: #a52936;
+  background: #fff1f3;
+  border: 1px solid #f2cbd0;
+}
+
+.admin-link {
+  color: #174e7d;
+  background: #eaf6ff;
+  border: 1px solid #cee8fa;
+  text-decoration: none;
+}
+
+/* Customer-friendly feedback */
+
+#ironing-submit-status,
+.order-feedback,
+.location-status {
+  line-height: 1.55;
+}
+
+@media (max-width: 520px) {
+  .admin-order-details,
+  .admin-order-links,
+  .admin-order-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btn,
+  button,
+  .btn-help,
+  .admin-link {
+    min-height: 48px;
+  }
+}
+
+/* Motion must never overpower service */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
