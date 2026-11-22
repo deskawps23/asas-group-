@@ -4,10 +4,17 @@
   const bookingStage = document.querySelector("#booking-stage");
 
   const services = {
-    cleaning: "Cleaning",
-    "garment-care": "Laundry & Garment Care",
-    maintenance: "Maintenance",
-    building: "Building & Facility"
+    ironing: "Jasa Setrika"
+  };
+
+  const activeServiceConfig = {
+    serviceCategory: "LAUNDRY_GARMENT_CARE",
+    serviceType: "IRONING",
+    orderMode: "ONE_TIME",
+    engagementType: "SAM_NON_CONTRACT",
+    fulfillmentMode: "PICKUP_DELIVERY",
+    marketArea: "PANDEGLANG",
+    serviceZone: "ZONE_1"
   };
 
   function scrollToSection(id) {
@@ -35,8 +42,9 @@
       ? `
         <strong>${serviceName}</strong>
         <p>
-          Pilih mode layanan untuk melanjutkan.
-          Booking production belum diaktifkan.
+          Pickup & Delivery tersedia untuk pilot
+          Jasa Setrika Pandeglang Zona 1.
+          Lengkapi detail pemesanan untuk melanjutkan.
         </p>
       `
       : `
