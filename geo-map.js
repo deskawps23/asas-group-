@@ -1,6 +1,23 @@
 (() => {
   const mapEl = document.getElementById("geoMap");
-  if (!mapEl || typeof L === "undefined") return;
+  const earlyStatus = document.getElementById("geoMeasureStatus");
+
+  if (!mapEl) {
+    if (earlyStatus) {
+      earlyStatus.textContent = "ERROR: container peta tidak ditemukan.";
+    }
+    return;
+  }
+
+  if (typeof L === "undefined") {
+    if (earlyStatus) {
+      earlyStatus.textContent =
+        "ERROR: mesin peta Leaflet gagal dimuat. Periksa koneksi atau pemuatan CDN.";
+    }
+    mapEl.innerHTML =
+      '<div style="padding:20px;color:#fff">Peta gagal dimuat.</div>';
+    return;
+  }
 
   const locateBtn = document.getElementById("geoLocate");
   const measureBtn = document.getElementById("geoMeasure");
