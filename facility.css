@@ -1559,3 +1559,86 @@ body {
     transition-duration: .01ms !important;
   }
 }
+
+/* ==========================================
+   TAHAP 1: SPRING MICRO-INTERACTIONS & TRANSITIONS
+   ========================================== */
+
+/* 1. Transisi Fisika Pegas (Spring) untuk Tombol */
+button, .service-card, a {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.4s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+/* Efek tertekan (Tap/Click) */
+button:active, .service-card:active, a:active {
+  transform: scale(0.95) translateY(2px);
+}
+
+/* Efek Hover (jika dibuka di Desktop) */
+@media (hover: hover) {
+  button:hover, .service-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+}
+
+/* 2. Animasi Spinner Loading (Morphing ke Centang) */
+.spinner-path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes dash {
+  0% { stroke-dashoffset: 60; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -60; }
+}
+
+/* 3. Aksesibilitas: Matikan animasi jika user sensitif */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 4. View Transitions API (Transisi Halaman Mulus) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+}
+
+/* ==========================================
+   TAHAP 2: NATIVE SCROLL-DRIVEN ANIMATION
+   ========================================== */
+
+/* Target elemen yang akan dianimasikan saat di-scroll */
+.reveal-on-scroll {
+  animation: fadeUp linear both;
+  animation-timeline: view();
+  animation-range: entry 10% cover 30%;
+}
+
+/* Keyframes untuk efek memudar dan naik */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Aksesibilitas: Jika pengguna menonaktifkan animasi, langsung tampilkan */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

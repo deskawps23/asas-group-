@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+
+  <title>Operations | ASAS Nexus</title>
+
+  <meta
+    name="description"
+    content="Operations exploration surface of ASAS Nexus."
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="facility.css?v=1">
+</head>
+
+<body>
+  <main>
+
+    <section class="operations-hero">
+      <div class="operations-shell">
+
+        <div class="operations-kicker">
+          ASAS NEXUS · BUSINESS · OPERATIONS
+        </div>
+
+        <h1 class="operations-title">
+          Explore operations as a connected system.
+        </h1>
+
+        <p class="operations-intro">
+          Telusuri operating model, process, service delivery,
+          asset & facility, supply interface, serta control &
+          evidence sebagai konteks yang saling terhubung.
+        </p>
+
+        <div class="operations-core">
+          <div class="operations-core-label">OPERATIONS CORE</div>
+
+          <h2>Context before activity.</h2>
+
+          <p>
+            ASAS Nexus tidak menampilkan project, workload,
+            utilization, SLA angka, aktivitas operasional,
+            atau performa yang belum memiliki sumber data nyata.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="operations-section">
+      <div class="operations-shell">
+
+        <div class="operations-section-head">
+          <small>EXPLORE OPERATIONS</small>
+          <h2>Select an operating context.</h2>
+        </div>
+
+        <div class="operations-nodes">
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Operating Model"
+            data-context="Telusuri struktur operating model dan hubungan fungsi tanpa membuat aktivitas atau performa simulasi."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>OPERATING MODEL</small>
+            <strong>Operating Model</strong>
+            <span>Structure, responsibility, and business context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Process Context"
+            data-context="Explore hubungan proses sebagai konteks operasional tanpa membuat volume, cycle time, atau KPI buatan."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>PROCESS CONTEXT</small>
+            <strong>Process Context</strong>
+            <span>Process relationship and operating context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Service Delivery"
+            data-context="Telusuri service delivery tanpa membuat SLA, workload, customer volume, atau performance indicator simulasi."
+            data-route="business.html"
+            data-action="Explore Business Context"
+          >
+            <small>SERVICE DELIVERY</small>
+            <strong>Service Delivery</strong>
+            <span>Service and connected operating context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Asset & Facility Context"
+            data-context="Jelajahi asset dan facility sebagai konteks operasi tanpa membuat asset value, utilization, atau facility count simulasi."
+            data-route="growth.html?v=879026c"
+            data-action="Explore Growth & Portfolio"
+          >
+            <small>ASSET & FACILITY</small>
+            <strong>Asset & Facility Context</strong>
+            <span>Asset, facility, and portfolio context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Supply Interface"
+            data-context="Hubungkan operasi dengan procurement dan supply tanpa membuat supplier, order, atau delivery data fiktif."
+            data-route="procurement.html?v=0682c13"
+            data-action="Explore Procurement & Supply"
+          >
+            <small>SUPPLY INTERFACE</small>
+            <strong>Supply Interface</strong>
+            <span>Procurement, supply, and operating context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="operations-node"
+            aria-pressed="false"
+            data-title="Control & Evidence"
+            data-context="Hubungkan operasi dengan governance, audit, dan evidence tanpa membuat compliance atau audit result simulasi."
+            data-route="governance.html?v=e7c9284"
+            data-action="Explore Governance & Trust"
+          >
+            <small>CONTROL & EVIDENCE</small>
+            <strong>Control & Evidence</strong>
+            <span>Governance, audit, and operating evidence context.</span>
+          </button>
+
+        </div>
+
+
+        <div
+          class="operations-reveal"
+          id="operationsReveal"
+          aria-live="polite"
+        >
+          <h3 id="operationsRevealTitle">Operations Context</h3>
+
+          <p id="operationsRevealText">
+            Pilih satu domain untuk mengungkap konteks operasi.
+          </p>
+
+          <a
+            class="operations-route"
+            id="operationsRevealRoute"
+            href="#"
+          >
+            Explore
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="operations-section">
+      <div class="operations-shell">
+
+        <div class="operations-section-head">
+          <small>CONNECTED OPERATIONS</small>
+          <h2>Operations connects execution to control.</h2>
+        </div>
+
+        <div class="operations-context">
+
+          <a href="finance.html?v=2499bee">
+            <strong>Operations ↔ Finance</strong>
+            <span>
+              Hubungkan operating context dengan Finance & Control.
+            </span>
+          </a>
+
+          <a href="procurement.html?v=0682c13">
+            <strong>Operations ↔ Procurement</strong>
+            <span>
+              Explore hubungan operasi dengan procurement
+              dan supply context.
+            </span>
+          </a>
+
+          <a href="governance.html?v=e7c9284">
+            <strong>Operations ↔ Governance</strong>
+            <span>
+              Hubungkan execution dengan control, audit,
+              dan evidence.
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="operations-footer">
+    <div class="operations-shell">
+      <div>ASAS · Aggregate Strategic Asset Solutions</div>
+      <div>
+        Concept, Design & Development by <strong>deskawps</strong>
+      </div>
+    </div>
+  </footer>
+
+  <script src="facility.js?v=1"></script>
+</body>
+</html>

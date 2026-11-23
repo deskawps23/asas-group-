@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+
+  <title>Geo | ASAS Nexus</title>
+
+  <meta
+    name="description"
+    content="Geo and spatial exploration surface of ASAS Nexus."
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="geo.css?v=1">
+</head>
+
+<body>
+  <main>
+
+    <section class="geo-hero">
+      <div class="geo-shell">
+
+        <div class="geo-kicker">
+          ASAS NEXUS · GEO
+        </div>
+
+        <h1 class="geo-title">
+          Explore spatial context before coordinates.
+        </h1>
+
+        <p class="geo-intro">
+          Telusuri spatial context, geometry, survey,
+          thematic layers, spatial evidence, dan metadata
+          sebagai hubungan geospasial yang dapat berkembang
+          ketika sumber data nyata tersedia.
+        </p>
+
+        <div class="geo-core">
+          <div class="geo-core-label">GEO CORE</div>
+
+          <h2>Context before coordinates.</h2>
+
+          <p>
+            ASAS Nexus tidak membuat koordinat, asset point,
+            polygon, coverage area, project location, atau
+            spatial layer yang belum berasal dari sumber data nyata.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="geo-section">
+      <div class="geo-shell">
+
+        <div class="geo-section-head">
+          <small>EXPLORE GEO</small>
+          <h2>Select a spatial context.</h2>
+        </div>
+
+        <div class="geo-nodes">
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Spatial Context"
+            data-context="Telusuri ruang sebagai konteks hubungan tanpa membuat lokasi atau coverage area sintetis."
+            data-route="geo.html"
+            data-action="Stay in Geo Context"
+          >
+            <small>SPATIAL CONTEXT</small>
+            <strong>Spatial Context</strong>
+            <span>Place, relationship, and spatial context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Point / Line / Polygon"
+            data-context="Gunakan konsep geometry untuk membedakan representasi spatial. Geometry aktual hanya ditampilkan ketika dataset nyata tersedia."
+            data-route="geo.html"
+            data-action="Stay in Geo Context"
+          >
+            <small>GEOMETRY</small>
+            <strong>Point / Line / Polygon</strong>
+            <span>Geometry model without synthetic features.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Survey Context"
+            data-context="Telusuri survey sebagai konteks pengumpulan spatial evidence tanpa membuat hasil survey atau lokasi fiktif."
+            data-route="geo.html"
+            data-action="Stay in Geo Context"
+          >
+            <small>SURVEY</small>
+            <strong>Survey Context</strong>
+            <span>Collection and field evidence context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Thematic Layers"
+            data-context="Jelajahi thematic layer sebagai struktur penyajian data. Layer aktual menunggu sumber geospasial yang tervalidasi."
+            data-route="geo.html"
+            data-action="Stay in Geo Context"
+          >
+            <small>THEMATIC LAYERS</small>
+            <strong>Thematic Layers</strong>
+            <span>Layer structure without fabricated spatial data.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Spatial Evidence"
+            data-context="Hubungkan evidence dengan lokasi dan geometry tanpa membuat bukti atau spatial record simulasi."
+            data-route="governance.html?v=e7c9284"
+            data-action="Explore Governance & Trust"
+          >
+            <small>SPATIAL EVIDENCE</small>
+            <strong>Spatial Evidence</strong>
+            <span>Evidence, location, and governance context.</span>
+          </button>
+
+
+          <button
+            type="button"
+            class="geo-node"
+            aria-pressed="false"
+            data-title="Spatial Metadata"
+            data-context="Telusuri metadata sebagai konteks asal, definisi, dan keterhubungan data spatial tanpa membuat metadata sumber palsu."
+            data-route="global.html"
+            data-action="Explore Connected Data Context"
+          >
+            <small>SPATIAL METADATA</small>
+            <strong>Spatial Metadata</strong>
+            <span>Source, definition, and connected data context.</span>
+          </button>
+
+        </div>
+
+
+        <div
+          class="geo-reveal"
+          id="geoReveal"
+          aria-live="polite"
+        >
+          <h3 id="geoRevealTitle">Geo Context</h3>
+
+          <p id="geoRevealText">
+            Pilih satu domain untuk mengungkap konteks spatial.
+          </p>
+
+          <a
+            class="geo-route"
+            id="geoRevealRoute"
+            href="#"
+          >
+            Explore
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="geo-section">
+      <div class="geo-shell">
+
+        <div class="geo-section-head">
+          <small>CONNECTED GEO</small>
+          <h2>Geo connects place to evidence.</h2>
+        </div>
+
+        <div class="geo-context">
+
+          <a href="operations.html?v=b6fa619">
+            <strong>Geo ↔ Operations</strong>
+            <span>
+              Hubungkan spatial context dengan asset,
+              facility, dan operating context.
+            </span>
+          </a>
+
+          <a href="global.html">
+            <strong>Geo ↔ Data</strong>
+            <span>
+              Hubungkan geometry, layer, dan metadata
+              dengan connected data context.
+            </span>
+          </a>
+
+          <a href="governance.html?v=e7c9284">
+            <strong>Geo ↔ Evidence</strong>
+            <span>
+              Hubungkan spatial evidence dengan governance,
+              control, dan trust.
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="geo-footer">
+    <div class="geo-shell">
+      <div>ASAS · Aggregate Strategic Asset Solutions</div>
+      <div>
+        Concept, Design & Development by <strong>deskawps</strong>
+      </div>
+    </div>
+  </footer>
+
+  <script src="geo.js?v=1"></script>
+</body>
+</html>

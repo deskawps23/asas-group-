@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eaf6ff">
+  <title>Facility Services | ASAS Nexus</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="asas-tokens.css">
+  <link rel="stylesheet" href="facility.css">
+  
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="facility-app">
+    <header class="app-header">
+      <a class="app-brand" href="index.html">
+        <strong>ASAS</strong><br><small>Facility Services</small>
+      </a>
+      <a href="#" class="btn-header">Order Saya</a>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="hero-card">
+          <span class="section-label">FACILITY SERVICES</span>
+          <div class="pilot-badge">
+            <span class="dot"></span> PILOT BERTAHAP · ZONA 1
+          </div>
+          <h1>Anda yang Utama</h1>
+          <p>Jasa Setrika yang datang kepada Anda. Pilih lokasi dan waktu yang nyaman, lalu biarkan kami membantu proses berikutnya.</p>
+          <button class="btn-primary" style="width:100%; margin-bottom:10px;">Pesan Sekarang</button>
+          <button class="btn-secondary" style="width:100%;">Lihat Order Saya</button>
+        </div>
+      </section>
+
+      <section class="services-section">
+        <span class="section-label">LAYANAN</span>
+        <h2>Layanan yang siap membantu</h2>
+        <p>Jasa Setrika sudah tersedia. Layanan lainnya sedang kami persiapkan secara bertahap.</p>
+        
+        <div class="services-grid">
+          <div class="service-card disabled">
+            <span class="card-num">01</span>
+            <h3>Cleaning</h3>
+            <p>Belum tersedia</p>
+          </div>
+          <div class="service-card active">
+            <span class="card-num">02</span>
+            <span class="status-badge">AKTIF</span>
+            <h3>Jasa Setrika<br>Pickup & Delivery<br>· Pandeglang</h3>
+            <div class="price-tag">Rp5.000/kg · Min. 3 kg</div>
+            <p>Antar-jemput Rp5.000/order</p>
+          </div>
+          <div class="service-card disabled">
+            <span class="card-num">03</span>
+            <h3>Maintenance</h3>
+            <p>Belum tersedia</p>
+          </div>
+          <div class="service-card disabled">
+            <span class="card-num">04</span>
+            <h3>Building & Facility</h3>
+            <p>Belum tersedia</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-to-section">
+        <span class="section-label">CARA MEMESAN</span>
+        <h2>Sesuai kebutuhan Anda</h2>
+        
+        <div class="info-card">
+          <span class="section-label">TANPA KONTRAK</span>
+          <h3>Pesan Jasa Setrika</h3>
+          <p>Untuk satu kebutuhan layanan.</p>
+        </div>
+        <div class="info-card">
+          <span class="section-label">RUTIN</span>
+          <h3>Layanan Terjadwal</h3>
+          <p>Untuk kebutuhan layanan yang berulang.</p>
+        </div>
+      </section>
+
+      <section class="order-section">
+        <span class="section-label">ORDER SAYA</span>
+        <h2>Pantau layanan</h2>
+        <p>Order aktual akan tampil setelah workflow pemesanan production tersedia.</p>
+        <p style="font-size: 12px; color: #666;">Belum ada order untuk ditampilkan. Data order simulasi tidak digunakan.</p>
+      </section>
+
+      <section class="promises-section">
+        <span class="section-label">4 JANJI PELAYANAN ASAS</span>
+        <h2>Anda yang utama dalam setiap pelayanan.</h2>
+        <p>ASAS hadir untuk membuat proses lebih mudah, lebih jelas, dan lebih nyaman bagi Anda.</p>
+        
+        <div class="promise-card">
+          <h3>Anda yang Utama</h3>
+          <p>Kebutuhan dan kenyamanan Anda menjadi prioritas.</p>
+        </div>
+        <div class="promise-card">
+          <h3>Siap Membantu</h3>
+          <p>Kami hadir ketika Anda membutuhkan bantuan.</p>
+        </div>
+        <div class="promise-card">
+          <h3>Amanah dalam Pelayanan</h3>
+          <p>Kepercayaan dan pesanan Anda kami jaga.</p>
+        </div>
+        <div class="promise-card">
+          <h3>Sampai Tuntas</h3>
+          <p>Kami menemani proses layanan hingga selesai.</p>
+        </div>
+      </section>
+
+      <section class="help-section">
+        <span class="section-label">KAMI SIAP MEMBANTU</span>
+        <h2>Ada yang ingin ditanyakan?</h2>
+        <p>WhatsApp tersedia sebagai jalur bantuan cadangan selama proses Jasa Setrika.</p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <small>&copy; 2026 <strong class="deskawps">deska</strong> ASAS Nexus. All rights reserved.</small>
+    </footer>
+
+    <nav class="bottom-nav">
+      <button data-nav="home" class="active">Beranda</button>
+      <button data-nav="services">Layanan</button>
+      <button data-nav="order">Order</button>
+      <button data-nav="help">Bantuan</button>
+    </nav>
+  </div>
+
+  <script type="module" src="facility.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+from pathlib import Path
+
+rules = """rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function hubAdminDoc() {
+      return isSignedIn()
+        ? get(/databases/$(database)/documents/hubAdmins/$(request.auth.uid))
+        : null;
+    }
+
+    function isActiveHubAdmin() {
+      return isSignedIn()
+        && hubAdminDoc() != null
+        && hubAdminDoc().data.active == true
+        && hubAdminDoc().data.role in ['HUB_ADMIN', 'SUPER_ADMIN'];
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn()
+        && hubAdminDoc() != null
+        && hubAdminDoc().data.active == true
+        && hubAdminDoc().data.role == 'SUPER_ADMIN';
+    }
+
+    function isValidZone(z) {
+      return z in [
+        'Pandeglang',
+        'Majasari',
+        'Karang Tanjung',
+        'Cadasari',
+        'Kaduhejo',
+        'Koroncong'
+      ];
+    }
+
+    function isValidGeo(g) {
+      return g == null
+        || (
+          g is map
+          && g.keys().hasAll(['lat', 'lng'])
+          && g.keys().hasOnly(['lat', 'lng', 'accuracy'])
+          && g.lat is number && g.lat >= -90 && g.lat <= 90
+          && g.lng is number && g.lng >= -180 && g.lng <= 180
+        );
+    }
+
+    match /hubAdmins/{adminUid} {
+      allow read: if isSuperAdmin() || (isSignedIn() && request.auth.uid == adminUid);
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    match /serviceOrders/{orderId} {
+      allow read: if isActiveHubAdmin()
+        || (isSignedIn() && resource.data.uid == request.auth.uid);
+
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
+          'orderCode',
+          'serviceCode',
+          'zone',
+          'estimatedWeightKg',
+          'landmark',
+          'geo',
+          'status',
+          'uid',
+          'createdAt'
+        ])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.serviceCode == 'IRONING'
+        && isValidZone(request.resource.data.zone)
+        && request.resource.data.estimatedWeightKg is number
+        && request.resource.data.estimatedWeightKg > 0
+        && request.resource.data.estimatedWeightKg <= 200
+        && request.resource.data.landmark is string
+        && request.resource.data.landmark.size() <= 180
+        && isValidGeo(request.resource.data.geo)
+        && request.resource.data.status == 'PENDING_PICKUP'
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isActiveHubAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'verifiedWeightKg',
+          'finalAmount',
+          'hubNote',
+          'status',
+          'updatedAt'
+        ])
+        && request.resource.data.status in [
+          'PENDING_PICKUP',
+          'PICKUP_IN_PROGRESS',
+          'AT_HUB_VERIFICATION',
+          'IRONING_IN_PROGRESS',
+          'DELIVERING',
+          'COMPLETED',
+          'CANCELLED'
+        ]
+        && (
+          !('verifiedWeightKg' in request.resource.data)
+          || (request.resource.data.verifiedWeightKg is number && request.resource.data.verifiedWeightKg > 0)
+        )
+        && (
+          !('finalAmount' in request.resource.data)
+          || (request.resource.data.finalAmount is number && request.resource.data.finalAmount >= 0)
+        )
+        && (
+          !('hubNote' in request.resource.data)
+          || (request.resource.data.hubNote is string && request.resource.data.hubNote.size() <= 240)
+        )
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if isSuperAdmin();
+    }
+  }
+}
+"""
+
+Path("firestore.rules").write_text(rules.strip() + "\n", encoding="utf-8")
+print("FIRESTORE_RULES_SAVED")

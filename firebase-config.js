@@ -9,9 +9,9 @@ import {
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 export const firebaseConfig = window.__FIREBASE_CONFIG__ || {
-  apiKey: "ISI_API_KEY",
-  authDomain: "ISI_AUTH_DOMAIN",
-  projectId: "ISI_PROJECT_ID",
+  apiKey: "AIzaSyBgx_OmMh9WJ1t6YeDhJyE5dGltCqfJq3k",
+  authDomain: "asas-corporate.firebaseapp.com",
+  projectId: "asas-corporate",
   storageBucket: "ISI_STORAGE_BUCKET",
   messagingSenderId: "ISI_SENDER_ID",
   appId: "ISI_APP_ID"

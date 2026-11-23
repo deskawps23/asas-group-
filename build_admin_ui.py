@@ -1,0 +1,65 @@
+from pathlib import Path
+
+admin_html = """<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Satu Hub — ASAS Facility Services</title>
+  <style>
+    :root { --bg:#07192f; --panel:#0d233f; --line:#1e3a5f; --ink:#f8fafc; --muted:#94a3b8; --teal:#16b981; --coral:#d9483b; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
+    .top { position:sticky; top:0; z-index:20; background:#fff; color:#0b223d; border-bottom:1px solid #e2e8f0; }
+    .top-in { max-width:520px; margin:0 auto; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; }
+    .wrap { max-width:520px; margin:0 auto; padding:16px 16px 84px; }
+    .box { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:14px; margin-bottom:14px; }
+    label { display:block; font-size:12px; font-weight:700; color:#cbd5e1; margin-bottom:5px; }
+    input, select { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #334155; background:#07192f; color:#fff; font-size:13.5px; margin-bottom:10px; }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .btn-save { width:100%; padding:11px; border:none; border-radius:999px; background:var(--teal); color:#07192f; font-weight:800; font-size:13px; cursor:pointer; }
+    .btn-link { display:inline-block; margin-top:8px; padding:7px 11px; border-radius:10px; background:#133158; color:#5eead4; font-size:12px; font-weight:700; text-decoration:none; }
+    .meta { font-size:12.5px; color:#cbd5e1; line-height:1.5; }
+    .credit { text-align:center; font-size:12px; color:var(--muted); margin-top:18px; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-in">
+      <div><strong style="font-size:18px;">ASAS Satu Hub</strong><div style="font-size:12px;color:#475569;">Panel Verifikasi &amp; Operasional Zona 1</div></div>
+      <a href="./facility.html" style="font-size:12.5px;font-weight:700;color:#0b223d;text-decoration:none;border:1px solid #cbd5e1;padding:7px 12px;border-radius:999px;">Mode Pelanggan</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="box">
+      <label for="filterZone">Filter Kecamatan Zona 1</label>
+      <select id="filterZone">
+        <option value="">Semua Kecamatan Zona 1</option>
+        <option value="Pandeglang">Pandeglang</option><option value="Majasari">Majasari</option>
+        <option value="Karang Tanjung">Karang Tanjung</option><option value="Cadasari">Cadasari</option>
+        <option value="Kaduhejo">Kaduhejo</option><option value="Koroncong">Koroncong</option>
+      </select>
+      <label for="filterStatus">Filter Status Order</label>
+      <select id="filterStatus">
+        <option value="">Semua Status</option>
+        <option value="PENDING_PICKUP">Menunggu Jemput</option>
+        <option value="PICKUP_IN_PROGRESS">Kurir Menuju Lokasi</option>
+        <option value="AT_HUB_VERIFICATION">Verifikasi Timbangan di Hub</option>
+        <option value="IRONING_IN_PROGRESS">Sedang Disetrika</option>
+        <option value="DELIVERING">Dalam Pengantaran</option>
+        <option value="COMPLETED">Selesai</option>
+        <option value="CANCELLED">Dibatalkan</option>
+      </select>
+    </div>
+    <div id="adminOrderList">
+      <div class="box"><p class="meta" style="margin:0;">Menghubungkan antrean pesanan Zona 1 ke Cloud Firestore (<code>serviceOrders</code>)...</p></div>
+    </div>
+    <footer class="credit">created design &amp; development by <strong>deskawps</strong></footer>
+  </main>
+  <script type="module" src="./admin-facility.js"></script>
+</body>
+</html>
+"""
+
+Path("admin-facility.html").write_text(admin_html.strip() + "\n", encoding="utf-8")
+print("ADMIN_UI_OK")

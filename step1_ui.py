@@ -1,0 +1,184 @@
+from pathlib import Path
+
+css = """
+:root {
+  --bg-navy: #07192f;
+  --bg-navy-elev: #0d233f;
+  --surface-white: #ffffff;
+  --surface-ice-soft: #eef5fc;
+  --ink-navy: #0b223d;
+  --ink-slate: #334155;
+  --teal-bg: #16b981;
+  --teal-dark: #0f766e;
+  --coral-btn: #d9483b;
+  --coral-hover: #be382c;
+  --line-soft: #d5e2f0;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg-navy);
+  color: var(--ink-navy);
+  -webkit-font-smoothing: antialiased;
+}
+.fs-topbar {
+  position: sticky; top: 0; z-index: 25;
+  background: var(--surface-white);
+  border-bottom: 1px solid #e2e8f0;
+}
+.fs-topbar-inner {
+  max-width: 480px; margin: 0 auto; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.fs-brand strong { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.3px; color: var(--ink-navy); }
+.fs-brand span { display: block; font-size: 12.5px; color: var(--ink-slate); margin-top: 1px; }
+.fs-pill-top {
+  border: 1.5px solid #cbd5e1; background: var(--surface-white); color: var(--ink-navy);
+  font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 999px; cursor: pointer;
+}
+.fs-wrap { max-width: 480px; margin: 0 auto; padding: 16px; }
+.fs-hero {
+  background: linear-gradient(135deg, #e4effb 0%, #f5f9fe 65%, #e8f2fc 100%);
+  border-radius: 22px; padding: 18px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+.fs-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fs-badge-dark {
+  background: var(--bg-navy); color: #ffffff; font-size: 11px; font-weight: 800;
+  letter-spacing: 0.5px; padding: 5px 11px; border-radius: 999px;
+}
+.fs-badge-light {
+  background: var(--surface-white); color: var(--ink-navy); border: 1.5px solid #cbd5e1;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; padding: 4px 11px; border-radius: 999px;
+}
+.fs-hero h1 { margin: 12px 0 8px; font-size: 28px; line-height: 1.15; font-weight: 800; color: var(--ink-navy); }
+.fs-hero p { margin: 0 0 16px; font-size: 14px; line-height: 1.48; color: var(--ink-slate); }
+.fs-hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fs-btn-coral {
+  background: var(--coral-btn); color: #ffffff; border: none; border-radius: 999px;
+  padding: 12px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+.fs-btn-coral:hover { background: var(--coral-hover); }
+.fs-btn-outline {
+  background: var(--surface-white); color: var(--ink-navy); border: 1.5px solid #94a3b8;
+  border-radius: 999px; padding: 12px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+.fs-sec { margin-top: 22px; }
+.fs-kicker { display: block; font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; color: #cbd5e1; margin-bottom: 4px; }
+.fs-sec h2 { margin: 0 0 6px; font-size: 21px; line-height: 1.25; font-weight: 800; color: #ffffff; }
+.fs-sec-sub { margin: 0 0 14px; font-size: 13.5px; line-height: 1.48; color: #cbd5e1; }
+.fs-grid-panel { background: var(--surface-white); border-radius: 22px; padding: 14px; }
+.fs-grid-2x2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.fs-card {
+  border-radius: 18px; padding: 14px; border: 1.5px solid var(--line-soft);
+  background: var(--surface-ice-soft); display: flex; flex-direction: column;
+  justify-content: space-between; gap: 10px; text-align: left; min-width: 0;
+}
+.fs-card.is-disabled { opacity: 0.92; cursor: not-allowed; }
+.fs-card.is-active { background: var(--teal-bg); border-color: #34d399; color: var(--ink-navy); cursor: pointer; }
+.fs-card-num { font-size: 14px; font-weight: 800; color: var(--ink-slate); line-height: 1.15; }
+.fs-card-tag { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: var(--ink-navy); margin-top: 2px; }
+.fs-card-art { width: 100%; height: 84px; display: flex; align-items: center; justify-content: center; }
+.fs-card strong { display: block; font-size: 16px; font-weight: 800; color: var(--ink-navy); line-height: 1.2; }
+.fs-card small { display: block; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--ink-slate); }
+.fs-card.is-active small { color: var(--ink-navy); font-weight: 700; }
+.fs-dark-panel {
+  background: var(--bg-navy-elev); border: 1px solid #1e3a5f;
+  border-radius: 20px; padding: 16px; color: #ffffff;
+}
+.fs-label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px; color: #e2e8f0; }
+.fs-input {
+  width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #334155;
+  background: #07192f; color: #ffffff; font-size: 14px; margin-bottom: 12px;
+}
+.fs-zone-box {
+  margin: -4px 0 12px; padding: 10px 12px; border-radius: 12px;
+  background: #07192f; border: 1px solid #1e3a5f; font-size: 12px; color: #cbd5e1; line-height: 1.45;
+}
+.fs-credit {
+  margin-top: 16px; padding: 12px 16px 142px; text-align: center;
+  font-size: 12px; color: #94a3b8;
+}
+.fs-credit strong { color: #e2e8f0; }
+.fs-toast {
+  position: fixed; left: 16px; right: 16px; bottom: 78px; max-width: 448px; margin: 0 auto;
+  padding: 13px 16px; border-radius: 14px; background: #10a37f; color: #ffffff;
+  font-size: 13.5px; font-weight: 700; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); z-index: 40;
+}
+.fs-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
+  background: #091b33; border-top: 1px solid #1e3a5f; z-index: 30;
+}
+.fs-nav-inner { max-width: 480px; height: 100%; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.fs-nav button {
+  border: none; background: transparent; color: #94a3b8; font-size: 11.5px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer;
+}
+.fs-nav button.is-active { color: #38bdf8; font-weight: 700; }
+""".strip()
+
+cards = """
+<div class="fs-grid-2x2">
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">01</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <rect x="18" y="24" width="22" height="36" rx="6" fill="#60a5fa" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="23" y="13" width="12" height="11" rx="2.5" fill="#bfdbfe" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M29 34v14M22 41h14" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+        <rect x="44" y="34" width="18" height="26" rx="4" fill="#e2e8f0" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M48 34v-8h10v8" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="65" y="16" width="7" height="44" rx="3.5" fill="#93c5fd" stroke="#0f2744" stroke-width="2.2"/>
+        <path d="M61 60h15l-2-7h-11l-2 7Z" fill="#cbd5e1" stroke="#0f2744" stroke-width="2.2"/>
+      </svg>
+    </div>
+    <div><strong>Cleaning</strong><small>Belum tersedia</small></div>
+  </div>
+  <button type="button" class="fs-card is-active" data-service="IRONING">
+    <div><span class="fs-card-num">02</span><span class="fs-card-tag">AKTIF</span></div>
+    <div class="fs-card-art">
+      <svg width="104" height="72" viewBox="0 0 104 72" fill="none">
+        <rect x="12" y="46" width="32" height="9" rx="4" fill="#fb923c" stroke="#0f2744" stroke-width="2.3"/>
+        <rect x="14" y="37" width="28" height="9" rx="4" fill="#fde047" stroke="#0f2744" stroke-width="2.3"/>
+        <rect x="16" y="28" width="24" height="9" rx="4" fill="#7dd3fc" stroke="#0f2744" stroke-width="2.3"/>
+        <path d="M48 53h42l-4-15H58a7 7 0 0 0-7 7v8Z" fill="#38bdf8" stroke="#0f2744" stroke-width="2.3" stroke-linejoin="round"/>
+        <path d="M58 38v-8h17l4.5 8" fill="#e0f2fe" stroke="#0f2744" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M65 22c0-3 3-4 3-7M74 23c0-3 3-4 3-7" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><strong>Jasa Setrika</strong><small>Rp5.000/order</small></div>
+  </button>
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">03</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <circle cx="44" cy="42" r="16" fill="#94a3b8" stroke="#0f2744" stroke-width="2.4"/>
+        <circle cx="44" cy="42" r="6.5" fill="#eef5fc" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M56 30L75 13l8 8-19 17" fill="#cbd5e1" stroke="#0f2744" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 22l12 12" stroke="#0f2744" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><strong>Maintenance</strong><small>Belum tersedia</small></div>
+  </div>
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">04</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <rect x="16" y="14" width="38" height="46" rx="4" fill="#93c5fd" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="23" y="22" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="35" y="22" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="23" y="33" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="35" y="33" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="29" y="45" width="10" height="15" rx="2" fill="#3b82f6" stroke="#0f2744" stroke-width="2"/>
+        <circle cx="71" cy="36" r="8.5" fill="#fde047" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M71 44.5V60h6" stroke="#0f2744" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div><strong>Building &amp; Facility</strong><small>Belum tersedia</small></div>
+  </div>
+</div>
+""".strip()
+
+Path("_ui_parts.py").write_text(f"CSS = {css!r}\nCARDS = {cards!r}\n", encoding="utf-8")
+print("STEP1_OK")

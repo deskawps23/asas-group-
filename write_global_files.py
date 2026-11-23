@@ -1,0 +1,69 @@
+from pathlib import Path
+
+Path("governance-global-lines.js").write_text("""import { db } from "./firebase-config.js";
+import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const DEFAULT_LINES = [
+  { line: "KOMISARIS", title: "Dewan Komisaris", desc: "Pengawasan tata kelola, kepatuhan, dan arah strategis ASAS Global World." },
+  { line: "CEO", title: "Chief Executive Officer", desc: "Eksekutif tertinggi pengelolaan dan integrasi lini usaha ASAS Global World." },
+  { line: "CFO", title: "Chief Financial Officer", desc: "Pengendalian keuangan korporat, struktur modal, dan pelaporan strategis." },
+  { line: "CFO-F", title: "Chief Financial Officer - Finance", desc: "Pengelolaan anggaran, arus kas operasional, dan kontrol keuangan unit." },
+  { line: "CTO", title: "Chief Technology Officer", desc: "Arsitektur platform, keamanan sistem, dan infrastruktur digital perusahaan." },
+  { line: "CHRO", title: "Chief Human Resources Officer", desc: "Pengelolaan SDM, pembinaan talenta, dan struktur peran organisasi." }
+];
+
+const gridEl = document.getElementById("asasGlobalLinesGrid");
+const sumEl = document.getElementById("asasGlobalLinesSummary");
+
+function renderFallback(labelNote = "") {
+  if (!gridEl) return;
+  if (sumEl && labelNote) sumEl.textContent = labelNote;
+  gridEl.innerHTML = DEFAULT_LINES.map((item) =>
+    `<article class="governance-card" style="padding:14px;border-radius:12px;border:1px solid rgba(148,163,184,0.25);margin-bottom:10px;">
+      <strong>${item.line} — ${item.title}</strong>
+      <p style="margin:6px 0 0;font-size:13px;opacity:0.88;">${item.desc}</p>
+    </article>`
+  ).join("");
+}
+
+async function initGlobalLines() {
+  if (!gridEl) return;
+  try {
+    const snap = await getDocs(query(collection(db, "hubAdmins"), where("active", "==", true)));
+    const activeOfficers = snap.docs.map((d) => d.data()).filter((d) => Boolean(d.corporateLine || d.role));
+    if (!activeOfficers.length) {
+      renderFallback("Struktur lini standar ASAS Global World (menunggu penetapan pejabat aktif di panel Super Admin).");
+      return;
+    }
+    if (sumEl) {
+      sumEl.textContent = `Menampilkan ${activeOfficers.length} pemegang lini aktif ASAS Global World yang telah ditetapkan Super Admin.`;
+    }
+    gridEl.innerHTML = activeOfficers.map((o) => {
+      const line = String(o.corporateLine || o.role || "UNIT_HEAD");
+      const name = String(o.name || o.email || "Pejabat Aktif");
+      const divName = String(o.division || o.enterprise || "ASAS Global World");
+      return `<article class="governance-card" style="padding:14px;border-radius:12px;border:1px solid rgba(148,163,184,0.25);margin-bottom:10px;">
+        <strong>${line} · ${name}</strong>
+        <p style="margin:6px 0 0;font-size:13px;opacity:0.88;">Divisi / Cakupan: ${divName}</p>
+      </article>`;
+    }).join("");
+  } catch (_) {
+    renderFallback("Struktur lini standar ASAS Global World.");
+  }
+}
+
+initGlobalLines();
+""", encoding="utf-8")
+
+gov_p = Path("governance.html")
+if gov_p.exists():
+    gh = gov_p.read_text(encoding="utf-8")
+    sec = '<div class="governance-section-head" id="asasGlobalLinesSection" style="margin-top:24px;"><h3>Lini Kepemimpinan ASAS Global World</h3><p id="asasGlobalLinesSummary">Komisaris · CEO · CFO · CFO-F · CTO · CHRO · Kepala Unit (diatur oleh Super Admin).</p></div><div id="asasGlobalLinesGrid" class="governance-context"></div>'
+    if 'id="asasGlobalLinesSection"' not in gh and '<footer class="governance-footer">' in gh:
+        gh = gh.replace('<footer class="governance-footer">', sec + "\n\n  <footer class=\"governance-footer\">", 1)
+    tag = '<script type="module" src="./governance-global-lines.js"></script>'
+    if tag not in gh and "</body>" in gh:
+        gh = gh.replace("</body>", f"  {tag}\n</body>", 1)
+    gov_p.write_text(gh, encoding="utf-8")
+
+print("WRITE_GLOBAL_FILES_OK")

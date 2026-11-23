@@ -1,0 +1,258 @@
+:root{
+  --geo-bg:#05070a;
+  --geo-surface:#0b1017;
+  --geo-surface-2:#101824;
+  --geo-line:rgba(255,255,255,.10);
+  --geo-text:#f4f7fb;
+  --geo-muted:#98a6b8;
+  --geo-accent:#d92c38;
+}
+
+html{
+  background:var(--geo-bg);
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 80% 5%,rgba(217,44,56,.12),transparent 32rem),
+    var(--geo-bg);
+  color:var(--geo-text);
+}
+
+main{
+  overflow:hidden;
+}
+
+.geo-hero{
+  padding:72px 20px 40px;
+}
+
+.geo-shell{
+  width:min(100%,1120px);
+  margin:0 auto;
+}
+
+.geo-kicker{
+  margin-bottom:14px;
+  color:#ff5f68;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.16em;
+}
+
+.geo-title{
+  max-width:760px;
+  margin:0;
+  font-size:clamp(2.5rem,11vw,5.6rem);
+  line-height:.92;
+  letter-spacing:-.055em;
+}
+
+.geo-intro{
+  max-width:640px;
+  margin:24px 0 0;
+  color:var(--geo-muted);
+  font-size:1rem;
+  line-height:1.7;
+}
+
+.geo-core{
+  margin-top:34px;
+  padding:20px;
+  border:1px solid rgba(217,44,56,.34);
+  border-radius:24px;
+  background:
+    linear-gradient(145deg,rgba(217,44,56,.12),transparent 58%),
+    var(--geo-surface);
+}
+
+.geo-core-label{
+  color:var(--geo-muted);
+  font-size:.72rem;
+  letter-spacing:.14em;
+}
+
+.geo-core h2{
+  margin:8px 0 0;
+  font-size:1.7rem;
+}
+
+.geo-core p{
+  margin:10px 0 0;
+  color:var(--geo-muted);
+  line-height:1.6;
+}
+
+.geo-section{
+  padding:28px 20px 48px;
+}
+
+.geo-section-head{
+  margin-bottom:18px;
+}
+
+.geo-section-head small{
+  color:#ff5f68;
+  font-weight:700;
+  letter-spacing:.14em;
+}
+
+.geo-section-head h2{
+  margin:8px 0 0;
+  font-size:clamp(1.7rem,8vw,3rem);
+  letter-spacing:-.035em;
+}
+
+.geo-nodes{
+  display:grid;
+  gap:12px;
+}
+
+.geo-node{
+  appearance:none;
+  width:100%;
+  padding:18px;
+  border:1px solid var(--geo-line);
+  border-radius:20px;
+  background:var(--geo-surface);
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    opacity .18s ease;
+}
+
+.geo-node:active{
+  transform:scale(.985);
+}
+
+.geo-node.is-active{
+  border-color:rgba(217,44,56,.72);
+  background:
+    linear-gradient(135deg,rgba(217,44,56,.12),transparent 70%),
+    var(--geo-surface-2);
+}
+
+.geo-nodes.has-active .geo-node:not(.is-active){
+  opacity:.52;
+}
+
+.geo-node small{
+  display:block;
+  color:#ff6e76;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+
+.geo-node strong{
+  display:block;
+  margin-top:7px;
+  font-size:1.15rem;
+}
+
+.geo-node span{
+  display:block;
+  margin-top:7px;
+  color:var(--geo-muted);
+  font-size:.9rem;
+  line-height:1.5;
+}
+
+.geo-reveal{
+  display:none;
+  margin-top:14px;
+  padding:20px;
+  border:1px solid var(--geo-line);
+  border-radius:22px;
+  background:var(--geo-surface-2);
+}
+
+.geo-reveal.is-visible{
+  display:block;
+}
+
+.geo-reveal h3{
+  margin:0;
+  font-size:1.35rem;
+}
+
+.geo-reveal p{
+  margin:10px 0 18px;
+  color:var(--geo-muted);
+  line-height:1.6;
+}
+
+.geo-route{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 16px;
+  border-radius:999px;
+  background:var(--geo-text);
+  color:#07101b;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.geo-context{
+  display:grid;
+  gap:12px;
+}
+
+.geo-context a{
+  display:block;
+  padding:18px;
+  border:1px solid var(--geo-line);
+  border-radius:20px;
+  background:var(--geo-surface);
+  color:inherit;
+  text-decoration:none;
+}
+
+.geo-context strong{
+  display:block;
+}
+
+.geo-context span{
+  display:block;
+  margin-top:7px;
+  color:var(--geo-muted);
+  line-height:1.5;
+}
+
+.geo-footer{
+  padding:28px 20px 42px;
+  border-top:1px solid var(--geo-line);
+  color:var(--geo-muted);
+  font-size:.82rem;
+  line-height:1.6;
+}
+
+.geo-footer strong{
+  color:var(--geo-text);
+}
+
+@media (min-width:720px){
+  .geo-hero{
+    padding-top:110px;
+  }
+
+  .geo-nodes{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .geo-context{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .geo-node{
+    transition:none;
+  }
+}
