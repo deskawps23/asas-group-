@@ -1,110 +1,277 @@
-import { getEligibilityDecision } from './eligibility-client.js';
+import {
+  auth,
+  db,
+  ensureCustomerAuth,
+  onAuthStateChanged
+} from "./firebase-config.js";
+import { buildHubWhatsAppUrl } from "./wa_order_helper.js";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. OTOMATIS PASANG ANIMASI SCROLL KE SECTION (Tahap 2)
-  const sections = document.querySelectorAll('section');
-  sections.forEach(sec => {
-    // Jangan pasang animasi di hero-section (biar langsung muncul di awal)
-    if (!sec.classList.contains('hero-section')) {
-      sec.classList.add('reveal-on-scroll');
-    }
-  });
+const VALID_ZONES = new Set([
+  "Pandeglang",
+  "Majasari",
+  "Karang Tanjung",
+  "Cadasari",
+  "Kaduhejo",
+  "Koroncong"
+]);
 
-  // 2. FUNGSI NAVIGASI BAWAAN
-  const navButtons = document.querySelectorAll('[data-nav], .btn-header');
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = btn.dataset.nav;
-      if (target) {
-        const el = document.getElementById(target);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else if (btn.classList.contains('btn-header')) {
-        alert("Order Saya belum tersedia di versi pilot.");
-      }
-    });
-  });
+const STATUS_LABELS = {
+  PENDING_PICKUP: "Menunggu Jemput",
+  PICKUP_IN_PROGRESS: "Kurir Menuju Lokasi",
+  AT_HUB_VERIFICATION: "Verifikasi Timbangan di Hub",
+  IRONING_IN_PROGRESS: "Sedang Disetrika",
+  DELIVERING: "Dalam Pengantaran",
+  COMPLETED: "Selesai",
+  CANCELLED: "Dibatalkan"
+};
 
-  // 3. LOGIKA ELIGIBILITY (Tahap 1)
-  const actionButtons = document.querySelectorAll('button, a');
-  actionButtons.forEach(btn => {
-    if (btn.innerText.includes('Pesan Sekarang') || btn.innerText.toLowerCase().includes('setrika')) {
-      btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        
-        const originalHTML = btn.innerHTML;
-        btn.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        btn.style.transform = 'scale(0.90)';
-        btn.style.pointerEvents = "none";
+const toastEl = document.getElementById("fsToast");
+const orderSec = document.getElementById("sec-order");
+const orderListEl = document.getElementById("orderListContainer");
+const bookingSec = document.getElementById("sec-booking");
+const zoneSel = document.getElementById("fsZoneSelect");
+const weightInp = document.getElementById("fsWeightInput");
+const landmarkInp = document.getElementById("fsLandmarkInput");
+const locStatusEl = document.getElementById("fsLocStatus");
+const shareBtn = document.getElementById("fsBtnShareLoc");
+const submitBtn = document.getElementById("fsBtnSubmitOrder");
 
-        setTimeout(() => {
-          btn.style.transform = 'scale(1)';
-          btn.innerHTML = `
-            <span style="display:inline-flex; align-items:center; justify-content:center; gap:8px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9" style="stroke-dasharray: 60; stroke-dashoffset: 0; transform-origin: center; animation: spin 1s linear infinite;"></circle>
-              </svg>
-              Memproses...
-            </span>`;
-        }, 150);
+let toastTimer = null;
+let geoPayload = null;
+let currentUser = null;
+let unsubscribeOrders = null;
 
-        try {
-          const decision = await getEligibilityDecision('dummy-person-id');
-          await new Promise(resolve => setTimeout(resolve, 600));
+function notify(msg) {
+  if (!toastEl) return;
+  toastEl.textContent = msg;
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toastEl.hidden = true;
+  }, 3400);
+}
 
-          if (!document.startViewTransition) {
-            btn.innerHTML = originalHTML;
-            btn.style.pointerEvents = "auto";
-            showToast("Anda siap melanjutkan pesanan.", "success");
-          } else {
-            document.startViewTransition(() => {
-              btn.innerHTML = originalHTML;
-              btn.style.pointerEvents = "auto";
-              showToast("Anda siap melanjutkan pesanan.", "success");
-            });
-          }
-        } catch (error) {
-          btn.innerHTML = originalHTML;
-          btn.style.pointerEvents = "auto";
-          showToast("Terjadi kendala teknis.", "error");
-        }
+function escapeHtml(str = "") {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function renderOrdersSnapshot(docs) {
+  if (!orderListEl) return;
+  if (!docs.length) {
+    orderListEl.innerHTML =
+      '<p style="margin:0;font-size:13.5px;color:#cbd5e1;">Belum ada pesanan di Cloud Firestore. Tekan <strong>Pesan Sekarang</strong> untuk membuat order Zona 1.</p>';
+    return;
+  }
+
+  orderListEl.innerHTML = docs
+    .map((docSnap) => {
+      const d = docSnap.data();
+      const code = d.orderCode || docSnap.id;
+      const badge = STATUS_LABELS[d.status] || d.status || "Menunggu Jemput";
+      const hasGeo =
+        d.geo && typeof d.geo.lat === "number" && typeof d.geo.lng === "number";
+
+      const geoHtml = hasGeo
+        ? `Geotag: <strong>${d.geo.lat}, ${d.geo.lng}</strong> (±${Math.round(d.geo.accuracy || 0)}m) · <a href="https://www.google.com/maps?q=${d.geo.lat},${d.geo.lng}" target="_blank" rel="noopener" style="color:#5eead4;">Peta</a>`
+        : `Geotag: <strong>Konfirmasi Kurir Zona 1</strong>`;
+
+      const landmarkHtml = d.landmark
+        ? `<br>Patokan: <strong>${escapeHtml(d.landmark)}</strong>`
+        : "";
+
+      const verifiedHtml =
+        typeof d.verifiedWeightKg === "number"
+          ? `<br>Timbangan Hub: <strong>${d.verifiedWeightKg} kg</strong>${
+              typeof d.finalAmount === "number"
+                ? ` · Tagihan Final: <strong>Rp${Number(d.finalAmount).toLocaleString("id-ID")}</strong>`
+                : ""
+            }`
+          : `<br><span style="color:#94a3b8;">Timbangan &amp; billing final diverifikasi di Satu Hub.</span>`;
+
+      const waUrl = buildHubWhatsAppUrl({
+        orderCode: code,
+        zone: d.zone || "-",
+        estimatedWeightKg: d.estimatedWeightKg || 0,
+        landmark: d.landmark || "",
+        geo: hasGeo ? d.geo : null
       });
+
+      return `
+        <div style="padding:12px;border-radius:14px;background:#07192f;border:1px solid #1e3a5f;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
+            <strong style="font-size:14px;color:#fff;">${escapeHtml(code)} · Jasa Setrika</strong>
+            <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:#0f766e;color:#ccfbf1;">${escapeHtml(badge)}</span>
+          </div>
+          <div style="margin-top:6px;font-size:12.5px;color:#cbd5e1;line-height:1.5;">
+            Kecamatan: <strong>${escapeHtml(d.zone || "-")}</strong> · Est. Berat: <strong>${escapeHtml(d.estimatedWeightKg)} kg</strong><br>
+            ${geoHtml}${landmarkHtml}${verifiedHtml}
+          </div>
+          <div style="margin-top:8px;">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:7px 12px;border-radius:10px;background:#16b981;color:#07192f;font-weight:700;font-size:12px;text-decoration:none;">Kirim Order ke WA (+6285779308809)</a>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function subscribeUserOrders(uid) {
+  if (unsubscribeOrders) {
+    unsubscribeOrders();
+    unsubscribeOrders = null;
+  }
+  const q = query(
+    collection(db, "serviceOrders"),
+    where("uid", "==", uid),
+    orderBy("createdAt", "desc")
+  );
+  unsubscribeOrders = onSnapshot(
+    q,
+    (snap) => renderOrdersSnapshot(snap.docs),
+    (err) => {
+      console.error("Firestore read error:", err);
+      if (orderListEl) {
+        orderListEl.innerHTML =
+          '<p style="margin:0;font-size:13px;color:#fca5a5;">Gagal memuat daftar pesanan. Periksa koneksi atau aturan Firestore.</p>';
+      }
     }
-  });
+  );
+}
+
+shareBtn?.addEventListener("click", () => {
+  if (!navigator.geolocation) {
+    geoPayload = null;
+    if (locStatusEl) {
+      locStatusEl.innerHTML =
+        "GPS tidak tersedia; isi <strong>Patokan Lokasi</strong> atau lanjutkan konfirmasi kurir.";
+    }
+    return notify("GPS otomatis tidak tersedia.");
+  }
+
+  shareBtn.disabled = true;
+  shareBtn.textContent = "Mencari GPS...";
+  if (locStatusEl) locStatusEl.textContent = "Mengambil koordinat pemesan...";
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      shareBtn.disabled = false;
+      shareBtn.textContent = "Bagikan Lokasi";
+      geoPayload = {
+        lat: Number(pos.coords.latitude.toFixed(6)),
+        lng: Number(pos.coords.longitude.toFixed(6)),
+        accuracy: Number((pos.coords.accuracy || 0).toFixed(1))
+      };
+      if (locStatusEl) {
+        locStatusEl.innerHTML = `Geotag aktif: <strong>${geoPayload.lat}, ${geoPayload.lng}</strong> (±${Math.round(geoPayload.accuracy)}m) · <a href="https://www.google.com/maps?q=${geoPayload.lat},${geoPayload.lng}" target="_blank" rel="noopener" style="color:#5eead4;">Cek Peta</a>`;
+      }
+      notify("Titik geotag pemesan berhasil dikunci.");
+    },
+    () => {
+      shareBtn.disabled = false;
+      shareBtn.textContent = "Bagikan Lokasi";
+      geoPayload = null;
+      if (locStatusEl) {
+        locStatusEl.textContent =
+          "Lokasi GPS belum aktif/diizinkan; lanjutkan dengan patokan atau konfirmasi kurir.";
+      }
+      notify("Lokasi akan dikonfirmasi saat penjemputan.");
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
 });
 
-function showToast(message, type) {
-  const old = document.getElementById('asas-toast');
-  if (old) old.remove();
+submitBtn?.addEventListener("click", async () => {
+  const zone = zoneSel?.value?.trim() || "";
+  const estimatedWeightKg = parseFloat(weightInp?.value || "0");
+  const landmark = (landmarkInp?.value || "").trim().slice(0, 180);
 
-  let bgColor = type === "success" ? "#059669" : "#dc2626"; 
-  let icon = type === "success" 
-    ? `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`
-    : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+  if (!VALID_ZONES.has(zone)) {
+    zoneSel?.focus();
+    return notify("Pilih kecamatan Zona 1 yang valid.");
+  }
+  if (!Number.isFinite(estimatedWeightKg) || estimatedWeightKg <= 0) {
+    weightInp?.focus();
+    return notify("Masukkan estimasi berat (minimal 0.5 kg).");
+  }
+  if (!currentUser) {
+    return notify("Sesi pengguna belum siap, silakan tunggu sebentar.");
+  }
 
-  const toast = document.createElement('div');
-  toast.id = 'asas-toast';
-  toast.style.cssText = `
-    position: fixed; bottom: 80px; left: 50%; transform: translate(-50%, 30px) scale(0.9);
-    background-color: ${bgColor}; color: white; padding: 14px 20px; border-radius: 12px;
-    font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700;
-    display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-    z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    white-space: nowrap;
-  `;
-  
-  toast.innerHTML = `${icon} <span>${message}</span>`;
-  document.body.appendChild(toast);
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Mengirim...";
 
-  setTimeout(() => {
-    toast.style.opacity = '1';
-    toast.style.transform = 'translate(-50%, 0) scale(1)';
-  }, 50);
+  try {
+    const orderCode = `ASAS-Z1-${String(Date.now()).slice(-4)}`;
+    const geoSnapshot = geoPayload ? { ...geoPayload } : null;
 
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translate(-50%, 10px) scale(0.9)';
-    setTimeout(() => toast.remove(), 400);
-  }, 4000);
+    await addDoc(collection(db, "serviceOrders"), {
+      orderCode,
+      serviceCode: "IRONING",
+      zone,
+      estimatedWeightKg,
+      landmark,
+      geo: geoSnapshot,
+      status: "PENDING_PICKUP",
+      uid: currentUser.uid,
+      createdAt: serverTimestamp()
+    });
+
+    const waUrl = buildHubWhatsAppUrl({
+      orderCode,
+      zone,
+      estimatedWeightKg,
+      landmark,
+      geo: geoSnapshot
+    });
+
+    if (weightInp) weightInp.value = "";
+    if (landmarkInp) landmarkInp.value = "";
+    geoPayload = null;
+    if (locStatusEl) locStatusEl.textContent = "";
+
+    if (orderSec) {
+      const y = orderSec.getBoundingClientRect().top + window.scrollY - 68;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    }
+    notify(`Pesanan ${orderCode} (${zone}) tersimpan. Membuka WA Satu Hub...`);
+    window.open(waUrl, "_blank", "noopener,noreferrer");
+  } catch (err) {
+    console.error("Firestore create error:", err);
+    notify("Gagal mengirim pesanan. Cek konfigurasi Firebase & Firestore Rules.");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Kirim Pesanan";
+  }
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    subscribeUserOrders(user.uid);
+    return;
+  }
+  try {
+    currentUser = await ensureCustomerAuth();
+    if (currentUser) subscribeUserOrders(currentUser.uid);
+  } catch (err) {
+    console.error("Auth error:", err);
+    notify("Gagal memulai sesi anonim. Cek Firebase Auth.");
+  }
+});
+
+if (bookingSec) {
+  bookingSec.hidden = false;
 }
