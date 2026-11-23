@@ -1,161 +1,118 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function signedIn() {
+    function isSignedIn() {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return signedIn()
-        && request.auth.token.admin == true;
+    function hubAdminDoc() {
+      return isSignedIn()
+        ? get(/databases/$(database)/documents/hubAdmins/$(request.auth.uid))
+        : null;
     }
 
-    match /leadershipProfiles/{userId} {
+    function isActiveHubAdmin() {
+      return isSignedIn()
+        && hubAdminDoc() != null
+        && hubAdminDoc().data.active == true
+        && hubAdminDoc().data.role in ['HUB_ADMIN', 'SUPER_ADMIN'];
+    }
 
-      allow read: if isAdmin()
-        || (signedIn()
-            && request.auth.uid == userId);
+    function isSuperAdmin() {
+      return isSignedIn()
+        && hubAdminDoc() != null
+        && hubAdminDoc().data.active == true
+        && hubAdminDoc().data.role == 'SUPER_ADMIN';
+    }
 
-      allow create: if signedIn()
-        && request.auth.uid == userId
-        && request.resource.data.status in [
-          "draft",
-          "pending"
-        ];
+    function isValidZone(z) {
+      return z in [
+        'Pandeglang',
+        'Majasari',
+        'Karang Tanjung',
+        'Cadasari',
+        'Kaduhejo',
+        'Koroncong'
+      ];
+    }
 
-      allow update: if isAdmin()
+    function isValidGeo(g) {
+      return g == null
         || (
-          signedIn()
-          && request.auth.uid == userId
-          && resource.data.status in [
-            "draft",
-            "pending"
-          ]
-          && request.resource.data.status in [
-            "draft",
-            "pending"
-          ]
+          g is map
+          && g.keys().hasAll(['lat', 'lng'])
+          && g.keys().hasOnly(['lat', 'lng', 'accuracy'])
+          && g.lat is number && g.lat >= -90 && g.lat <= 90
+          && g.lng is number && g.lng >= -180 && g.lng <= 180
         );
-
-      allow delete: if isAdmin();
     }
 
-    match /publicLeadership/{profileId} {
-      allow read: if true;
-      allow create, update, delete: if isAdmin();
-    }
-
-    match /auditLogs/{auditId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin();
-      allow update, delete: if false;
+    match /hubAdmins/{adminUid} {
+      allow read: if isSuperAdmin() || (isSignedIn() && request.auth.uid == adminUid);
+      allow create, update, delete: if isSuperAdmin();
     }
 
     match /serviceOrders/{orderId} {
-      function isOrderOwner() {
-        return request.auth != null
-          && resource.data.ownerUid == request.auth.uid;
-      }
+      allow read: if isActiveHubAdmin()
+        || (isSignedIn() && resource.data.uid == request.auth.uid);
 
-      function isLaundryOrderCreate() {
-        let data = request.resource.data;
-        let pickup = data.pickup;
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
+          'orderCode',
+          'serviceCode',
+          'zone',
+          'estimatedWeightKg',
+          'landmark',
+          'geo',
+          'status',
+          'uid',
+          'createdAt'
+        ])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.serviceCode == 'IRONING'
+        && isValidZone(request.resource.data.zone)
+        && request.resource.data.estimatedWeightKg is number
+        && request.resource.data.estimatedWeightKg > 0
+        && request.resource.data.estimatedWeightKg <= 200
+        && request.resource.data.landmark is string
+        && request.resource.data.landmark.size() <= 180
+        && isValidGeo(request.resource.data.geo)
+        && request.resource.data.status == 'PENDING_PICKUP'
+        && request.resource.data.createdAt == request.time;
 
-        return request.auth != null
+      allow update: if isActiveHubAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'verifiedWeightKg',
+          'finalAmount',
+          'hubNote',
+          'status',
+          'updatedAt'
+        ])
+        && request.resource.data.status in [
+          'PENDING_PICKUP',
+          'PICKUP_IN_PROGRESS',
+          'AT_HUB_VERIFICATION',
+          'IRONING_IN_PROGRESS',
+          'DELIVERING',
+          'COMPLETED',
+          'CANCELLED'
+        ]
+        && (
+          !('verifiedWeightKg' in request.resource.data)
+          || (request.resource.data.verifiedWeightKg is number && request.resource.data.verifiedWeightKg > 0)
+        )
+        && (
+          !('finalAmount' in request.resource.data)
+          || (request.resource.data.finalAmount is number && request.resource.data.finalAmount >= 0)
+        )
+        && (
+          !('hubNote' in request.resource.data)
+          || (request.resource.data.hubNote is string && request.resource.data.hubNote.size() <= 240)
+        )
+        && request.resource.data.updatedAt == request.time;
 
-          && data.keys().hasAll([
-            "ownerUid",
-            "serviceCategory",
-            "serviceType",
-            "orderMode",
-            "engagementType",
-            "fulfillmentMode",
-            "marketArea",
-            "serviceZone",
-            "pickup",
-            "customerNotes",
-            "status",
-            "createdAt",
-            "updatedAt"
-          ])
-
-          && data.keys().hasOnly([
-            "ownerUid",
-            "serviceCategory",
-            "serviceType",
-            "orderMode",
-            "engagementType",
-            "fulfillmentMode",
-            "marketArea",
-            "serviceZone",
-            "pickup",
-            "customerNotes",
-            "status",
-            "createdAt",
-            "updatedAt"
-          ])
-
-          && data.ownerUid == request.auth.uid
-          && data.serviceCategory == "LAUNDRY_GARMENT_CARE"
-          && data.marketArea == "PANDEGLANG"
-          && data.serviceZone == "ZONE_1"
-
-          && data.serviceType == "IRONING"
-
-          && data.orderMode == "ONE_TIME"
-          && data.engagementType == "SAM_NON_CONTRACT"
-          && data.fulfillmentMode == "PICKUP_DELIVERY"
-          && data.status == "REQUESTED"
-
-          && data.createdAt == request.time
-          && data.updatedAt == request.time
-
-          && data.customerNotes is string
-          && data.customerNotes.size() <= 1000
-
-          && pickup is map
-
-          && pickup.keys().hasAll([
-            "address",
-            "requestedAt"
-          ])
-
-          && pickup.keys().hasOnly([
-            "address",
-            "requestedAt",
-            "latitude",
-            "longitude"
-          ])
-
-          && pickup.address is string
-          && pickup.address.size() >= 5
-          && pickup.address.size() <= 500
-
-          && pickup.requestedAt is timestamp
-
-          && (
-            !("latitude" in pickup)
-            || pickup.latitude is number
-          )
-
-          && (
-            !("longitude" in pickup)
-            || pickup.longitude is number
-          );
-      }
-
-      allow create: if isLaundryOrderCreate();
-
-      allow get, list: if isOrderOwner() || isAdmin();
-
-      allow update: if isAdmin() && request.resource.data.ownerUid == resource.data.ownerUid && resource.data.status == "REQUESTED" && request.resource.data.status in ["APPROVED", "CANCELLED"];
-      allow delete: if false;
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
+      allow delete: if isSuperAdmin();
     }
   }
 }
