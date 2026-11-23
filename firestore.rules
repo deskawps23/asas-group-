@@ -21,6 +21,7 @@ service cloud.firestore {
 
     function isSuperAdmin() {
       return isSignedIn()
+        && request.auth.token.admin == true
         && hubAdminDoc() != null
         && hubAdminDoc().data.active == true
         && hubAdminDoc().data.role == 'SUPER_ADMIN';

@@ -5,6 +5,7 @@ import {
   logoutHubSession,
   onAuthStateChanged
 } from "./firebase-config.js";
+import { getIdTokenResult } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   collection,
   query,
@@ -263,7 +264,9 @@ onAuthStateChanged(auth, async (user) => {
   try {
     const snap = await getDoc(doc(db, "hubAdmins", user.uid));
     const data = snap.exists() ? snap.data() : null;
-    if (data && data.active === true && data.role === "SUPER_ADMIN") {
+    const tokenResult = await getIdTokenResult(user, true);
+    const hasAdminClaim = tokenResult.claims.admin === true;
+    if (data && data.active === true && data.role === "SUPER_ADMIN" && hasAdminClaim) {
       if (loginBox) loginBox.style.display = "none";
       if (dashboard) dashboard.style.display = "block";
       startGlobalSuperAdminStreams(user);
