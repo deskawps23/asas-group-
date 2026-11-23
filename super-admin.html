@@ -123,7 +123,7 @@
   <main class="wrap">
     <div class="box" id="saLoginBox">
       <strong style="display:block;font-size:15px;margin-bottom:4px;">Login Super Admin ASAS Global World</strong>
-      <div class="meta" style="margin-bottom:10px;">Kelola seluruh lini kepemimpinan perusahaan (Komisaris, CEO, CFO, CFO-F, CTO, CHRO, dan Kepala Unit).</div>
+      <div class="meta" style="margin-bottom:10px;">Kelola seluruh lini kepemimpinan perusahaan (Dewan Komisaris [3 orang], Presdir / CEO, Dewan Direksi, jajaran Chief, GM (General Manager), dan Kepala Unit).</div>
       <div id="saLoginError" class="meta" style="color:#fca5a5;margin-bottom:8px;"></div>
       <label for="saEmail">Email Super Admin</label>
       <input id="saEmail" type="email" placeholder="superadmin@asasglobal.local" autocomplete="username" />
@@ -166,7 +166,7 @@
 
       <div class="box">
         <strong style="display:block;font-size:15px;margin-bottom:4px;">2. Tetapkan / Kelola Lini Perusahaan ASAS Global World</strong>
-        <div class="meta" style="margin-bottom:10px;">Tetapkan Komisaris, CEO, CFO, CFO-F, CTO, CHRO, atau Kepala Unit pada koleksi <code>hubAdmins/{uid}</code>.</div>
+        <div class="meta" style="margin-bottom:10px;">Tetapkan Dewan Komisaris (3 orang), Presdir / CEO, CFO, CFO-F (Facility Service), CTO, CHRO, GM (General Manager), atau Kepala Unit pada koleksi <code>hubAdmins/{uid}</code>.</div>
         <label for="saTargetUid">UID Firebase Auth</label>
         <input id="saTargetUid" type="text" placeholder="UID akun dari Firebase Authentication > Users" />
         <label for="saTargetEmail">Email Resmi</label>
@@ -175,13 +175,14 @@
         <input id="saTargetName" type="text" placeholder="Nama lengkap pemegang jabatan" />
         <label for="saTargetLine">Lini Perusahaan / Jabatan</label>
         <select id="saTargetLine">
-          <option value="KOMISARIS">Komisaris (Dewan Komisaris)</option>
-          <option value="CEO">CEO (Chief Executive Officer)</option>
+          <option value="KOMISARIS">Komisaris (Dewan Komisaris · 3 Orang)</option>
+          <option value="CEO">Presdir / CEO</option>
           <option value="CFO">CFO (Chief Financial Officer)</option>
-          <option value="CFO-F">CFO-F (Chief Financial Officer - Finance)</option>
+          <option value="CFO-F">CFO-F (Facility Service)</option>
           <option value="CTO">CTO (Chief Technology Officer)</option>
           <option value="CHRO">CHRO (Chief Human Resources Officer)</option>
-          <option value="UNIT_HEAD">Kepala Unit / Operasional</option>
+          <option value="GM">GM (General Manager)</option>
+            <option value="UNIT_HEAD">Kepala Unit / Operasional</option>
           <option value="SUPER_ADMIN">SUPER_ADMIN (Super Admin Global)</option>
         </select>
         <label for="saTargetDivision">Divisi / Unit / Cakupan</label>

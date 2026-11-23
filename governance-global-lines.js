@@ -2,12 +2,13 @@ import { db } from "./firebase-config.js";
 import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const DEFAULT_LINES = [
-  { line: "KOMISARIS", title: "Dewan Komisaris", desc: "Pengawasan tata kelola, kepatuhan, dan arah strategis ASAS Global World." },
+  { line: "KOMISARIS", title: "Dewan Komisaris", desc: "Pengawasan tata kelola, kepatuhan, dan arah strategis ASAS Global World oleh Dewan Komisaris (3 orang)." },
   { line: "CEO", title: "Chief Executive Officer", desc: "Eksekutif tertinggi pengelolaan dan integrasi lini usaha ASAS Global World." },
   { line: "CFO", title: "Chief Financial Officer", desc: "Pengendalian keuangan korporat, struktur modal, dan pelaporan strategis." },
-  { line: "CFO-F", title: "Chief Financial Officer - Finance", desc: "Pengelolaan anggaran, arus kas operasional, dan kontrol keuangan unit." },
+  { line: "CFO-F", title: "Facility Service", desc: "Pengelolaan, perawatan, dan operasional layanan fasilitas (Facility Service) serta sarana pendukung perusahaan." },
   { line: "CTO", title: "Chief Technology Officer", desc: "Arsitektur platform, keamanan sistem, dan infrastruktur digital perusahaan." },
   { line: "CHRO", title: "Chief Human Resources Officer", desc: "Pengelolaan SDM, pembinaan talenta, dan struktur peran organisasi." }
+  { line: "GM", title: "General Manager", desc: "Pengelolaan operasional lintas fungsi/unit, koordinasi manajerial, dan eksekusi target perusahaan." },
 ];
 
 const gridEl = document.getElementById("asasGlobalLinesGrid");
