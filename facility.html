@@ -353,7 +353,7 @@ body {
         };
         const mapUrl = `https://www.google.com/maps?q=${geoData.lat},${geoData.lng}`;
         renderGeoStatus(
-          `Geotag aktif: <strong>${geoData.lat}, ${geoData.lng}</strong> (±${Math.round(geoData.acc)}m) · <a href="${mapUrl}" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:underline;">Cek Peta</a>`
+          `Geotag aktif: <strong>${geoData.lat}, ${geoData.lng}</strong> (±${Math.round(geoData.acc)}m) · <a href="index.html" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:underline;">Cek Peta</a>`
         );
         notify("Titik geotag pemesan berhasil dikunci.");
       },
@@ -467,7 +467,7 @@ submitBtn?.addEventListener("click", () => {
   if (orderList && orderList.firstElementChild) {
     const linkBox = document.createElement("div");
     linkBox.style.marginTop = "8px";
-    linkBox.innerHTML = `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 12px;border-radius:10px;background:#16b981;color:#07192f;font-weight:700;font-size:12px;text-decoration:none;">Kirim Order ke WA (+6285779308809)</a>`;
+    linkBox.innerHTML = `<a href="index.html" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 12px;border-radius:10px;background:#16b981;color:#07192f;font-weight:700;font-size:12px;text-decoration:none;">Kirim Order ke WA (+6285779308809)</a>`;
     orderList.firstElementChild.appendChild(linkBox);
   }
   lastGeo = null;
