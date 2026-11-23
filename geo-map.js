@@ -318,6 +318,18 @@
 
     setStatus("Peta siap.");
     setButtons();
+let activeGeoContext = null;
+document.querySelectorAll(".geo-node[data-context]").forEach((node) => {
+  node.addEventListener("click", () => {
+    document.querySelectorAll(".geo-node[data-context]").forEach((n) => n.classList.remove("is-active"));
+    node.classList.add("is-active");
+    activeGeoContext = node.getAttribute("data-context");
+    if (typeof setStatus === "function" && activeGeoContext) {
+      setStatus(activeGeoContext);
+    }
+  });
+});
+
   }
 
   measureBtn.addEventListener("click", () => {
@@ -518,11 +530,14 @@
 
     coordinates.push([...coordinates[0]]);
 
+    const activeNode = document.querySelector(".geo-node.is-active, .geo-node[aria-selected=\"true\"]");
+    const activeContext = activeNode ? activeNode.getAttribute("data-context") : null;
     const geojson = {
       type: "Feature",
       properties: {
         source: "ASAS Nexus Geo Workspace",
         measurementType: "digital-analysis",
+        ...(activeContext ? { contextNote: activeContext } : {}),
         areaSqm: sphericalAreaSqm(points),
         perimeterM: perimeterMeters(points)
       },
