@@ -193,9 +193,11 @@ if (publishedEl) publishedEl.textContent = published;
 
           return `
             <article class="review-card">
-              <strong>${profileName}</strong>
-              <p>${profilePosition}</p>
-              <small>Status: Pending</small>
+              <div class="review-card__meta">
+                <strong>${profileName}</strong>
+                <p>${profilePosition}</p>
+                <span class="review-status-badge">Status: Pending</span>
+              </div>
               <button
                 type="button"
                 class="approve-leadership-button"
@@ -231,7 +233,6 @@ if (publishedEl) publishedEl.textContent = published;
           window.location.reload();
         } catch (error) {
           console.error("Leadership approval failed:", error);
-
           alert(
             error?.message ||
             "Approval gagal. Periksa Firestore Rules."
