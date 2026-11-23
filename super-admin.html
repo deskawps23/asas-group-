@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASAS Global World - Pusat Kendali Super Admin</title>
+  <style>
+    :root {
+      --bg: #051326;
+      --card: #0b2240;
+      --card2: #07192f;
+      --border: #1e3a5f;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #16b981;
+      --teal: #5eead4;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 44px;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(5, 19, 38, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 14px 16px; }
+    .box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr; } }
+    .kpi {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .kpi strong { display: block; font-size: 20px; color: var(--teal); margin-top: 4px; }
+    label { display: block; font-size: 12.5px; color: var(--muted); margin: 10px 0 4px; }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #2b4c7e;
+      background: var(--card2);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .btn-primary {
+      margin-top: 12px;
+      width: 100%;
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #051326;
+      font-weight: 800;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+    .btn-sm {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid #334155;
+      background: var(--card2);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-approve { background: var(--accent); color: #051326; border: 0; }
+    .btn-danger { background: #3f131a; color: #fca5a5; border: 1px solid #7f1d1d; }
+    .item {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .meta { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    footer { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <strong style="font-size:15px;">ASAS Global World - Super Admin</strong>
+      <div class="meta">Kendali Lini Kepemimpinan &amp; Tata Kelola Perusahaan</div>
+    </div>
+    <div class="nav-links">
+      <a class="btn-sm" href="./governance.html">Tata Kelola</a>
+      <a class="btn-sm" href="./organisasi.html">Organisasi</a>
+      <a class="btn-sm" href="./admin-facility.html">Operasional Hub</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="box" id="saLoginBox">
+      <strong style="display:block;font-size:15px;margin-bottom:4px;">Login Super Admin ASAS Global World</strong>
+      <div class="meta" style="margin-bottom:10px;">Kelola seluruh lini kepemimpinan perusahaan (Komisaris, CEO, CFO, CFO-F, CTO, CHRO, dan Kepala Unit).</div>
+      <div id="saLoginError" class="meta" style="color:#fca5a5;margin-bottom:8px;"></div>
+      <label for="saEmail">Email Super Admin</label>
+      <input id="saEmail" type="email" placeholder="superadmin@asasglobal.local" autocomplete="username" />
+      <label for="saPassword">Kata Sandi</label>
+      <input id="saPassword" type="password" placeholder="••••••••" autocomplete="current-password" />
+      <button type="button" id="btnSaLogin" class="btn-primary">Masuk ke Kendali ASAS Global World</button>
+    </div>
+
+    <div id="saDashboard" style="display:none;">
+      <div class="box" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div>
+          <strong style="font-size:14px;">Sesi Super Admin ASAS Global World</strong>
+          <div class="meta" id="saSessionInfo">-</div>
+        </div>
+        <button type="button" id="btnSaLogout" class="btn-sm btn-danger">Keluar</button>
+      </div>
+
+      <div class="box">
+        <div class="grid3">
+          <div class="kpi">
+            <span class="meta">Pejabat &amp; Admin Aktif</span>
+            <strong id="kpiOfficers">0</strong>
+          </div>
+          <div class="kpi">
+            <span class="meta">Antrean Approval Jabatan</span>
+            <strong id="kpiPending">0</strong>
+          </div>
+          <div class="kpi">
+            <span class="meta">Lini Terdaftar</span>
+            <strong id="kpiLines">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <strong style="display:block;font-size:15px;margin-bottom:4px;">1. Approval Pengajuan Lini &amp; Jabatan</strong>
+        <div class="meta" style="margin-bottom:10px;">Setujui atau tolak pengajuan jabatan dari koleksi <code>adminRequests</code>.</div>
+        <div id="saPendingList"><p class="meta">Memuat...</p></div>
+      </div>
+
+      <div class="box">
+        <strong style="display:block;font-size:15px;margin-bottom:4px;">2. Tetapkan / Kelola Lini Perusahaan ASAS Global World</strong>
+        <div class="meta" style="margin-bottom:10px;">Tetapkan Komisaris, CEO, CFO, CFO-F, CTO, CHRO, atau Kepala Unit pada koleksi <code>hubAdmins/{uid}</code>.</div>
+        <label for="saTargetUid">UID Firebase Auth</label>
+        <input id="saTargetUid" type="text" placeholder="UID akun dari Firebase Authentication > Users" />
+        <label for="saTargetEmail">Email Resmi</label>
+        <input id="saTargetEmail" type="email" placeholder="pimpinan@asasglobal.local" />
+        <label for="saTargetName">Nama Lengkap</label>
+        <input id="saTargetName" type="text" placeholder="Nama lengkap pemegang jabatan" />
+        <label for="saTargetLine">Lini Perusahaan / Jabatan</label>
+        <select id="saTargetLine">
+          <option value="KOMISARIS">Komisaris (Dewan Komisaris)</option>
+          <option value="CEO">CEO (Chief Executive Officer)</option>
+          <option value="CFO">CFO (Chief Financial Officer)</option>
+          <option value="CFO-F">CFO-F (Chief Financial Officer - Finance)</option>
+          <option value="CTO">CTO (Chief Technology Officer)</option>
+          <option value="CHRO">CHRO (Chief Human Resources Officer)</option>
+          <option value="UNIT_HEAD">Kepala Unit / Operasional</option>
+          <option value="SUPER_ADMIN">SUPER_ADMIN (Super Admin Global)</option>
+        </select>
+        <label for="saTargetDivision">Divisi / Unit / Cakupan</label>
+        <input id="saTargetDivision" type="text" value="ASAS Global World" placeholder="ASAS Global World / Keuangan / Teknologi / SDM / Unit" />
+        <button type="button" id="btnSaSaveOfficer" class="btn-primary">Tetapkan &amp; Aktifkan Lini Jabatan</button>
+        <div id="saAdminMsg" class="meta" style="margin-top:8px;"></div>
+        <div id="saOfficerList" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <footer>created design &amp; development by deskawps</footer>
+  </main>
+
+  <script type="module" src="./super-admin.js"></script>
+</body>
+</html>
