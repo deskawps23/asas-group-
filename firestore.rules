@@ -48,6 +48,27 @@ service cloud.firestore {
         );
     }
 
+// Pengajuan calon admin/operator (menunggu approval Super Admin)
+    match /adminRequests/{reqId} {
+      allow read: if isSuperAdmin();
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
+          'uid',
+          'email',
+          'name',
+          'status',
+          'approved',
+          'createdAt'
+        ])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'PENDING_APPROVAL'
+        && request.resource.data.approved == false
+        && request.resource.data.createdAt == request.time;
+      allow update: if isSuperAdmin()
+        && request.resource.data.status in ['APPROVED', 'REJECTED'];
+      allow delete: if isSuperAdmin();
+    }
+
     match /hubAdmins/{adminUid} {
       allow read: if isSuperAdmin() || (isSignedIn() && request.auth.uid == adminUid);
       allow create, update, delete: if isSuperAdmin();
