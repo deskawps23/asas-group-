@@ -1,239 +1,479 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eaf6ff">
-
-  <title>Facility Services | ASAS Nexus</title>
-
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="asas-tokens.css?v=2">
-  <link rel="stylesheet" href="facility.css?v=13">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASAS Facility Services — Pilot Zona 1</title>
+  <style>:root {
+  --bg-navy: #07192f;
+  --bg-navy-elev: #0d233f;
+  --surface-white: #ffffff;
+  --surface-ice: #dcebfa;
+  --surface-ice-soft: #eef5fc;
+  --ink-navy: #0b223d;
+  --ink-slate: #334155;
+  --ink-muted: #64748b;
+  --teal-bg: #16b981;
+  --teal-dark: #0f766e;
+  --coral-btn: #d9483b;
+  --coral-hover: #be382c;
+  --line-soft: #d5e2f0;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg-navy);
+  color: var(--ink-navy);
+  -webkit-font-smoothing: antialiased;
+}
+.fs-topbar {
+  position: sticky; top: 0; z-index: 25;
+  background: var(--surface-white);
+  border-bottom: 1px solid #e2e8f0;
+}
+.fs-topbar-inner {
+  max-width: 480px; margin: 0 auto; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.fs-brand strong { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.3px; color: var(--ink-navy); }
+.fs-brand span { display: block; font-size: 12.5px; color: var(--ink-slate); margin-top: 1px; }
+.fs-pill-top {
+  border: 1.5px solid #cbd5e1; background: var(--surface-white); color: var(--ink-navy);
+  font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 999px; cursor: pointer;
+}
+.fs-wrap { max-width: 480px; margin: 0 auto; padding: 16px; }
+.fs-hero {
+  background: linear-gradient(135deg, #e4effb 0%, #f5f9fe 65%, #e8f2fc 100%);
+  border-radius: 22px; padding: 18px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+.fs-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fs-badge-dark {
+  background: var(--bg-navy); color: #ffffff; font-size: 11px; font-weight: 800;
+  letter-spacing: 0.5px; padding: 5px 11px; border-radius: 999px;
+}
+.fs-badge-light {
+  background: var(--surface-white); color: var(--ink-navy); border: 1.5px solid #cbd5e1;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; padding: 4px 11px; border-radius: 999px;
+}
+.fs-hero h1 { margin: 12px 0 8px; font-size: 28px; line-height: 1.15; font-weight: 800; color: var(--ink-navy); }
+.fs-hero p { margin: 0 0 16px; font-size: 14px; line-height: 1.48; color: var(--ink-slate); }
+.fs-hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fs-btn-coral {
+  background: var(--coral-btn); color: #ffffff; border: none; border-radius: 999px;
+  padding: 12px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+.fs-btn-coral:hover { background: var(--coral-hover); }
+.fs-btn-outline {
+  background: var(--surface-white); color: var(--ink-navy); border: 1.5px solid #94a3b8;
+  border-radius: 999px; padding: 12px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+.fs-sec { margin-top: 22px; }
+.fs-kicker { display: block; font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; color: #cbd5e1; margin-bottom: 4px; }
+.fs-sec h2 { margin: 0 0 6px; font-size: 21px; line-height: 1.25; font-weight: 800; color: #ffffff; }
+.fs-sec-sub { margin: 0 0 14px; font-size: 13.5px; line-height: 1.48; color: #cbd5e1; }
+.fs-grid-panel { background: var(--surface-white); border-radius: 22px; padding: 14px; }
+.fs-grid-2x2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.fs-card {
+  border-radius: 18px; padding: 14px; border: 1.5px solid var(--line-soft);
+  background: var(--surface-ice-soft); display: flex; flex-direction: column;
+  justify-content: space-between; gap: 10px; text-align: left; min-width: 0;
+}
+.fs-card.is-disabled { opacity: 0.92; cursor: not-allowed; }
+.fs-card.is-active {
+  background: var(--teal-bg); border-color: #34d399; color: var(--ink-navy); cursor: pointer;
+}
+.fs-card-num { font-size: 14px; font-weight: 800; color: var(--ink-slate); line-height: 1.15; }
+.fs-card-tag { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: var(--ink-navy); margin-top: 2px; }
+.fs-card-art { width: 100%; height: 84px; display: flex; align-items: center; justify-content: center; }
+.fs-card strong { display: block; font-size: 16px; font-weight: 800; color: var(--ink-navy); line-height: 1.2; }
+.fs-card small { display: block; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--ink-slate); }
+.fs-card.is-active small { color: var(--ink-navy); font-weight: 700; }
+.fs-dark-panel {
+  background: var(--bg-navy-elev); border: 1px solid #1e3a5f;
+  border-radius: 20px; padding: 16px; color: #ffffff;
+}
+.fs-input {
+  width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #334155;
+  background: #07192f; color: #ffffff; font-size: 14px; margin-bottom: 12px;
+}
+.fs-credit {
+  margin-top: 16px; padding: 12px 16px 142px; text-align: center;
+  font-size: 12px; color: #94a3b8;
+}
+.fs-credit strong { color: #e2e8f0; }
+.fs-toast {
+  position: fixed; left: 16px; right: 16px; bottom: 78px; max-width: 448px; margin: 0 auto;
+  padding: 13px 16px; border-radius: 14px; background: #10a37f; color: #ffffff;
+  font-size: 14px; font-weight: 700; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); z-index: 40;
+}
+.fs-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
+  background: #091b33; border-top: 1px solid #1e3a5f; z-index: 30;
+}
+.fs-nav-inner { max-width: 480px; height: 100%; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.fs-nav button {
+  border: none; background: transparent; color: #94a3b8; font-size: 11.5px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer;
+}
+.fs-nav button.is-active { color: #38bdf8; font-weight: 700; }</style>
 </head>
-
 <body>
-  <div class="facility-app">
-
-    <header class="app-header">
-      <a class="app-brand" href="index.html">
-        <strong>ASAS</strong>
-        <span>Facility Services</span>
-      </a>
-
-      <button class="header-order" type="button" data-action="orders">
-        Order Saya
-      </button>
-    </header>
-
-    <main>
-      <section class="facility-hero" id="home">
-        <span class="eyebrow">FACILITY SERVICES</span>
-
-        <div class="pilot-badge">
-          <span class="pilot-dot" aria-hidden="true"></span>
-          <span>PILOT BERTAHAP · ZONA 1</span>
-        </div>
-
-        <h1>Anda yang Utama</h1>
-
-        <p>
-          Jasa Setrika yang datang kepada Anda. Pilih lokasi dan waktu yang nyaman, lalu biarkan kami membantu proses berikutnya.
-        </p>
-
-        <div class="hero-actions">
-          <button class="btn btn-primary" type="button" data-action="book-now">
-            Pesan Sekarang
-          </button>
-
-          <button class="btn btn-secondary" type="button" data-action="orders">
-            Lihat Order Saya
-          </button>
-        </div>
-      </section>
-
-      <section class="app-section" id="services">
-        <div class="section-heading">
-          <span class="section-kicker">LAYANAN</span>
-          <h2>Layanan yang siap membantu</h2>
-          <p>
-            Jasa Setrika sudah tersedia. Layanan lainnya sedang kami persiapkan secara bertahap.
-          </p>
-        </div>
-
-        <div class="service-grid">
-          <button class="service-card is-unavailable" type="button" disabled aria-disabled="true">
-            <span class="service-number">01</span>
-            <strong>Cleaning</strong>
-            <span>Belum tersedia</span>
-          </button>
-
-          <button class="service-card service-card-active" type="button" data-service="ironing">
-            <span class="service-number">02</span>
-            <strong>Jasa Setrika</strong>
-            <span>Pickup &amp; Delivery · Pandeglang Zona 1</span>
-            <span class="service-price">Rp5.000/kg · Min. 3 kg</span>
-            <span class="service-delivery">Antar-jemput Rp5.000/order</span>
-          </button>
-
-          <button class="service-card is-unavailable" type="button" disabled aria-disabled="true">
-            <span class="service-number">03</span>
-            <strong>Maintenance</strong>
-            <span>Belum tersedia</span>
-          </button>
-
-          <button class="service-card is-unavailable" type="button" disabled aria-disabled="true">
-            <span class="service-number">04</span>
-            <strong>Building &amp; Facility</strong>
-            <span>Belum tersedia</span>
-          </button>
-        </div>
-      </section>
-
-      <section class="app-section order-mode-section" id="order-mode">
-        <div class="section-heading">
-          <span class="section-kicker">CARA MEMESAN</span>
-          <h2>Sesuai kebutuhan Anda</h2>
-        </div>
-
-        <div class="mode-list">
-          <button class="mode-card mode-primary" type="button" data-mode="one-time">
-            <span>Tanpa kontrak</span>
-            <strong>Pesan Jasa Setrika</strong>
-            <p>Untuk satu kebutuhan layanan.</p>
-          </button>
-
-          <button class="mode-card" type="button" data-mode="scheduled">
-            <span>Rutin</span>
-            <strong>Layanan Terjadwal</strong>
-            <p>Untuk kebutuhan layanan yang berulang.</p>
-          </button>
-        </div>
-      </section>
-
-      <section class="booking-panel" id="booking-panel" hidden>
-        <div class="section-heading">
-          <span class="section-kicker">PESAN LAYANAN</span>
-          <h2 id="booking-title">Mulai pesanan</h2>
-        </div>
-
-        <div class="booking-steps" aria-label="Tahapan booking">
-          <span>01 Layanan</span>
-          <span>02 Cara layanan</span>
-          <span>03 Lokasi</span>
-          <span>04 Jadwal</span>
-          <span>05 Detail</span>
-          <span>06 Review</span>
-        </div>
-
-        <div id="booking-stage" class="booking-stage" aria-live="polite">
-          <p>Pilih layanan untuk memulai.</p>
-        </div>
-      </section>
-
-      <section class="app-section orders-section" id="orders">
-        <div class="section-heading">
-          <span class="section-kicker">ORDER SAYA</span>
-          <h2>Pantau layanan</h2>
-          <p>
-            Order aktual akan tampil setelah workflow
-            pemesanan production tersedia.
-          </p>
-        </div>
-
-        <div class="empty-state" id="orders-state">
-          <strong>Belum ada order untuk ditampilkan.</strong>
-          <span>Data order simulasi tidak digunakan.</span>
-        </div>
-      </section>
-    <section class="service-promise-section" id="promise">
-      <div class="section-heading">
-        <span class="section-kicker">4 JANJI PELAYANAN ASAS</span>
-        <h2>Anda yang utama dalam setiap pelayanan.</h2>
-        <p>
-          ASAS hadir untuk membuat proses lebih mudah,
-          lebih jelas, dan lebih nyaman bagi Anda.
-        </p>
-      </div>
-
-      <div class="service-promise-grid">
-        <article class="service-promise">
-          <span class="promise-letter">A</span>
-          <div>
-            <h3>Anda yang Utama</h3>
-            <p>Kebutuhan dan kenyamanan Anda menjadi prioritas.</p>
-          </div>
-        </article>
-
-        <article class="service-promise">
-          <span class="promise-letter">S</span>
-          <div>
-            <h3>Siap Membantu</h3>
-            <p>Kami hadir ketika Anda membutuhkan bantuan.</p>
-          </div>
-        </article>
-
-        <article class="service-promise">
-          <span class="promise-letter">A</span>
-          <div>
-            <h3>Amanah dalam Pelayanan</h3>
-            <p>Kepercayaan dan pesanan Anda kami jaga.</p>
-          </div>
-        </article>
-
-        <article class="service-promise">
-          <span class="promise-letter">S</span>
-          <div>
-            <h3>Sampai Tuntas</h3>
-            <p>Kami menemani proses layanan hingga selesai.</p>
-          </div>
-        </article>
+  <header class="fs-topbar">
+    <div class="fs-topbar-inner">
+      <div class="fs-brand"><strong>ASAS</strong><span>Facility Services</span></div>
+      <button type="button" class="fs-pill-top" data-action="go-orders">Order Saya</button>
+    </div>
+  </header>
+  <main class="fs-wrap">
+    <section class="fs-hero">
+      <div class="fs-badges"><span class="fs-badge-dark">PILOT ZONA 1</span><span class="fs-badge-light">SATU HUB</span></div>
+      <h1>Anda yang Utama</h1>
+      <p>Jasa Setrika yang datang kepada Anda. Berat timbangan dan billing akan diverifikasi langsung di Satu Hub.</p>
+      <label class="fs-field-label" for="fsLandmarkInput">Patokan / Catatan Lokasi (Opsional)</label>
+<input id="fsLandmarkInput" class="fs-input" type="text" placeholder="Contoh: Dekat masjid / pagar hijau" />
+<div class="fs-hero-actions">
+        <button type="button" class="fs-btn-coral" data-action="open-booking">Pesan Sekarang</button>
+        <button type="button" class="fs-btn-outline" data-action="go-orders">Lihat Order Saya</button>
       </div>
     </section>
-
-    <section class="help-section" id="help">
-      <div class="help-card">
-        <span class="section-kicker">KAMI SIAP MEMBANTU</span>
-        <h2>Ada yang ingin ditanyakan?</h2>
-        <p>
-          WhatsApp tersedia sebagai jalur bantuan cadangan
-          selama proses Jasa Setrika.
-        </p>
-
-        <div class="admin-whatsapp-actions">
-          <a
-            class="btn btn-help"
-            href="https://wa.me/6285779308809"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Hubungi Admin via WhatsApp
-          </a>
-        </div>
-      </div>
-    </section>
-    </main>
-
-    <footer class="app-footer">
-      <span>ASAS Nexus · Facility Services</span>
-
-      <small>
-        Concept, Design &amp; Development by
-        <strong class="deskawps">
-          <span class="deska">deska</span><span class="wps">wps</span>
-        </strong>
-      </small>
-    </footer>
-
-    <nav class="bottom-nav" aria-label="Facility navigation">
-      <button type="button" data-nav="home">Beranda</button>
-      <button type="button" data-nav="services">Layanan</button>
-      <button type="button" data-nav="orders">Order</button>
-      <button type="button" data-nav="help">Bantuan</button>
-    </nav>
-
+    <section id="sec-layanan" class="fs-sec">
+      <span class="fs-kicker">LAYANAN</span>
+      <h2>Layanan yang siap membantu</h2>
+      <p class="fs-sec-sub">Jasa Setrika sudah tersedia. Layanan lainnya sedang kami persiapkan secara bertahap.</p>
+      <div class="fs-grid-panel"><div class="fs-grid-2x2">
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">01</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <rect x="18" y="24" width="22" height="36" rx="6" fill="#60a5fa" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="23" y="13" width="12" height="11" rx="2.5" fill="#bfdbfe" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M29 34v14M22 41h14" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+        <rect x="44" y="34" width="18" height="26" rx="4" fill="#e2e8f0" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M48 34v-8h10v8" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="65" y="16" width="7" height="44" rx="3.5" fill="#93c5fd" stroke="#0f2744" stroke-width="2.2"/>
+        <path d="M61 60h15l-2-7h-11l-2 7Z" fill="#cbd5e1" stroke="#0f2744" stroke-width="2.2"/>
+      </svg>
+    </div>
+    <div><strong>Cleaning</strong><small>Belum tersedia</small></div>
   </div>
+  <button type="button" class="fs-card is-active" data-service="IRONING">
+    <div><span class="fs-card-num">02</span><span class="fs-card-tag">AKTIF</span></div>
+    <div class="fs-card-art">
+      <svg width="104" height="72" viewBox="0 0 104 72" fill="none">
+        <rect x="12" y="46" width="32" height="9" rx="4" fill="#fb923c" stroke="#0f2744" stroke-width="2.3"/>
+        <rect x="14" y="37" width="28" height="9" rx="4" fill="#fde047" stroke="#0f2744" stroke-width="2.3"/>
+        <rect x="16" y="28" width="24" height="9" rx="4" fill="#7dd3fc" stroke="#0f2744" stroke-width="2.3"/>
+        <path d="M48 53h42l-4-15H58a7 7 0 0 0-7 7v8Z" fill="#38bdf8" stroke="#0f2744" stroke-width="2.3" stroke-linejoin="round"/>
+        <path d="M58 38v-8h17l4.5 8" fill="#e0f2fe" stroke="#0f2744" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M65 22c0-3 3-4 3-7M74 23c0-3 3-4 3-7" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><strong>Jasa Setrika</strong><small>Rp5.000/order</small></div>
+  </button>
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">03</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <circle cx="44" cy="42" r="16" fill="#94a3b8" stroke="#0f2744" stroke-width="2.4"/>
+        <circle cx="44" cy="42" r="6.5" fill="#eef5fc" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M56 30L75 13l8 8-19 17" fill="#cbd5e1" stroke="#0f2744" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 22l12 12" stroke="#0f2744" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><strong>Maintenance</strong><small>Belum tersedia</small></div>
+  </div>
+  <div class="fs-card is-disabled" aria-disabled="true">
+    <div class="fs-card-num">04</div>
+    <div class="fs-card-art">
+      <svg width="96" height="72" viewBox="0 0 96 72" fill="none">
+        <rect x="16" y="14" width="38" height="46" rx="4" fill="#93c5fd" stroke="#0f2744" stroke-width="2.4"/>
+        <rect x="23" y="22" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="35" y="22" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="23" y="33" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="35" y="33" width="6" height="6" rx="1.5" fill="#ffffff" stroke="#0f2744" stroke-width="1.8"/>
+        <rect x="29" y="45" width="10" height="15" rx="2" fill="#3b82f6" stroke="#0f2744" stroke-width="2"/>
+        <circle cx="71" cy="36" r="8.5" fill="#fde047" stroke="#0f2744" stroke-width="2.4"/>
+        <path d="M71 44.5V60h6" stroke="#0f2744" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div><strong>Building &amp; Facility</strong><small>Belum tersedia</small></div>
+  </div>
+</div></div>
+    </section>
+    <section id="sec-booking" class="fs-sec" hidden>
+      <span class="fs-kicker">FORM PEMESANAN · ZONA 1</span>
+      <h2>Pesan Jasa Setrika</h2>
+      <div class="fs-dark-panel">
+        <input type="hidden" id="fsServiceCode" value="IRONING" />
+        <label for="fsZoneSelect" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;">Kecamatan Zona 1 (Satu Hub)</label>
+        <select id="fsZoneSelect" class="fs-input">
+          <option value="">Pilih kecamatan Zona 1</option>
+          <option value="Pandeglang">Pandeglang</option><option value="Majasari">Majasari</option>
+          <option value="Karang Tanjung">Karang Tanjung</option><option value="Cadasari">Cadasari</option>
+          <option value="Kaduhejo">Kaduhejo</option><option value="Koroncong">Koroncong</option>
+        </select>
+        <label for="fsWeightInput" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;">Estimasi Berat (kg)</label>
+        <input id="fsWeightInput" type="number" min="1" step="0.5" placeholder="Contoh: 3" class="fs-input" />
+        <div class="fs-hero-actions">
+          <button type="button" id="fsBtnShareLoc" class="fs-btn-outline">Bagikan Lokasi</button>
+          <button type="button" id="fsBtnSubmitOrder" class="fs-btn-coral">Kirim Pesanan</button>
+        </div>
+        <p id="fsLocStatus" style="margin:10px 0 0;font-size:12.5px;color:#cbd5e1;"></p>
+      </div>
+    </section>
+    <section id="sec-order" class="fs-sec">
+      <span class="fs-kicker">ORDER SAYA</span>
+      <h2>Pantau Pesanan</h2>
+      <div id="orderListContainer" class="fs-dark-panel">
+        <p style="margin:0;font-size:13.5px;color:#cbd5e1;">Pilot Jasa Setrika Zona 1 aktif. Timbangan &amp; billing diverifikasi di Satu Hub.</p>
+      </div>
+    </section>
+    <footer class="fs-credit" aria-label="Kredit pengembang">created design &amp; development by <strong>deskawps</strong></footer>
+  </main>
+  <div id="fsToast" class="fs-toast" role="status" aria-live="polite" hidden></div>
+  <nav class="fs-nav" aria-label="Navigasi utama">
+    <div class="fs-nav-inner">
+      <button type="button" class="is-active" data-nav="home"><span>&#8962;</span><span>Beranda</span></button>
+      <button type="button" data-nav="services"><span>&#9776;</span><span>Layanan</span></button>
+      <button type="button" data-nav="orders"><span>&#9779;</span><span>Order</span></button>
+      <button type="button" data-nav="help"><span>&#63;</span><span>Bantuan</span></button>
+    </div>
+  </nav>
+  <script>
+(() => {
+  const toast = document.getElementById("fsToast");
+  const orderSec = document.getElementById("sec-order");
+  const orderList = document.getElementById("orderListContainer");
+  const bookingSec = document.getElementById("sec-booking");
+  const zoneSel = document.getElementById("fsZoneSelect");
+  const zoneInfo = document.getElementById("fsZoneInfo");
+  const weightInp = document.getElementById("fsWeightInput");
+  const landmarkInp = document.getElementById("fsLandmarkInput");
+  const locStatus = document.getElementById("fsLocStatus");
+  const shareBtn = document.getElementById("fsBtnShareLoc");
+  const navBtns = document.querySelectorAll(".fs-nav button[data-nav]");
+  let toastTimer = null;
+  let geoData = null;
+  const orders = [];
 
-  <script type="module" src="facility.js?v=13"></script>
+  const zoneHubNotes = {
+    "Pandeglang": "Zona 1 · Pandeglang — Jemput terjadwal menuju Satu Hub (timbangan & tagihan final di hub).",
+    "Majasari": "Zona 1 · Majasari — Cakupan aktif Satu Hub dengan verifikasi berat aktual di hub.",
+    "Karang Tanjung": "Zona 1 · Karang Tanjung — Rute jemput pilot Satu Hub aktif.",
+    "Cadasari": "Zona 1 · Cadasari — Rute jemput pilot Satu Hub aktif.",
+    "Kaduhejo": "Zona 1 · Kaduhejo — Rute jemput pilot Satu Hub aktif.",
+    "Koroncong": "Zona 1 · Koroncong — Rute jemput pilot Satu Hub aktif."
+  };
+
+  function notify(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 3400);
+  }
+
+  function setNav(key) {
+    navBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.nav === key));
+  }
+
+  function goEl(el, key) {
+    if (!el) return;
+    if (key) setNav(key);
+    const y = el.getBoundingClientRect().top + window.scrollY - 68;
+    window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+  }
+
+  function openBooking() {
+    if (bookingSec) {
+      bookingSec.hidden = false;
+      goEl(bookingSec, "services");
+    }
+    notify("Form Jasa Setrika (02 AKTIF) siap diisi untuk Zona 1.");
+  }
+
+  function renderGeoStatus(htmlText) {
+    if (!locStatus) return;
+    locStatus.innerHTML = htmlText;
+  }
+
+  function renderOrders() {
+    if (!orderList) return;
+    if (!orders.length) {
+      orderList.innerHTML = '<p style="margin:0;font-size:13.5px;color:#cbd5e1;">Belum ada pesanan aktif. Tekan <strong>Pesan Sekarang</strong> atau pilih kartu <strong>02 Jasa Setrika</strong>.</p>';
+      return;
+    }
+    orderList.innerHTML = orders.map((o) => {
+      const geoLine = o.geo && typeof o.geo.lat === "number"
+        ? `Geotag: <strong>${o.geo.lat.toFixed(6)}, ${o.geo.lng.toFixed(6)}</strong> (±${Math.round(o.geo.acc)}m) · <a href="https://www.google.com/maps?q=${o.geo.lat},${o.geo.lng}" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:underline;">Buka Peta</a>`
+        : `Geotag: <strong>${o.geoLabel || "Manual / Konfirmasi Kurir"}</strong>`;
+      const markLine = o.landmark ? `<br>Patokan: <strong>${o.landmark}</strong>` : "";
+      return `
+        <div style="padding:12px;border-radius:14px;background:#07192f;border:1px solid #1e3a5f;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
+            <strong style="font-size:14px;color:#ffffff;">${o.code} · Jasa Setrika</strong>
+            <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:#0f766e;color:#ccfbf1;">Menunggu Jemput</span>
+          </div>
+          <div style="margin-top:6px;font-size:12.5px;color:#cbd5e1;line-height:1.5;">
+            Kecamatan: <strong>${o.zone}</strong> · Est. Berat: <strong>${o.weight} kg</strong><br>
+            ${geoLine}${markLine}<br>
+            <span style="color:#94a3b8;">Verifikasi berat aktual &amp; tagihan final dilakukan di Satu Hub.</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  zoneSel?.addEventListener("change", () => {
+    if (!zoneInfo) return;
+    const z = zoneSel.value;
+    zoneInfo.innerHTML = z && zoneHubNotes[z]
+      ? zoneHubNotes[z]
+      : 'Pilih salah satu dari 6 kecamatan <strong>Zona 1</strong> untuk penjemputan &amp; verifikasi timbangan di <strong>Satu Hub</strong>.';
+  });
+
+  shareBtn?.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      geoData = null;
+      renderGeoStatus('Browser tidak mendukung GPS otomatis; isi <strong>Patokan Lokasi</strong> atau lanjutkan dengan konfirmasi kurir.');
+      return notify("GPS otomatis tidak tersedia; gunakan patokan lokasi.");
+    }
+    if (shareBtn) { shareBtn.disabled = true; shareBtn.textContent = "Mencari GPS..."; }
+    renderGeoStatus("Mengambil titik koordinat pemesan...");
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        if (shareBtn) { shareBtn.disabled = false; shareBtn.textContent = "Bagikan Lokasi"; }
+        geoData = {
+          lat: Number(pos.coords.latitude.toFixed(6)),
+          lng: Number(pos.coords.longitude.toFixed(6)),
+          acc: Number(pos.coords.accuracy || 0)
+        };
+        const mapUrl = `https://www.google.com/maps?q=${geoData.lat},${geoData.lng}`;
+        renderGeoStatus(
+          `Geotag aktif: <strong>${geoData.lat}, ${geoData.lng}</strong> (±${Math.round(geoData.acc)}m) · <a href="${mapUrl}" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:underline;">Cek Peta</a>`
+        );
+        notify("Titik geotag pemesan berhasil dikunci.");
+      },
+      (err) => {
+        if (shareBtn) { shareBtn.disabled = false; shareBtn.textContent = "Bagikan Lokasi"; }
+        geoData = null;
+        const reason = err && err.code === 1
+          ? "Izin lokasi ditolak."
+          : "Sinyal GPS belum terbaca.";
+        renderGeoStatus(`${reason} Anda tetap bisa mengisi patokan lokasi atau melanjutkan pemesanan.`);
+        notify(reason + " Titik jemput bisa dikonfirmasi saat penjemputan.");
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  });
+
+  document.getElementById("fsBtnSubmitOrder")?.addEventListener("click", () => {
+    const zone = zoneSel?.value?.trim() || "";
+    const weight = parseFloat(weightInp?.value || "0");
+    const landmark = landmarkInp?.value?.trim() || "";
+    if (!zone) {
+      zoneSel?.focus();
+      return notify("Silakan pilih kecamatan Zona 1 terlebih dahulu.");
+    }
+    if (!weight || weight <= 0) {
+      weightInp?.focus();
+      return notify("Masukkan estimasi berat pakaian (minimal 0.5 kg).");
+    }
+    const seq = String(orders.length + 1).padStart(3, "0");
+    orders.unshift({
+      code: `ASAS-Z1-${seq}`,
+      zone,
+      weight,
+      geo: geoData,
+      geoLabel: geoData ? `${geoData.lat}, ${geoData.lng}` : "Konfirmasi Kurir Zona 1",
+      landmark
+    });
+    renderOrders();
+    if (weightInp) weightInp.value = "";
+    if (landmarkInp) landmarkInp.value = "";
+    geoData = null;
+    renderGeoStatus("");
+    goEl(orderSec, "orders");
+    notify(`Pesanan ASAS-Z1-${seq} (${zone}) tersimpan dengan info geotag.`);
+  });
+
+  document.addEventListener("click", (e) => {
+    const act = e.target.closest("[data-action]")?.dataset.action;
+    if (act === "open-booking") return openBooking();
+    if (act === "go-orders") {
+      goEl(orderSec, "orders");
+      return notify("Menampilkan daftar Order Saya.");
+    }
+    if (e.target.closest(".fs-card.is-active")) return openBooking();
+    const dis = e.target.closest(".fs-card.is-disabled");
+    if (dis) {
+      const label = dis.querySelector("strong")?.textContent?.trim() || "Layanan ini";
+      return notify(`${label} belum tersedia pada pilot Zona 1.`);
+    }
+    const nb = e.target.closest(".fs-nav button[data-nav]");
+    if (nb) {
+      const k = nb.dataset.nav;
+      setNav(k);
+      if (k === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+      else if (k === "services") goEl(document.getElementById("sec-layanan"), "services");
+      else if (k === "orders") goEl(orderSec, "orders");
+      else if (k === "help") notify("Pilot Zona 1 · Satu Hub: berat timbangan & billing final diverifikasi di hub.");
+    }
+  });
+})();
+</script>
+<script type="module">
+import { buildHubWhatsAppUrl } from "./wa_order_helper.js";
+
+const submitBtn = document.getElementById("fsBtnSubmitOrder");
+const zoneSel = document.getElementById("fsZoneSelect");
+const weightInp = document.getElementById("fsWeightInput");
+const landmarkInp = document.getElementById("fsLandmarkInput");
+const locStatus = document.getElementById("fsLocStatus");
+const orderList = document.getElementById("orderListContainer");
+
+let lastGeo = null;
+document.getElementById("fsBtnShareLoc")?.addEventListener("click", () => {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      lastGeo = {
+        lat: Number(pos.coords.latitude.toFixed(6)),
+        lng: Number(pos.coords.longitude.toFixed(6)),
+        accuracy: Number((pos.coords.accuracy || 0).toFixed(1))
+      };
+    },
+    () => { lastGeo = null; },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+});
+
+submitBtn?.addEventListener("click", () => {
+  const zone = zoneSel?.value?.trim() || "";
+  const w = parseFloat(weightInp?.value || "0");
+  const lm = (landmarkInp?.value || "").trim();
+  if (!zone || !Number.isFinite(w) || w <= 0) return;
+  const code = "ASAS-Z1-" + String(Date.now()).slice(-4);
+  const waUrl = buildHubWhatsAppUrl({
+    orderCode: code,
+    zone,
+    estimatedWeightKg: w,
+    landmark: lm,
+    geo: lastGeo
+  });
+  if (orderList && orderList.firstElementChild) {
+    const linkBox = document.createElement("div");
+    linkBox.style.marginTop = "8px";
+    linkBox.innerHTML = `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 12px;border-radius:10px;background:#16b981;color:#07192f;font-weight:700;font-size:12px;text-decoration:none;">Kirim Order ke WA (+6285779308809)</a>`;
+    orderList.firstElementChild.appendChild(linkBox);
+  }
+  lastGeo = null;
+  if (locStatus) locStatus.textContent = "";
+  window.open(waUrl, "_blank", "noopener,noreferrer");
+}, true);
+</script>
 </body>
 </html>
