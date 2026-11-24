@@ -1,942 +1,466 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7fcff">
-  <meta name="description" content="ASAS Nexus — Strategic Assets. Connected Intelligence. Real Impact.">
-  <title>ASAS Nexus | Aggregate Strategic Asset Solutions</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="./manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASAS Group Global — Facility Service (Jasa Setrika)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --grid: rgba(15, 23, 42, 0.04);
+      --ink: #0f172a;
+      --muted: #475569;
+      --emerald: #059669;
+      --emerald-soft: #ecfdf5;
+      --navy: #0b1324;
+      --navy-2: #131f38;
+      --orange: #f59e0b;
+      --orange-btn: #ea580c;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 0 0 60px;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(to right, var(--grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    .topbar-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-box { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--navy); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
+    }
+    .brand-title { font-size: 14px; font-weight: 800; line-height: 1.15; }
+    .brand-sub { font-size: 11px; color: var(--muted); }
+    .brand-sub span { color: var(--emerald); font-weight: 700; }
+
+    .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+    .hero { text-align: center; padding: 14px 4px 18px; }
+    .kicker-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #fff; border: 1px solid var(--border);
+      padding: 6px 13px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+    .dot-em { width: 7px; height: 7px; border-radius: 999px; background: var(--emerald); }
+    .hero h1 {
+      margin: 14px 0 10px;
+      font-size: 27px; line-height: 1.18; letter-spacing: -0.5px;
+      font-weight: 800;
+    }
+    .hero h1 em { font-style: normal; color: var(--emerald); }
+    .hero p {
+      margin: 0 auto 18px; max-width: 540px;
+      font-size: 14px; line-height: 1.6; color: var(--muted);
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 700;
+      text-decoration: none; border: none; cursor: pointer;
+    }
+    .btn-dark { background: var(--navy); color: #fff; width: 100%; }
+    .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--border); width: 100%; margin-top: 8px; }
+    .btn-em { background: var(--emerald); color: #fff; }
+    .btn-wa { background: var(--orange-btn); color: #fff; }
+    .btn-sm { padding: 8px 12px; border-radius: 9px; font-size: 12px; font-weight: 700; background: var(--navy); color: #fff; border: none; cursor: pointer; }
+    .btn-sm.em { background: var(--emerald); }
+
+    .dark-card {
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: #fff; border-radius: 20px; padding: 20px; margin-top: 16px;
+      box-shadow: 0 14px 30px rgba(11, 19, 36, 0.2);
+    }
+    .dark-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+    .dark-kicker { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: var(--orange); text-transform: uppercase; }
+    .dark-title { font-size: 19px; font-weight: 800; margin-top: 4px; line-height: 1.25; }
+    .dark-pill {
+      background: rgba(16, 185, 129, 0.16); border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 10px; white-space: nowrap;
+    }
+    .svc-row {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+      padding: 13px 0; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .svc-row strong { display: block; font-size: 14px; color: #fff; }
+    .svc-row p { margin: 3px 0 0; font-size: 12px; color: #cbd5e1; line-height: 1.45; }
+    .svc-tag { font-size: 12px; font-weight: 700; color: #e2e8f0; white-space: nowrap; }
+    .dark-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 12px; color: #cbd5e1;
+    }
+    .dark-foot a { color: #fbbf24; font-weight: 700; text-decoration: none; }
+
+    .sec-head { margin-top: 26px; margin-bottom: 12px; }
+    .sec-kicker { font-size: 11px; font-weight: 800; letter-spacing: 0.8px; color: var(--emerald); text-transform: uppercase; }
+    .sec-head h2 { margin: 5px 0 6px; font-size: 21px; line-height: 1.22; font-weight: 800; }
+    .sec-head p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    .num-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 16px;
+      padding: 16px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+    }
+    .num-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--navy); color: #fff; font-size: 12px; font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .num-badge.em { background: var(--emerald); }
+    .num-card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 800; }
+    .num-card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    .rate-table {
+      width: 100%; border-collapse: collapse; background: #fff;
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    }
+    .rate-table th {
+      background: var(--navy); color: #fff; font-size: 10px; letter-spacing: 0.6px;
+      text-transform: uppercase; padding: 11px 10px; text-align: left;
+    }
+    .rate-table td { padding: 12px 10px; border-top: 1px solid var(--border); vertical-align: middle; font-size: 12px; }
+    .rate-table tr.pop { background: #fffbeb; }
+    .badge-pop {
+      display: inline-block; background: var(--orange-btn); color: #fff;
+      font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; margin-left: 4px;
+    }
+    .price-val { font-weight: 800; color: var(--ink); font-size: 13px; white-space: nowrap; }
+
+    .form-card {
+      background: #fff; border: 1.5px solid #cbd5e1; border-radius: 18px;
+      padding: 18px; margin-top: 16px; box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    }
+    .row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+    label { font-size: 12px; font-weight: 700; }
+    input, select {
+      width: 100%; padding: 10px 11px; border: 1.5px solid #cbd5e1;
+      border-radius: 10px; font-size: 14px; font-family: inherit; background: #fff;
+    }
+    .est-box {
+      background: var(--emerald-soft); border: 1px solid #a7f3d0;
+      border-radius: 12px; padding: 12px; margin-top: 8px;
+    }
+    .badge-wait {
+      display: inline-block; background: #fef3c7; color: #92400e;
+      font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px;
+    }
+    .est-total { font-size: 17px; font-weight: 800; color: var(--navy); margin-top: 6px; }
+    .act-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  </style>
 </head>
-
 <body>
-<div class="nexus-shell">
-
-<header class="nexus-header">
-  <a href="#home" class="brand" aria-label="ASAS Home">
-    <strong>ASAS</strong>
-    <span>Aggregate Strategic Asset Solutions</span>
-  </a>
-
-  <button class="nav-toggle" type="button"
-          aria-label="Buka navigasi"
-          aria-expanded="false">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <nav class="main-nav" aria-label="Navigasi utama">
-    <a href="#business">Business</a>
-    <a href="#people">People</a>
-    <a href="#geo">Geo</a>
-    <a href="#intelligence">Intelligence</a>
-    <a href="leadership.html">Leadership</a>
-    <a href="#impact">Impact</a>
-    <a href="portal/login.html" class="portal-button">Corporate Portal</a>
-  </nav>
-</header>
-
-<main>
-
-<section id="home" class="scene hero-scene"
-         data-scene="01" data-label="ASAS NEXUS">
-
-  <div class="scene-copy hero-copy">
-    <p class="scene-kicker">ASAS NEXUS</p>
-
-    <h1>
-      Strategic Assets.<br>
-      <span>Connected Intelligence.</span><br>
-      Real Impact.
-    </h1>
-
-    <p class="lead">
-      Ekosistem kerja dan intelijen strategis ASAS yang menghubungkan
-      manusia, bisnis, aset, proyek, wilayah, data dan teknologi
-      dalam satu arsitektur yang terintegrasi.
-    </p>
-
-    <div class="scene-actions">
-      <a href="#business" class="button primary">
-        Jelajahi ASAS Nexus
-      </a>
-
-      <a href="portal/login.html" class="button secondary">
-        Corporate Portal
-      </a>
-    </div>
-
-    <p class="one-asas">
-      ONE ASAS · One Company · One Data · One Intelligence · One Connected Future
-    </p>
-  </div>
-
-  <div class="nexus-visual hero-network"
-       aria-label="Visual jaringan ASAS Nexus">
-
-    <div class="network-orbit orbit-a"></div>
-    <div class="network-orbit orbit-b"></div>
-    <div class="network-orbit orbit-c"></div>
-
-    <div class="network-core">
-      <strong>ASAS</strong>
-      <span>NEXUS</span>
-    </div>
-
-    <button type="button" class="network-node node-people">
-      PEOPLE
-    </button>
-
-    <button type="button" class="network-node node-business">
-      BUSINESS
-    </button>
-
-    <button type="button" class="network-node node-assets">
-      ASSETS
-    </button>
-
-    <button type="button" class="network-node node-data">
-      DATA
-    </button>
-
-    <button type="button" class="network-node node-geo">
-      GEO
-    </button>
-
-    <button type="button" class="network-node node-intelligence">
-      INTELLIGENCE
-    </button>
-  </div>
-
-  <div class="scene-index">
-    <span>01</span>
-    <span class="index-line"></span>
-    <span>NEXUS</span>
-  </div>
-</section>
-
-<section id="business" class="scene business-scene"
-         data-scene="02" data-label="BUSINESS & STRATEGIC ASSETS">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">BUSINESS & STRATEGIC ASSETS</p>
-
-    <h2>
-      Bisnis nyata.<br>
-      <span>Terhubung secara digital.</span>
-    </h2>
-
-    <p class="lead">
-      Setiap domain bisnis ASAS memiliki proses, manusia, aset,
-      wilayah dan data yang berbeda. ASAS Nexus menghubungkannya
-      tanpa menghilangkan karakter setiap lini usaha.
-    </p>
-
-    <p class="status-note">
-      Struktur domain akan berkembang berdasarkan aktivitas
-      dan data perusahaan yang telah diverifikasi.
-    </p>
-  </div>
-
-  <div class="business-network nexus-panel">
-
-    <button type="button" class="domain-card active"
-            data-domain="land">
-      <span>LAND</span>
-      <strong>Land & Assets</strong>
-      <small>Akuisisi, aset, GIS dan pengelolaan lahan</small>
-    </button>
-
-    <button type="button" class="domain-card"
-            data-domain="property">
-      <span>PROPERTY</span>
-      <strong>Property & Housing</strong>
-      <small>Pengembangan, konstruksi dan perumahan</small>
-    </button>
-
-    <button type="button" class="domain-card"
-            data-domain="healthcare">
-      <span>HEALTHCARE</span>
-      <strong>Healthcare</strong>
-      <small>Rumah sakit, fasilitas dan layanan pendukung</small>
-    </button>
-
-    <button type="button" class="domain-card"
-            data-domain="facility">
-      <span>FACILITY</span>
-      <strong>Facility Services</strong>
-      <small>Operasi, maintenance dan managed services</small>
-    </button>
-
-    <button type="button" class="domain-card"
-            data-domain="aviation">
-      <span>AVIATION</span>
-      <strong>Aviation</strong>
-      <small>Airport, ground dan aviation support</small>
-    </button>
-
-    <button type="button" class="domain-card"
-            data-domain="maritime">
-      <span>MARITIME</span>
-      <strong>Maritime</strong>
-      <small>Maritime services dan ship recycling</small>
-    </button>
-
-    <div class="domain-focus" aria-live="polite">
-      <span class="focus-label">CONNECTED DOMAIN</span>
-      <strong id="domainTitle">Land & Assets</strong>
-      <p id="domainFlow">
-        Business → People → Geography → Asset → Project → Data
-      </p>
-
-      <div id="domainDrilldown" class="domain-drilldown" aria-live="polite">
-        <button type="button">Land Acquisition</button>
-        <button type="button">Land Management</button>
-        <button type="button">Asset Management</button>
-        <button type="button">GIS & Mapping</button>
-        <button type="button">Project / Site</button>
-        <button type="button">Evidence</button>
-        <button type="button">Metadata</button>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-box">
+        <div class="brand-icon">AGG</div>
+        <div>
+          <div class="brand-title">ASAS Group Global</div>
+          <div class="brand-sub">Facility Service • <span>Pilot Zona 1 Aktif</span></div>
+        </div>
       </div>
+      <a href="#formCalc" class="btn-sm em" style="text-decoration:none;">Pesan</a>
     </div>
-  </div>
+  </header>
 
-  <div class="scene-index">
-    <span>02</span>
-    <span class="index-line"></span>
-    <span>BUSINESS</span>
-  </div>
-</section>
+  <div class="wrap">
+    <section class="hero">
+      <div class="kicker-pill"><span class="dot-em"></span> ASAS Group Global • Facility Service — Pilot Zona 1</div>
+      <h1>Layanan <em>Facility Service</em> Setrika yang Terukur &amp; Terpercaya</h1>
+      <p>Standar layanan perawatan pakaian &amp; busana di bawah Facility Service ASAS Group Global—rapi, terjadwal, dan tercatat dengan verifikasi operasional.</p>
+      <a href="#formCalc" class="btn btn-dark">Buat Jadwal &amp; Estimasi →</a>
+      <a href="#daftarTarif" class="btn btn-light">Tinjau Tarif Jasa Setrika</a>
+    </section>
 
-<section id="capabilities" class="scene capability-scene"
-         data-scene="03" data-label="SECTOR CAPABILITY NETWORK">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">SECTOR CAPABILITY NETWORK</p>
-
-    <h2>
-      Capability mengikuti
-      <span>konteks pekerjaan.</span>
-    </h2>
-
-    <p class="lead">
-      Kebutuhan klien diterjemahkan menjadi sektor, kompetensi,
-      manpower, wilayah dan standar layanan yang relevan.
-      Digitalisasi menjadi cara seluruh lini ASAS bekerja,
-      bukan satu lini yang berdiri sendiri.
-    </p>
-  </div>
-
-  <div class="capability-flow nexus-panel">
-    <div class="flow-node">
-      <span>01</span>
-      <strong>Business Need</strong>
-      <small>Kebutuhan nyata</small>
-    </div>
-
-    <div class="flow-link"></div>
-
-    <div class="flow-node">
-      <span>02</span>
-      <strong>Sector</strong>
-      <small>Konteks sektoral</small>
-    </div>
-
-    <div class="flow-link"></div>
-
-    <div class="flow-node">
-      <span>03</span>
-      <strong>Capability</strong>
-      <small>Kompetensi</small>
-    </div>
-
-    <div class="flow-link"></div>
-
-    <div class="flow-node">
-      <span>04</span>
-      <strong>People</strong>
-      <small>Tenaga yang tepat</small>
-    </div>
-
-    <div class="flow-link"></div>
-
-    <div class="flow-node">
-      <span>05</span>
-      <strong>Geography</strong>
-      <small>Lokasi & konteks</small>
-    </div>
-
-    <div class="flow-link"></div>
-
-    <a href="facility.html" class="flow-node" style="text-decoration:none;color:inherit;">
-      <span>06</span>
-      <strong>Service</strong>
-      <small>Pelaksanaan & nilai</small>
-    </a>
-  </div>
-
-  <div class="scene-index">
-    <span>03</span>
-    <span class="index-line"></span>
-    <span>CAPABILITY</span>
-  </div>
-</section>
-
-
-<section id="people" class="scene people-scene"
-         data-scene="04" data-label="PEOPLE & CULTURE">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">PEOPLE & CULTURE</p>
-
-    <h2>
-      Human Value
-      <span>in Motion.</span>
-    </h2>
-
-    <p class="lead">
-      ASAS menumbuhkan manusia bukan sekadar sebagai tenaga kerja,
-      tetapi sebagai sumber nilai yang berkembang melalui kesempatan,
-      kompetensi, pekerjaan, kestabilan, pertumbuhan dan kontribusi.
-    </p>
-
-    <p class="principle">
-      Grow People. Elevate Service. Earn Trust.
-    </p>
-  </div>
-
-  <div class="human-cycle nexus-panel">
-    <div class="cycle-track">
-      <span>Opportunity</span>
-      <span>Capability</span>
-      <span>Employment</span>
-      <span>Stability</span>
-      <span>Growth</span>
-      <span>Independence</span>
-      <span>Contribution</span>
-      <span>New Opportunity</span>
-    </div>
-
-    <div class="human-core">
-      <small>HUMAN VALUE</small>
-      <strong>People Grow.<br>Value Moves.</strong>
-    </div>
-  </div>
-
-  <div class="scene-index">
-    <span>04</span>
-    <span class="index-line"></span>
-    <span>PEOPLE</span>
-  </div>
-</section>
-
-<section id="service" class="scene service-scene"
-         data-scene="05" data-label="SERVICE EXCELLENCE">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">SERVICE EXCELLENCE</p>
-
-    <h2>
-      Pelayanan yang baik
-      <span>menciptakan pengalaman.</span>
-    </h2>
-
-    <p class="lead">
-      Manusia yang siap, kompeten dan memahami konteks pekerjaan
-      menjadi fondasi pelayanan prima. Pengalaman layanan yang
-      konsisten membangun kepercayaan dan memberi dasar bagi
-      hubungan bisnis yang berkelanjutan.
-    </p>
-  </div>
-
-  <div class="service-chain nexus-panel">
-    <div class="service-step">
-      <span>01</span>
-      <strong>People Readiness</strong>
-      <small>Kesiapan manusia</small>
-    </div>
-
-    <div class="service-arrow"></div>
-
-    <div class="service-step">
-      <span>02</span>
-      <strong>Right Deployment</strong>
-      <small>Penempatan tepat</small>
-    </div>
-
-    <div class="service-arrow"></div>
-
-    <div class="service-step">
-      <span>03</span>
-      <strong>Service Excellence</strong>
-      <small>Pelayanan prima</small>
-    </div>
-
-    <div class="service-arrow"></div>
-
-    <div class="service-step">
-      <span>04</span>
-      <strong>Customer Experience</strong>
-      <small>Nilai yang dirasakan klien</small>
-    </div>
-
-    <div class="service-arrow"></div>
-
-    <div class="service-step">
-      <span>05</span>
-      <strong>Trust</strong>
-      <small>Kepercayaan</small>
-    </div>
-
-    <div class="service-arrow"></div>
-
-    <div class="service-step">
-      <span>06</span>
-      <strong>Continuity</strong>
-      <small>Hubungan yang memiliki dasar untuk berlanjut</small>
-    </div>
-  </div>
-
-  <div class="service-values">
-    <span>Ready</span>
-    <span>Responsive</span>
-    <span>Respectful</span>
-    <span>Reliable</span>
-    <span>Responsible</span>
-  </div>
-
-  <div class="scene-index">
-    <span>05</span>
-    <span class="index-line"></span>
-    <span>SERVICE</span>
-  </div>
-</section>
-
-<section id="geo" class="scene geo-scene"
-         data-scene="06" data-label="NEXUS GEO">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS GEO</p>
-
-    <h2>
-      Geography becomes
-      <span>strategic context.</span>
-    </h2>
-
-    <p class="lead">
-      Intelijen geospasial menghubungkan wilayah, bisnis, manusia,
-      aset, proyek dan data tematik sehingga setiap keputusan dapat
-      memahami konteks tempat secara lebih utuh.
-    </p>
-
-    <div class="geo-path">
-      <span>World</span>
-      <span>Country</span>
-      <span>Region</span>
-      <span>Branch</span>
-      <span>Project / Site</span>
-      <span>Asset</span>
-    </div>
-  </div>
-
-  <div class="geo-interface nexus-panel">
-    <div class="geo-map">
-      <div class="geo-ring ring-1"></div>
-      <div class="geo-ring ring-2"></div>
-      <div class="geo-ring ring-3"></div>
-
-      <span class="map-point map-a"></span>
-      <span class="map-point map-b"></span>
-      <span class="map-point map-c"></span>
-
-      <div class="geo-center">
-        <small>SPATIAL INTELLIGENCE</small>
-        <strong>NEXUS GEO</strong>
+    <section class="dark-card">
+      <div class="dark-top">
+        <div>
+          <div class="dark-kicker">Ringkasan Unit Facility Service</div>
+          <div class="dark-title">ASAS Group Global — Pilot Zona 1 Setrika</div>
+        </div>
+        <div class="dark-pill">Layanan Aktif</div>
       </div>
+
+      <div class="svc-row">
+        <div>
+          <strong>Setrika Reguler Kiloan</strong>
+          <p>Penanganan setrika rapi untuk kebutuhan pakaian harian rumah tangga &amp; unit.</p>
+        </div>
+        <div class="svc-tag">Aktif</div>
+      </div>
+
+      <div class="svc-row">
+        <div>
+          <strong>Setrika Ekspres Kiloan</strong>
+          <p>Prioritas jadwal setrika cepat untuk kebutuhan operasional &amp; seragam kerja.</p>
+        </div>
+        <div class="svc-tag">Aktif</div>
+      </div>
+
+      <div class="svc-row">
+        <div>
+          <strong>Setrika Satuan &amp; Hanger</strong>
+          <p>Penanganan khusus kemeja, pakaian formal, atau item dengan penataan hanger.</p>
+        </div>
+        <div class="svc-tag">Aktif</div>
+      </div>
+
+      <div class="dark-foot">
+        <span>Unit: Facility Service ASAS Group Global</span>
+        <a href="#formCalc">Hitung Biaya →</a>
+      </div>
+    </section>
+
+    <div class="sec-head">
+      <div class="sec-kicker">Standar Operasional Facility Service</div>
+      <h2>Tata Kelola Layanan yang Dapat Dipertanggungjawabkan</h2>
+      <p>Alur layanan mengikuti pencatatan status dan verifikasi unit secara tertib.</p>
     </div>
 
-    <div class="thematic-layers">
-      <p>THEMATIC LAYERS</p>
-
-      <button type="button" class="layer-toggle active"
-              data-layer="land">Land & Assets</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="healthcare">Healthcare</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="property">Property</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="facility">Facility</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="aviation">Aviation</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="maritime">Maritime</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="people">People</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="projects">Projects</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="environment">Environment</button>
-
-      <button type="button" class="layer-toggle"
-              data-layer="risk">Risk</button>
+    <div class="num-card">
+      <div class="num-badge">01</div>
+      <h3>Pencatatan &amp; Verifikasi Awal</h3>
+      <p>Setiap pesanan masuk tercatat dengan status awal <strong>MENUNGGU_VERIFIKASI</strong> sebelum diproses lebih lanjut oleh petugas.</p>
+    </div>
+    <div class="num-card">
+      <div class="num-badge em">02</div>
+      <h3>Eksekusi Setrika Terstandar</h3>
+      <p>Pengerjaan setrika, pilihan aroma, serta pengaturan lipat rapi atau hanger sesuai permintaan pelanggan.</p>
+    </div>
+    <div class="num-card">
+      <div class="num-badge">03</div>
+      <h3>Konfirmasi &amp; Rekap Layanan</h3>
+      <p>Konfirmasi langsung ke admin WA serta pencatatan transaksi untuk rekap operasional unit.</p>
     </div>
 
-    <div class="geo-status" aria-live="polite">
-      <small>ACTIVE CONTEXT</small>
-      <strong id="geoLayerTitle">Land & Assets</strong>
-      <span>Menunggu integrasi data terverifikasi</span>
-    </div>
-  </div>
-
-  <div class="scene-index">
-    <span>06</span>
-    <span class="index-line"></span>
-    <span>GEO</span>
-  </div>
-</section>
-
-<section id="pulse" class="scene pulse-scene"
-         data-scene="07" data-label="NEXUS PULSE">
-
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS PULSE</p>
-
-    <h2>
-      Perkembangan menjadi
-      <span>cerita yang dapat ditelusuri.</span>
-    </h2>
-
-    <p class="lead">
-      Nexus Pulse dirancang untuk menghubungkan milestone,
-      perkembangan proyek, aktivitas strategis dan peristiwa
-      terverifikasi dalam satu timeline yang hidup.
-    </p>
-
-    <p class="status-note">
-      Belum Ada Data Terverifikasi · Sumber Data Menunggu Integrasi
-    </p>
-  </div>
-
-  <div class="pulse-interface nexus-panel">
-    <div class="pulse-grid"></div>
-
-    <div class="pulse-curve">
-      <span class="pulse-dot pulse-1"></span>
-      <span class="pulse-dot pulse-2"></span>
-      <span class="pulse-dot pulse-3"></span>
-      <span class="pulse-dot pulse-4"></span>
+    <div id="daftarTarif" class="sec-head">
+      <div class="sec-kicker">Struktur Tarif Aktif</div>
+      <h2>Daftar Tarif Jasa Setrika</h2>
+      <p>Klik <strong>Gunakan Tarif</strong> untuk memuat paket ke form estimasi Facility Service ASAS Group Global.</p>
     </div>
 
-    <div class="pulse-meta">
-      <span>Verified Events</span>
-      <span>Milestones</span>
-      <span>Projects</span>
-      <span>Impact</span>
-    </div>
+    <table class="rate-table">
+      <thead>
+        <tr>
+          <th>Paket Setrika</th>
+          <th>Cakupan Layanan</th>
+          <th>Tarif</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Reguler Kiloan</strong></td>
+          <td>Pakaian harian, lipat rapi</td>
+          <td class="price-val">Rp 6.000 / kg</td>
+          <td><button type="button" class="btn-sm" onclick="pilihTarif('REGULER', 6000, 'kg')">Gunakan Tarif</button></td>
+        </tr>
+        <tr class="pop">
+          <td><strong>Ekspres Kiloan</strong> <span class="badge-pop">Prioritas</span></td>
+          <td>Pengerjaan cepat kiloan</td>
+          <td class="price-val">Rp 10.000 / kg</td>
+          <td><button type="button" class="btn-sm em" onclick="pilihTarif('EKSPRES', 10000, 'kg')">Gunakan Tarif</button></td>
+        </tr>
+        <tr>
+          <td><strong>Satuan Potong</strong></td>
+          <td>Kemeja / item satuan</td>
+          <td class="price-val">Rp 8.000 / pcs</td>
+          <td><button type="button" class="btn-sm" onclick="pilihTarif('SATUAN', 8000, 'pcs')">Gunakan Tarif</button></td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="pulse-empty">
-      <small>DATA STATE</small>
-      <strong>Awaiting Verified Data</strong>
-      <p>
-        Visual akan aktif ketika sumber data yang sah
-        telah terhubung ke ASAS Nexus.
-      </p>
-    </div>
+    <section id="formCalc" class="form-card">
+      <div class="sec-kicker">Form Pemesanan Facility Service</div>
+      <h2 style="margin:4px 0 12px;font-size:20px;">Order Jasa Setrika — ASAS Group Global</h2>
+
+      <form id="orderForm">
+        <div class="row"><label for="nama">Nama Pelanggan</label><input id="nama" required placeholder="Contoh: Rina Wijaya" /></div>
+        <div class="row"><label for="wa">No. WhatsApp</label><input id="wa" required placeholder="Contoh: 081234567890" /></div>
+        <div class="row"><label for="alamat">Alamat Antar-Jemput</label><input id="alamat" required placeholder="Alamat lengkap / patokan" /></div>
+        <div class="row">
+          <label for="layanan">Paket Jasa Setrika</label>
+          <select id="layanan">
+            <option value="REGULER" data-rate="6000" data-unit="kg">Reguler Kiloan (Rp 6.000/kg)</option>
+            <option value="EKSPRES" data-rate="10000" data-unit="kg">Ekspres Kiloan (Rp 10.000/kg)</option>
+            <option value="SATUAN" data-rate="8000" data-unit="pcs">Satuan Potong (Rp 8.000/pcs)</option>
+          </select>
+        </div>
+        <div class="row"><label id="qtyLbl" for="qty">Estimasi Berat (kg)</label><input id="qty" type="number" step="0.5" min="0.5" value="3" required /></div>
+        <div class="row">
+          <label for="parfum">Parfum &amp; Kerapian</label>
+          <select id="parfum">
+            <option value="Fresh Blossom • Lipat Rapi">Fresh Blossom • Lipat Rapi</option>
+            <option value="Lavender Soft • Lipat Rapi">Lavender Soft • Lipat Rapi</option>
+            <option value="Sakura Morning • Hanger">Sakura Morning • Hanger</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="bayar">Metode Pembayaran</label>
+          <select id="bayar">
+            <option value="CASH">CASH</option>
+            <option value="QRIS">QRIS</option>
+          </select>
+        </div>
+
+        <div class="est-box">
+          <div>Status Awal: <span class="badge-wait">MENUNGGU_VERIFIKASI</span></div>
+          <div id="estDetail" style="font-size:12px;color:var(--muted);margin-top:5px;"></div>
+          <div class="est-total" id="estTotal">Perkiraan: Rp 18.000</div>
+        </div>
+
+        <div class="act-row">
+          <button type="submit" class="btn btn-em">Kirim Pesanan</button>
+          <a id="btnWa" href="https://wa.me/6285695272863" target="_blank" rel="noopener" class="btn btn-wa">Konfirmasi WA Admin (6285695272863)</a>
+        </div>
+        <div id="msg" style="margin-top:10px;font-size:13px;font-weight:700;color:var(--emerald);"></div>
+      </form>
+    </section>
   </div>
 
-  <div class="scene-index">
-    <span>07</span>
-    <span class="index-line"></span>
-    <span>PULSE</span>
-  </div>
-</section>
-
-
-<section id="data" class="scene" data-scene="08">
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS DATA FABRIC</p>
-    <h2>One Data bukan <span>satu database.</span></h2>
-    <p class="lead">
-      ASAS Nexus menghubungkan sumber data melalui metadata, kualitas,
-      lineage, common semantics, governance dan interoperability sehingga
-      data dapat ditemukan, dipahami, dipercaya dan dibagi-pakai sesuai kewenangan.
-    </p>
-  </div>
-
-  <div class="nexus-panel visual-grid">
-    <div class="visual-core">NEXUS DATA</div>
-    <span>METADATA</span><span>QUALITY</span><span>LINEAGE</span>
-    <span>GOVERNANCE</span><span>SEMANTICS</span><span>INTEROPERABILITY</span>
-  </div>
-
-  <div class="scene-index"><span>08</span><span class="index-line"></span><span>DATA</span></div>
-</section>
-
-<section id="intelligence"
-  class="scene intelligence-scene intelligence-v3"
-  data-scene="09"
-  data-label="NEXUS INTELLIGENCE">
-
-  <div class="scene-copy intelligence-copy">
-    <p class="scene-kicker">NEXUS INTELLIGENCE</p>
-
-    <h2>
-      Intelligence supports.
-      <span>People decide.</span>
-    </h2>
-
-    <p class="lead">
-      Data, metadata, geografi dan konteks bisnis dipertemukan
-      untuk membantu analisis dan rekomendasi.
-      Keputusan penting tetap berada pada manusia yang berwenang.
-    </p>
-  </div>
-
-  <div class="intel-space" aria-label="Nexus Intelligence interactive network">
-
-    <button type="button"
-      class="intel-node intel-data"
-      data-intel-action="data">
-      DATA
-    </button>
-
-    <button type="button"
-      class="intel-node intel-meta"
-      data-intel-action="metadata">
-      META
-    </button>
-
-    <button type="button"
-      class="intel-node intel-geo"
-      data-intel-action="geo">
-      GEO
-    </button>
-
-    <button type="button"
-      class="intel-node intel-business"
-      data-intel-action="business">
-      BUSINESS
-    </button>
-
-    <button type="button"
-      class="intel-node intel-people"
-      data-intel-action="people">
-      PEOPLE
-    </button>
-
-    <button type="button"
-      class="intel-node intel-assets"
-      data-intel-action="assets">
-      ASSETS
-    </button>
-
-    <div class="intel-orbit intel-orbit-a"></div>
-    <div class="intel-orbit intel-orbit-b"></div>
-
-    <button type="button"
-      class="intel-living-core"
-      data-intel-action="core"
-      aria-label="Buka Nexus Intelligence">
-      <small>ASAS NEXUS</small>
-      <strong>INTELLIGENCE</strong>
-      <span>Tap to explore</span>
-    </button>
-
-    <div class="intel-energy-line"></div>
-
-    <div class="intel-process">
-      <button type="button" data-intel-action="analysis">
-        <small>01</small>
-        <strong>ANALYZE</strong>
-      </button>
-
-      <span class="intel-process-line"></span>
-
-      <button type="button" data-intel-action="recommendation">
-        <small>02</small>
-        <strong>RECOMMEND</strong>
-      </button>
-
-      <span class="intel-process-line"></span>
-
-      <button type="button"
-        class="intel-human"
-        data-intel-action="decision">
-        <small>03</small>
-        <strong>HUMAN DECISION</strong>
-      </button>
-    </div>
-
-    <div id="intelContext"
-      class="intel-context"
-      aria-live="polite">
-      <small>ACTIVE INTELLIGENCE</small>
-      <strong>Connected Context</strong>
-      <p>Sentuh node untuk menjelajahi hubungan Nexus.</p>
-    </div>
-
-  </div>
-
-  <p class="status-note intelligence-status">
-    Actual · Historical · Forecast · Simulation · Synthetic
-  </p>
-
-  <div class="scene-index">
-    <span>09</span>
-    <span class="index-line"></span>
-    <span>INTELLIGENCE</span>
-  </div>
-</section>
-
-<section id="core" class="scene core-scene" data-scene="10">
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS INTELLIGENCE CORE</p>
-    <h2>One connected view. <span>Global strategic context.</span></h2>
-    <p class="lead">
-      Pusat intelijen ASAS yang dirancang untuk menghubungkan bisnis,
-      manusia, aset, proyek, klien, finansial, geografi, operasi dan data
-      dalam satu pandangan strategis berdasarkan role, scope dan kewenangan.
-    </p>
-  </div>
-
-  <div class="intelligence-core nexus-panel">
-    <div class="core-center">
-      <small>ASAS NEXUS</small>
-      <strong>INTELLIGENCE<br>CORE</strong>
-    </div>
-
-    <span>BUSINESS</span>
-    <span>PEOPLE</span>
-    <span>ASSETS</span>
-    <span>PROJECTS</span>
-    <span>CLIENTS</span>
-    <span>FINANCE</span>
-    <span>GEO</span>
-    <span>OPERATIONS</span>
-    <span>DATA</span>
-  </div>
-
-  <p class="status-note">
-    Data aktual akan tampil setelah sumber terverifikasi terhubung.
-  </p>
-
-  <div class="scene-index"><span>10</span><span class="index-line"></span><span>CORE</span></div>
-</section>
-
-<section id="trust" class="scene" data-scene="11">
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS TRUST</p>
-    <h2>Trust requires <span>traceability.</span></h2>
-    <p class="lead">
-      Sumber, evidence, metadata, approval, authority, provenance dan audit
-      membentuk jejak kepercayaan. Teknologi trust digunakan ketika memberikan
-      nilai nyata terhadap integritas dan verifikasi.
-    </p>
-  </div>
-
-  <div class="nexus-panel trust-track">
-    <span>Create</span>
-    <span>Evidence</span>
-    <span>Validate</span>
-    <span>Review</span>
-    <span>Approve</span>
-    <span>Release</span>
-    <span>Audit</span>
-  </div>
-
-  <div class="principle-stack">
-    <span>No Evidence, No Approval</span>
-    <span>No Approval, No Publication</span>
-    <span>AI Recommends, Humans Authorize</span>
-    <span>Every Critical Action Leaves a Trace</span>
-  </div>
-
-  <div class="scene-index"><span>11</span><span class="index-line"></span><span>TRUST</span></div>
-</section>
-
-
-<section id="leadership" class="scene" data-scene="12">
-  <div class="scene-copy">
-    <p class="scene-kicker">LEADERSHIP & ORGANIZATION</p>
-    <h2>Leadership with <span>connected responsibility.</span></h2>
-    <p class="lead">
-      Struktur kepemimpinan dan organisasi tetap menjadi fondasi corporate
-      governance ASAS. Profil publik hanya berasal dari data Leadership yang
-      telah melalui proses publikasi.
-    </p>
-
-    <div class="scene-actions">
-      <a href="leadership.html" class="button primary">Lihat Leadership</a>
-    </div>
-  </div>
-
-  <div class="nexus-panel org-preview">
-    <div>
-      <small>CORPORATE VIEW</small>
-      <strong>Organization Matrix</strong>
-      <p>Struktur organisasi dan kepemimpinan resmi.</p>
-    </div>
-
-    <div>
-      <small>NEXUS VIEW</small>
-      <strong>Connected Roles</strong>
-      <p>Relasi fungsi, bisnis, proyek dan wilayah sesuai governance.</p>
-    </div>
-  </div>
-
-  <div class="scene-index"><span>12</span><span class="index-line"></span><span>LEADERSHIP</span></div>
-</section>
-
-<section id="impact" class="scene impact-scene" data-scene="13">
-  <div class="scene-copy">
-    <p class="scene-kicker">NEXUS IMPACT</p>
-    <h2>Growth creates <span>new opportunity.</span></h2>
-    <p class="lead">
-      ASAS menumbuhkan manusia untuk menghadirkan pelayanan yang bermakna,
-      membangun kepercayaan dan menciptakan kesempatan baru yang memberikan
-      nilai bagi manusia, klien dan masyarakat.
-    </p>
-
-    <p class="principle">
-      Human Value in Motion.
-    </p>
-  </div>
-
-  <div class="nexus-panel impact-cycle">
-    <span>Opportunity</span>
-    <span>Capability</span>
-    <span>Employment</span>
-    <span>Stability</span>
-    <span>Growth</span>
-    <span>Service Excellence</span>
-    <span>Customer Experience</span>
-    <span>Trust</span>
-    <span>Independence</span>
-    <span>Contribution</span>
-    <span>New Opportunity</span>
-  </div>
-
-  <div class="scene-index"><span>13</span><span class="index-line"></span><span>IMPACT</span></div>
-</section>
-
-<section id="portal" class="scene portal-scene" data-scene="14">
-  <div class="scene-copy">
-    <p class="scene-kicker">CORPORATE PORTAL</p>
-    <h2>Public experience meets <span>controlled workspace.</span></h2>
-    <p class="lead">
-      Corporate Portal menjadi pintu menuju lingkungan kerja digital ASAS
-      dengan akses berdasarkan identity, role, scope, permission dan
-      klasifikasi data.
-    </p>
-
-    <div class="scene-actions">
-      <a href="portal/login.html" class="button primary">Enter Corporate Portal</a>
-      <a href="#home" class="button secondary">Kembali ke Atas</a>
-    </div>
-  </div>
-
-  <div class="nexus-panel access-preview">
-    <span>PUBLIC</span>
-    <span>WORKFORCE</span>
-    <span>CLIENT</span>
-    <span>CONTRIBUTOR</span>
-    <span>REVIEWER</span>
-    <span>PUBLISHER</span>
-    <span>EXECUTIVE</span>
-    <span>SUPER ADMIN</span>
-  </div>
-
-  <div class="scene-index"><span>14</span><span class="index-line"></span><span>PORTAL</span></div>
-</section>
-
-
-
-
-</main>
-
-<footer class="nexus-footer">
-  <div>
-    <strong>ASAS</strong>
-    <span>Aggregate Strategic Asset Solutions</span>
-  </div>
-
-  <p>
-    Strategic Assets. Connected Intelligence. Real Impact.
-  </p>
-
-  <p class="system-signature">
-    Concept, Design & Development by
-    <strong class="deskawps-signature">
-      <span class="deska">deska</span><span class="wps">wps</span>
-    </strong>
-  </p>
-</footer>
-
-</div>
-
-
-<div id="businessDetail" class="business-detail" hidden>
-  <div class="business-detail-backdrop" data-close-detail></div>
-
-  <section class="business-detail-panel"
-           role="dialog"
-           aria-modal="true"
-           aria-labelledby="businessDetailTitle">
-
-    <button type="button"
-            class="business-detail-close"
-            data-close-detail
-            aria-label="Tutup detail">×</button>
-
-    <p class="scene-kicker" id="businessDetailDomain">
-      BUSINESS DOMAIN
-    </p>
-
-    <h2 id="businessDetailTitle">
-      Land Acquisition
-    </h2>
-
-    <p id="businessDetailDescription">
-      Detail capability ASAS Nexus.
-    </p>
-
-    <div class="detail-path">
-      <button type="button" data-detail-tab="overview">Overview</button>
-      <button type="button" data-detail-tab="geo">Nexus Geo</button>
-      <button type="button" data-detail-tab="project">Project / Site</button>
-      <button type="button" data-detail-tab="evidence">Evidence</button>
-      <button type="button" data-detail-tab="metadata">Metadata</button>
-    </div>
-
-    <div class="detail-content" id="businessDetailContent">
-      <strong>Menunggu Integrasi Data</strong>
-      <p>
-        Informasi terverifikasi akan ditampilkan ketika sumber data
-        terkait telah terhubung ke ASAS Nexus.
-      </p>
-    </div>
-  </section>
-</div>
-
-<script src="script.js"></script>
-
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch((err) => {
-        console.error("Gagal mendaftarkan service worker:", err);
-      });
+  <script>
+    const ADMIN_WA = "6285695272863";
+    const rp = (n) => "Rp " + Number(n || 0).toLocaleString("id-ID");
+    const form = document.getElementById("orderForm");
+
+    window.pilihTarif = function (kode, rate, unit) {
+      const sel = document.getElementById("layanan");
+      sel.value = kode;
+      const opt = sel.options[sel.selectedIndex];
+      opt.dataset.rate = rate;
+      opt.dataset.unit = unit;
+      hitung();
+      document.getElementById("formCalc").scrollIntoView({ behavior: "smooth" });
+    };
+
+    function ambil(id = "DRAFT") {
+      const sel = document.getElementById("layanan");
+      const opt = sel.options[sel.selectedIndex];
+      const rate = Number(opt.dataset.rate || 6000);
+      const unit = opt.dataset.unit || (sel.value === "SATUAN" ? "pcs" : "kg");
+      const qty = Math.max(0, parseFloat(document.getElementById("qty").value) || 0);
+      const nama = document.getElementById("nama").value.trim() || "-";
+      const wa = document.getElementById("wa").value.trim() || "-";
+      const alamat = document.getElementById("alamat").value.trim() || "-";
+      return {
+        id, status: "MENUNGGU_VERIFIKASI", unitDivisi: "Facility Service ASAS Group Global", lokasiInfo: (typeof getLocText === "function" ? getLocText() : ""),
+        nama, wa, alamat, layanan: sel.value, rate, unit, qty,
+        total: Math.round(qty * rate),
+        parfum: document.getElementById("parfum").value,
+        bayar: document.getElementById("bayar").value
+      };
+    }
+
+    function buatWa(d) {
+      const text = [
+        "Halo Admin Facility Service ASAS Group Global, konfirmasi pesanan setrika:",
+        "Order: " + d.id + " (" + d.status + ")",
+        "Nama: " + d.nama + " (" + d.wa + ")",
+        "Alamat: " + d.alamat,
+        d.lokasiInfo ? "Lokasi/Area: " + d.lokasiInfo : "",
+        "Layanan: " + d.layanan + " " + d.qty + d.unit + " = " + rp(d.total),
+        "Opsi: " + d.parfum + " | Bayar: " + d.bayar
+      ].join("
+");
+      return "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent(text);
+    }
+
+    function hitung() {
+      const d = ambil();
+      document.getElementById("qtyLbl").textContent = d.unit === "pcs" ? "Estimasi Jumlah (pcs)" : "Estimasi Berat (kg)";
+      document.getElementById("estDetail").textContent = d.layanan + " (" + rp(d.rate) + "/" + d.unit + ") • " + d.parfum + " • " + d.bayar;
+      document.getElementById("estTotal").textContent = "Perkiraan: " + rp(d.total);
+      document.getElementById("btnWa").href = buatWa(d);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const d = ambil("ASAS-" + Date.now().toString().slice(-6));
+      if (typeof window.saveServiceOrder === "function") {
+        await window.saveServiceOrder(d);
+      }
+      document.getElementById("btnWa").href = buatWa(d);
+      document.getElementById("msg").textContent = "Pesanan " + d.id + " tercatat (MENUNGGU_VERIFIKASI).";
     });
-  }
-</script>
+
+    form.addEventListener("input", hitung);
+    form.addEventListener("change", hitung);
+    hitung();
+  
+    const btnLoc = document.getElementById("btnAmbilLokasi");
+    const locStatus = document.getElementById("locStatus");
+    const coordInput = document.getElementById("koordinatLokasi");
+    const areaInput = document.getElementById("areaLokasi");
+
+    function getLocText() {
+      const area = areaInput ? areaInput.value.trim() : "";
+      const coord = coordInput ? coordInput.value.trim() : "";
+      const parts = [];
+      if (area) parts.push("Area: " + area);
+      if (coord) parts.push("Lokasi: " + coord);
+      return parts.join(" | ");
+    }
+
+    if (btnLoc) {
+      btnLoc.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          locStatus.textContent = "Perangkat/browser tidak mendukung geolokasi. Isi manual atau ketik area/patokan.";
+          return;
+        }
+        locStatus.textContent = "Mengambil lokasi GPS...";
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude.toFixed(6);
+            const lng = pos.coords.longitude.toFixed(6);
+            coordInput.value = "https://maps.google.com/?q=" + lat + "," + lng;
+            locStatus.textContent = "Lokasi aktif (" + lat + ", " + lng + ").";
+            hitung();
+          },
+          (err) => {
+            locStatus.textContent = "Lokasi belum aktif / ditolak (" + err.message + "). Aktifkan Lokasi/GPS di HP atau isi manual.";
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      });
+    }
+
+    [areaInput, coordInput].forEach((el) => {
+      if (el) {
+        el.addEventListener("input", hitung);
+        el.addEventListener("change", hitung);
+      }
+    });
+
+  </script>
+  <script src="auto-jawab-ai.js"></script>
+  <footer style="max-width:720px;margin:20px auto 0;padding:14px 16px;text-align:center;font-size:12px;color:#475569;border-top:1px solid #e2e8f0;">
+    Design &amp; Development by <strong>deskawps</strong> • ASAS Group Global — Facility Service
+  </footer>
+</body>
+</html>
