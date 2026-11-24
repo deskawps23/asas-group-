@@ -164,3 +164,58 @@ git add dashboard.html
     }
   });
 </script>
+
+<div id="rekapBagiHasilSetrika">Memuat rekap cash, QRIS &amp; bagi hasil setrika...</div>
+<script type="module">
+  import { collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { db } from "./firebase-config.js";
+
+  const PORSI_DASHBOARD = { kasir: 15, operasional: 25, pusat: 60 };
+
+  function hitungBagiHasilDashboard(totalMasuk) {
+    const nominal = Math.max(0, Math.round(Number(totalMasuk || 0)));
+    const kasir = Math.round((nominal * PORSI_DASHBOARD.kasir) / 100);
+    const operasional = Math.round((nominal * PORSI_DASHBOARD.operasional) / 100);
+    const pusat = Math.max(0, nominal - kasir - operasional);
+    return { totalMasuk: nominal, kasir, operasional, pusat };
+  }
+
+  const qSetrikaLunas = query(collection(db, "serviceOrders"), where("serviceType", "==", "setrika"));
+
+  onSnapshot(qSetrikaLunas, (snapshot) => {
+    const orders = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const lunas = orders.filter((o) => o.paymentStatus === "lunas");
+
+    const rekap = lunas.reduce(
+      (acc, o) => {
+        const nominal = Number(o.paidAmount ?? o.totalBilling ?? 0);
+        const bh = o.bagiHasil || hitungBagiHasilDashboard(nominal);
+
+        if (o.paymentMethod === "cash") {
+          acc.cashTotal += nominal;
+          acc.cashCount += 1;
+        } else {
+          acc.qrisTotal += nominal;
+          acc.qrisCount += 1;
+        }
+
+        acc.kasir += Number(bh.kasir || 0);
+        acc.operasional += Number(bh.operasional || 0);
+        acc.pusat += Number(bh.pusat || 0);
+        return acc;
+      },
+      { cashTotal: 0, cashCount: 0, qrisTotal: 0, qrisCount: 0, kasir: 0, operasional: 0, pusat: 0 }
+    );
+
+    const el = document.getElementById("rekapBagiHasilSetrika");
+    if (el) {
+      el.textContent =
+        "Lunas Setrika (" + lunas.length + " trx) | " +
+        "Cash (" + rekap.cashCount + "): Rp " + rekap.cashTotal.toLocaleString("id-ID") + " | " +
+        "QRIS (" + rekap.qrisCount + "): Rp " + rekap.qrisTotal.toLocaleString("id-ID") + " || " +
+        "Bagi Hasil -> Kasir (15%): Rp " + rekap.kasir.toLocaleString("id-ID") +
+        " | Ops (25%): Rp " + rekap.operasional.toLocaleString("id-ID") +
+        " | Pusat (60%): Rp " + rekap.pusat.toLocaleString("id-ID");
+    }
+  });
+</script>

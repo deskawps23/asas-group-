@@ -3,74 +3,224 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Satu Hub - Kasir Jasa Setrika</title>
+  <title>Satu Hub ‚Ä¢ Kasir Jasa Setrika</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 560px; margin: 20px auto; padding: 0 14px; line-height: 1.45; }
+    label { display: block; margin-top: 10px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    .row-btn { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    button { padding: 9px 12px; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 12px; white-space: pre-wrap; border-radius: 6px; margin-top: 14px; }
+    #qrisArea { margin-top: 12px; }
+  </style>
 </head>
 <body>
-  <h2>Kasir & Veriikaisi Jasa Setrika</h2>
+  <h2>Kasir & Verifikasi Jasa Setrika</h2>
 
-  <lable>ID Order</label>
+  <label for="orderId">ID Order</label>
   <input id="orderId" type="text" placeholder="ORD-001" />
 
-  <label>Berat Aktual (kg)</label>
+  <label for="beratKg">Berat Aktual (kg)</label>
   <input id="beratKg" type="number" step="0.1" value="3.5" />
 
-  <label>Tarif / kg (Rp)</label>
-  <input id="tarifkg" type="number" value="6000" />
+  <label for="tarifKg">Tarif / kg (Rp)</label>
+  <input id="tarifKg" type="number" value="6000" />
 
-  <button id="btnHitung" type="button">Hitung Billing</button>
-  <button id="btnSimpan" type="button">Simpan Verifikasi</button>
-  <button id="btnStruk" type="button>Buat Struk</button>
+  <label for="paymentMethod">Metode Pembayaran</label>
+  <select id="paymentMethod">
+    <option value="cash">Cash (Tunai)</option>
+    <option value="qris">QRIS Statis (Zeevanna Digi &amp; Krea...)</option>
+  </select>
 
-  <pre id="outputBox"></pre>
+  <div id="cashBox">
+    <label for="cashReceived">Uang Diterima Cash (Rp)</label>
+    <input id="cashReceived" type="number" value="25000" />
+  </div>
+
+  <div class="row-btn">
+    <button id="btnHitung" type="button">Hitung Billing</button>
+    <button id="btnStruk" type="button">Buat Struk</button>
+    <button id="btnSimpanLunas" type="button">Simpan &amp; Tandai Lunas</button>
+  </div>
+
+  <div id="qrisArea"></div>
+  <pre id="outputBox">Siap memproses order jasa setrika.</pre>
 
   <script src="./portal/asas-upgrade.js"></script>
   <script type="module">
     import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { db, ensureCustomerAuth } from "./firebase-config.js";
 
-    const getOrderPayload = () => {
-      const orderId = document.getElementById("orderId").value.trim();
-      const beratKg = Number(document.getElementById("beratKg").value || 0);
-      const tarifkg = Number(document.getElementById("tarifkg").value || 0);
-      const totalBilling = Math.round(beratKg * tarifkg);
-      return { orderId, beratKg, tarifkg, totalBilling };
+    const PORSI = { kasir: 15, operasional: 25, pusat: 60 };
+    const QRIS_INFO = {
+      merchant: "Zeevanna Digi & Krea...",
+      nmid: "ID1026556910978",
+      terminal: "A01",
+      imageSrc: "./assets/qris-zeevanna.jpg"
     };
 
+    const paymentSelect = document.getElementById("paymentMethod");
+    const cashBox = document.getElementById("cashBox");
+    const qrisArea = document.getElementById("qrisArea");
+    const outputBox = document.getElementById("outputBox");
+
+    function hitungBagiHasil(totalMasuk, porsi = PORSI) {
+      const nominal = Math.max(0, Math.round(Number(totalMasuk || 0)));
+      const kasir = Math.round((nominal * Number(porsi.kasir || 0)) / 100);
+      const operasional = Math.round((nominal * Number(porsi.operasional || 0)) / 100);
+      const pusat = Math.max(0, nominal - kasir - operasional);
+      return { totalMasuk: nominal, kasir, operasional, pusat, porsi };
+    }
+
+    function getOrderData() {
+      const orderId = document.getElementById("orderId").value.trim();
+      const beratKg = Number(document.getElementById("beratKg").value || 0);
+      const tarifKg = Number(document.getElementById("tarifKg").value || 0);
+      const totalBilling = Math.round(beratKg * tarifKg);
+      const paymentMethod = paymentSelect.value;
+      const cashReceived = Number(document.getElementById("cashReceived").value || 0);
+
+      let paidAmount = totalBilling;
+      let changeAmount = 0;
+
+      if (paymentMethod === "cash") {
+        if (cashReceived < totalBilling) {
+          throw new Error("Uang cash kurang dari total tagihan (Rp " + totalBilling.toLocaleString("id-ID") + ").");
+        }
+        changeAmount = Math.round(cashReceived - totalBilling);
+      }
+
+      const bagiHasil = hitungBagiHasil(paidAmount, PORSI);
+      return {
+        orderId,
+        beratKg,
+        tarifKg,
+        totalBilling,
+        paymentMethod,
+        cashReceived: paymentMethod === "cash" ? Math.round(cashReceived) : paidAmount,
+        changeAmount,
+        paidAmount,
+        bagiHasil
+      };
+    }
+
+    function renderPaymentHelper() {
+      const { totalBilling } = (() => {
+        const b = Number(document.getElementById("beratKg").value || 0);
+        const t = Number(document.getElementById("tarifKg").value || 0);
+        return { totalBilling: Math.round(b * t) };
+      })();
+
+      if (paymentSelect.value === "cash") {
+        cashBox.style.display = "block";
+        qrisArea.innerHTML = "";
+      } else {
+        cashBox.style.display = "none";
+        qrisArea.innerHTML =
+          "<div><strong>Pembayaran QRIS ‚Ä¢ Tagihan: Rp " + totalBilling.toLocaleString("id-ID") + "</strong></div>" +
+          "<div>Merchant: " + QRIS_INFO.merchant + " | NMID: " + QRIS_INFO.nmid + " (" + QRIS_INFO.terminal + ")</div>" +
+          "<img src=\"" + QRIS_INFO.imageSrc + "\" alt=\"QRIS Zeevanna\" style=\"max-width:220px;margin-top:8px;border:1px solid #ccc;\" onerror=\"this.replaceWith(Object.assign(document.createElement('div'),{textContent:'File ./assets/qris-zeevanna.jpg belum ditemukan di folder assets/.'}))\" />";
+      }
+    }
+
+    paymentSelect.addEventListener("change", renderPaymentHelper);
+    document.getElementById("beratKg").addEventListener("input", renderPaymentHelper);
+    document.getElementById("tarifKg").addEventListener("input", renderPaymentHelper);
+    renderPaymentHelper();
+
     document.getElementById("btnHitung").addEventListener("click", () => {
-      const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
-      document.getElementById("outputBox").textContent =
-        `Order: ${orderId || "-"}\nBerat: ${beratKg} kg x Rp ${tarifkg.toLocaleString("id-ID")}\nTotal: Rp ${totalBilling.toLocaleString("id-ID")}`;
+      try {
+        const d = getOrderData();
+        const bh = d.bagiHasil;
+        let teks =
+          "Order: " + (d.orderId || "-") + "\n" +
+          "Berat x Tarif: " + d.beratKg + " kg x Rp " + d.tarifKg.toLocaleString("id-ID") + "\n" +
+          "Total Tagihan: Rp " + d.totalBilling.toLocaleString("id-ID") + "\n" +
+          "Metode: " + d.paymentMethod.toUpperCase();
+
+        if (d.paymentMethod === "cash") {
+          teks += "\nUang Diterima: Rp " + d.cashReceived.toLocaleString("id-ID") +
+                  "\nKembalian: Rp " + d.changeAmount.toLocaleString("id-ID");
+        }
+
+        teks += "\n--- Bagi Hasil (15/25/60) ---" +
+                "\nKasir (15%): Rp " + bh.kasir.toLocaleString("id-ID") +
+                "\nOperasional (25%): Rp " + bh.operasional.toLocaleString("id-ID") +
+                "\nPusat (60%): Rp " + bh.pusat.toLocaleString("id-ID");
+
+        outputBox.textContent = teks;
+      } catch (err) {
+        outputBox.textContent = "Error: " + err.message;
+      }
     });
 
-    document.getElementById("btnSimpan").addEventListener("click", async () => {
+    document.getElementById("btnStruk").addEventListener("click", () => {
+      try {
+        const d = getOrderData();
+        renderPaymentHelper();
+        let struk =
+          "=== STRUK JASA SETRIKA ===\n" +
+          "ID Order: " + (d.orderId || "-") + "\n" +
+          "Berat: " + d.beratKg + " kg\n" +
+          "Tarif: Rp " + d.tarifKg.toLocaleString("id-ID") + "/kg\n" +
+          "TOTAL: Rp " + d.totalBilling.toLocaleString("id-ID") + "\n" +
+          "Metode: " + d.paymentMethod.toUpperCase();
+
+        if (d.paymentMethod === "cash") {
+          struk += "\nTunai: Rp " + d.cashReceived.toLocaleString("id-ID") +
+                   "\nKembali: Rp " + d.changeAmount.toLocaleString("id-ID");
+        } else {
+          struk += "\nMerchant: " + QRIS_INFO.merchant +
+                   "\nNMID: " + QRIS_INFO.nmid + " (" + QRIS_INFO.terminal + ")";
+        }
+
+        struk += "\n===========================";
+        outputBox.textContent = struk;
+      } catch (err) {
+        outputBox.textContent = "Error: " + err.message;
+      }
+    });
+
+    document.getElementById("btnSimpanLunas").addEventListener("click", async () => {
       try {
         await ensureCustomerAuth();
-        const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
-        if (!orderId) throw new Error("ID Order wajib diisi.");
+        const d = getOrderData();
+        if (!d.orderId) throw new Error("ID Order wajib diisi.");
 
         await setDoc(
-          doc(db, "serviceOrders", orderId),
+          doc(db, "serviceOrders", d.orderId),
           {
-            orderId,
+            orderId: d.orderId,
             serviceType: "setrika",
-            beratKg,
-            tarifkg,
-            totalBilling,
-            status: "terverifikasi",
+            beratKg: d.beratKg,
+            tarifKg: d.tarifKg,
+            totalBilling: d.totalBilling,
+            paidAmount: d.paidAmount,
+            paymentMethod: d.paymentMethod,
+            cashReceived: d.cashReceived,
+            changeAmount: d.changeAmount,
+            paymentStatus: "lunas",
+            status: "selesai_bayar",
+            qrisNmid: d.paymentMethod === "qris" ? QRIS_INFO.nmid : null,
+            bagiHasil: d.bagiHasil,
+            paidAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           },
           { merge: true }
         );
 
-        document.getElementById("outputBox").textContent =
-          `Tersimpan ke serviceOrders (${orderId}) - Total Rp ${totalBilling.toLocaleString("id-ID")}`
+        const bh = d.bagiHasil;
+        outputBox.textContent =
+          "Tersimpan & LUNAS (" + d.orderId + ") via " + d.paymentMethod.toUpperCase() + "\n" +
+          "Masuk: Rp " + d.paidAmount.toLocaleString("id-ID") +
+          (d.paymentMethod === "cash" ? " | Kembali: Rp " + d.changeAmount.toLocaleString("id-ID") : "") + "\n" +
+          "Bagi Hasil -> Kasir: Rp " + bh.kasir.toLocaleString("id-ID") +
+          " | Ops: Rp " + bh.operasional.toLocaleString("id-ID") +
+          " | Pusat: Rp " + bh.pusat.toLocaleString("id-ID");
       } catch (err) {
-        document.getElementById("outputBox").textContent = `Gagal simpan: ${err.message}` ;
+        outputBox.textContent = "Gagal simpan: " + err.message;
       }
     });
-
-    document.getElementById("btnStruk").addEventListener("click", () => {
-      const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
-      document.getElementById("outputBox").textContent =
-        `
-=== STREK JASA SETRIKA ===\nID: ${orderId || "-"}\nBerat: ${beratKg} kg\nDarif: Rp ${tarifkg.toLocaleString("id-ID")}/kg\nTOTAL BAYAR: Rp ${totalBilling.toLocaleStrim öYRQä_BèOOOOOOOOOOOOOOOOOOOOOOOOOOOX¬àJN¬à‹ÿ‹ö\ÇèÿõŸOÇè⁄[Ç
+  </script>
+</body>
+</html>
