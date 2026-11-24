@@ -219,3 +219,109 @@ git add dashboard.html
     }
   });
 </script>
+
+<div id="superAdminBagiHasilBox" style="margin-top:16px;padding:12px;border:1px solid #ccc;border-radius:6px;">
+  <h3>Pengaturan Bagi Hasil (Super Admin)</h3>
+
+  <strong>Pos Utama (Total 100%)</strong>
+  <div style="margin-top:6px;">
+    Kasir/Tim (%): <input id="cfgKasirTim" type="number" value="15" style="width:70px;" />
+    Operasional (%): <input id="cfgOps" type="number" value="25" style="width:70px;" />
+    Pusat (%): <input id="cfgPusat" type="number" value="60" style="width:70px;" />
+  </div>
+
+  <strong style="display:block;margin-top:10px;">Rincian 4 Peran Operator dari Porsi Tim (Total 100%)</strong>
+  <div style="margin-top:6px;">
+    1. Orang Setrika (%): <input id="cfgPenyetrika" type="number" value="40" style="width:70px;" />
+    2. Kurir Antar Jemput (%): <input id="cfgKurir" type="number" value="25" style="width:70px;" />
+    3. Admin (%): <input id="cfgAdmin" type="number" value="20" style="width:70px;" />
+    4. Team Leader / PIC (%): <input id="cfgPic" type="number" value="15" style="width:70px;" />
+  </div>
+
+  <button id="btnSimpanAturanBagiHasil" type="button" style="margin-top:12px;">Simpan Aturan Bagi Hasil</button>
+  <pre id="statusAturanBagiHasil">Memuat aturan bagi hasil...</pre>
+</div>
+
+<script type="module">
+  import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { db, ensureCustomerAuth } from "./firebase-config.js";
+
+  const cfgRef = doc(db, "settings", "bagiHasilSetrika");
+  const statusCfg = document.getElementById("statusAturanBagiHasil");
+
+  function bacaFormAturan() {
+    const posUtama = {
+      kasirTim: Number(document.getElementById("cfgKasirTim").value || 0),
+      operasional: Number(document.getElementById("cfgOps").value || 0),
+      pusat: Number(document.getElementById("cfgPusat").value || 0)
+    };
+
+    const peran = {
+      penyetrika: Number(document.getElementById("cfgPenyetrika").value || 0),
+      kurir: Number(document.getElementById("cfgKurir").value || 0),
+      admin: Number(document.getElementById("cfgAdmin").value || 0),
+      pic: Number(document.getElementById("cfgPic").value || 0)
+    };
+
+    const totalPos = posUtama.kasirTim + posUtama.operasional + posUtama.pusat;
+    const totalPeran = peran.penyetrika + peran.kurir + peran.admin + peran.pic;
+
+    if (totalPos !== 100) {
+      throw new Error("Total pos utama harus 100% (saat ini " + totalPos + "%).");
+    }
+    if (totalPeran !== 100) {
+      throw new Error("Total rincian 4 peran harus 100% (saat ini " + totalPeran + "%).");
+    }
+
+    return { posUtama, peran };
+  }
+
+  async function muatAturanAwal() {
+    const snap = await getDoc(cfgRef);
+    if (!snap.exists()) {
+      statusCfg.textContent = "Menggunakan aturan default (Pos: 15/25/60 | Peran: 40/25/20/15).";
+      return;
+    }
+    const data = snap.data();
+    if (data.posUtama) {
+      document.getElementById("cfgKasirTim").value = data.posUtama.kasirTim ?? 15;
+      document.getElementById("cfgOps").value = data.posUtama.operasional ?? 25;
+      document.getElementById("cfgPusat").value = data.posUtama.pusat ?? 60;
+    }
+    if (data.peran) {
+      document.getElementById("cfgPenyetrika").value = data.peran.penyetrika ?? 40;
+      document.getElementById("cfgKurir").value = data.peran.kurir ?? 25;
+      document.getElementById("cfgAdmin").value = data.peran.admin ?? 20;
+      document.getElementById("cfgPic").value = data.peran.pic ?? 15;
+    }
+    statusCfg.textContent = "Aturan aktif dimuat dari Firestore.";
+  }
+
+  document.getElementById("btnSimpanAturanBagiHasil").addEventListener("click", async () => {
+    try {
+      const authUser = await ensureCustomerAuth();
+      const aturan = bacaFormAturan();
+
+      await setDoc(
+        cfgRef,
+        {
+          ...aturan,
+          updatedBy: authUser?.uid || "super_admin",
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
+
+      statusCfg.textContent =
+        "Aturan bagi hasil tersimpan!\n" +
+        "Pos Utama: " + aturan.posUtama.kasirTim + "% / " + aturan.posUtama.operasional + "% / " + aturan.posUtama.pusat + "%\n" +
+        "4 Peran: Setrika " + aturan.peran.penyetrika + "% | Kurir " + aturan.peran.kurir + "% | Admin " + aturan.peran.admin + "% | PIC " + aturan.peran.pic + "%";
+    } catch (err) {
+      statusCfg.textContent = "Gagal simpan aturan: " + err.message;
+    }
+  });
+
+  muatAturanAwal().catch((err) => {
+    statusCfg.textContent = "Error memuat aturan: " + err.message;
+  });
+</script>
