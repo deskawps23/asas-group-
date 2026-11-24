@@ -32,7 +32,21 @@
     <option value="qris">QRIS Statis (Zeevanna Digi &amp; Krea...)</option>
   </select>
 
-  <div id="cashBox">
+  <div id="operatorBox">
+  <label for="opPenyetrika">Penyetrika</label>
+  <input id="opPenyetrika" type="text" placeholder="Nama / Tim Penyetrika" value="Tim Setrika" />
+
+  <label for="opKurir">Kurir</label>
+  <input id="opKurir" type="text" placeholder="Nama / Tim Kurir" value="Tim Kurir" />
+
+  <label for="opAdmin">Admin</label>
+  <input id="opAdmin" type="text" placeholder="Nama Admin Kasir" value="Admin Kasir" />
+
+  <label for="opPic">PIC</label>
+  <input id="opPic" type="text" placeholder="Nama PIC Lapangan" value="PIC Lapangan" />
+</div>
+
+<div id="cashBox">
     <label for="cashReceived">Uang Diterima Cash (Rp)</label>
     <input id="cashReceived" type="number" value="25000" />
   </div>
@@ -202,7 +216,13 @@
             paymentStatus: "lunas",
             status: "selesai_bayar",
             qrisNmid: d.paymentMethod === "qris" ? QRIS_INFO.nmid : null,
-            bagiHasil: d.bagiHasil,
+                    bagiHasil: d.bagiHasil,
+        operators: {
+          penyetrika: document.getElementById("opPenyetrika")?.value.trim() || "Tim Setrika",
+          kurir: document.getElementById("opKurir")?.value.trim() || "Tim Kurir",
+          admin: document.getElementById("opAdmin")?.value.trim() || "Admin Kasir",
+          pic: document.getElementById("opPic")?.value.trim() || "PIC Lapangan",
+        },
             paidAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           },
