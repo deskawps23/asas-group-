@@ -1,4 +1,4 @@
-export const WA_HUB_NUMBER = "6285779308809";
+export const WA_HUB_NUMBER = "6285695272863";
 
 export function buildHubWhatsAppUrl(order) {
   const geoLine =
