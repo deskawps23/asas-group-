@@ -139,3 +139,28 @@ git add dashboard.html
     }
   };
 </script>
+
+<div id="rekapSetrikaDashboard">Memuat rekap setrika...</div>
+<script type="module">
+  import { collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { db } from "./firebase-config.js";
+
+  const qSetrika = query(collection(db, "serviceOrders"), where("serviceType", "==", "setrika"));
+
+  onSnapshot(qSetrika, (snapshot) => {
+    const orders = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const recap = typeof window.summarizeDailyOrders === "function"
+      ? window.summarizeDailyOrders(orders)
+      : {
+          totalOrders: orders.length,
+          totalOmzet: orders.reduce((sum, item) => sum + Number(item.totalBilling || 0), 0)
+        };
+
+    const el = document.getElementById("rekapSetrikaDashboard");
+    if (el) {
+      const jumlah = recap.totalOrders ?? orders.length;
+      const omzet = Number(recap.totalOmzet ?? 0).toLocaleString("id-ID");
+      el.textContent = "Order Setrika: " + jumlah + " | Total Omzet: Rp " + omzet;
+    }
+  });
+</script>
