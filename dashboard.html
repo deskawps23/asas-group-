@@ -121,3 +121,21 @@
 </script>
 <!-- === AKHIR PANEL KASIR SATU HUB & ASISTEN AI === -->
 git add dashboard.html
+<script type="module">
+  import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { db } from "./firebase-config.js";
+
+  window.asasFirestore = {
+    collection(colName) {
+      return {
+        doc(docId) {
+          return {
+            set(data, opts = { merge: true }) {
+              return setDoc(doc(db, colName, String(docId)), data, opts);
+            }
+          };
+        }
+      };
+    }
+  };
+</script>
