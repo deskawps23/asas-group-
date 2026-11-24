@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Satu Hub - Kasir Jasa Setrika</title>
+</head>
+<body>
+  <h2>Kasir & Veriikaisi Jasa Setrika</h2>
+
+  <lable>ID Order</label>
+  <input id="orderId" type="text" placeholder="ORD-001" />
+
+  <label>Berat Aktual (kg)</label>
+  <input id="beratKg" type="number" step="0.1" value="3.5" />
+
+  <label>Tarif / kg (Rp)</label>
+  <input id="tarifkg" type="number" value="6000" />
+
+  <button id="btnHitung" type="button">Hitung Billing</button>
+  <button id="btnSimpan" type="button">Simpan Verifikasi</button>
+  <button id="btnStruk" type="button>Buat Struk</button>
+
+  <pre id="outputBox"></pre>
+
+  <script src="./portal/asas-upgrade.js"></script>
+  <script type="module">
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { db, ensureCustomerAuth } from "./firebase-config.js";
+
+    const getOrderPayload = () => {
+      const orderId = document.getElementById("orderId").value.trim();
+      const beratKg = Number(document.getElementById("beratKg").value || 0);
+      const tarifkg = Number(document.getElementById("tarifkg").value || 0);
+      const totalBilling = Math.round(beratKg * tarifkg);
+      return { orderId, beratKg, tarifkg, totalBilling };
+    };
+
+    document.getElementById("btnHitung").addEventListener("click", () => {
+      const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
+      document.getElementById("outputBox").textContent =
+        `Order: ${orderId || "-"}\nBerat: ${beratKg} kg x Rp ${tarifkg.toLocaleString("id-ID")}\nTotal: Rp ${totalBilling.toLocaleString("id-ID")}`;
+    });
+
+    document.getElementById("btnSimpan").addEventListener("click", async () => {
+      try {
+        await ensureCustomerAuth();
+        const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
+        if (!orderId) throw new Error("ID Order wajib diisi.");
+
+        await setDoc(
+          doc(db, "serviceOrders", orderId),
+          {
+            orderId,
+            serviceType: "setrika",
+            beratKg,
+            tarifkg,
+            totalBilling,
+            status: "terverifikasi",
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        document.getElementById("outputBox").textContent =
+          `Tersimpan ke serviceOrders (${orderId}) - Total Rp ${totalBilling.toLocaleString("id-ID")}`
+      } catch (err) {
+        document.getElementById("outputBox").textContent = `Gagal simpan: ${err.message}` ;
+      }
+    });
+
+    document.getElementById("btnStruk").addEventListener("click", () => {
+      const { orderId, beratKg, tarifkg, totalBilling } = getOrderPayload();
+      document.getElementById("outputBox").textContent =
+        `
+=== STREK JASA SETRIKA ===\nID: ${orderId || "-"}\nBerat: ${beratKg} kg\nDarif: Rp ${tarifkg.toLocaleString("id-ID")}/kg\nTOTAL BAYAR: Rp ${totalBilling.toLocaleStrim öYRQä_BèOOOOOOOOOOOOOOOOOOOOOOOOOOOX¬àJN¬à‹ÿ‹ö\ÇèÿõŸOÇè⁄[Ç
