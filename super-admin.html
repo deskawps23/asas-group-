@@ -199,5 +199,304 @@
   <script type="module" src="./super-admin.js"></script>
 <div class="deskawps-credit" style="margin:16px auto 20px;padding:8px 14px;text-align:center;font-size:12px;color:#64748b;">Created design &amp; development by deskawps</div>
 <script src="auto-jawab-ai.js"></script>
+<script id="asas-holistic-bridge">
+(function () {
+  const ADMIN_WA = "6285695272863";
+  const ADMIN_NAME = "Deska Wiata Praja";
+  const STORAGE_KEY = "serviceOrders";
+
+  function normalizePhone(raw) {
+    let digits = String(raw || "").replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.startsWith("0")) digits = "62" + digits.slice(1);
+    else if (digits.startsWith("8")) digits = "62" + digits;
+    return digits;
+  }
+
+  function loadAllOrders() {
+    const merged = [];
+    const seen = new Set();
+    const keys = Object.keys(localStorage).filter((k) =>
+      k === STORAGE_KEY || /order|setrika|asas/i.test(k)
+    );
+    if (!keys.includes(STORAGE_KEY)) keys.unshift(STORAGE_KEY);
+
+    for (const k of keys) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(k) || "null");
+        const items = Array.isArray(parsed)
+          ? parsed
+          : parsed && typeof parsed === "object" && (parsed.id || parsed.nama)
+          ? [parsed]
+          : [];
+        for (const item of items) {
+          if (!item || typeof item !== "object") continue;
+          const id = String(item.id || ("ORD-" + (merged.length + 1)));
+          const sig = id + "|" + (item.noHp || "") + "|" + (item.createdAt || "");
+          if (seen.has(sig)) continue;
+          seen.add(sig);
+          merged.push({
+            id,
+            nama: item.nama || item.customerName || "Pelanggan",
+            noHp: normalizePhone(item.noHp || item.phone || item.wa || ""),
+            zona: item.zona || item.area || "Pilot Zona 1",
+            alamat: item.alamat || item.lokasiInfo || item.address || "-",
+            layanan: item.layanan || item.service || "Jasa Setrika",
+            qty: item.qty || item.jumlah || "-",
+            total: Number(item.total || item.estimasi || 0),
+            catatan: item.catatan || item.notes || "-",
+            status: item.status || "MENUNGGU_VERIFIKASI",
+            createdAt: item.createdAt || new Date().toISOString()
+          });
+        }
+      } catch (_) {}
+    }
+    return merged;
+  }
+
+  function saveAllOrders(orders) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  }
+
+  function upsertOrder(order) {
+    const list = loadAllOrders();
+    const norm = {
+      id: order.id || ("ORD-" + Date.now().toString().slice(-6)),
+      nama: order.nama || "Pelanggan",
+      noHp: normalizePhone(order.noHp),
+      zona: order.zona || "Pilot Zona 1",
+      alamat: order.alamat || "-",
+      layanan: order.layanan || "Jasa Setrika",
+      qty: order.qty || "-",
+      total: Number(order.total || 0),
+      catatan: order.catatan || "-",
+      status: order.status || "MENUNGGU_VERIFIKASI",
+      createdAt: order.createdAt || new Date().toISOString()
+    };
+    const idx = list.findIndex((x) => x.id === norm.id);
+    if (idx >= 0) list[idx] = { ...list[idx], ...norm };
+    else list.unshift(norm);
+    saveAllOrders(list);
+    return norm;
+  }
+
+  function buildCustomerWaText(order) {
+    return [
+      `Halo ${order.nama},`,
+      `Pesanan Facility Service ASAS Group Global (Pilot Zona 1) Anda telah *TERVERIFIKASI* oleh Super Admin (${ADMIN_NAME}).`,
+      ``,
+      `ID Order: *${order.id}*`,
+      `Layanan: ${order.layanan} (${order.qty})`,
+      `Area: ${order.zona} - ${order.alamat}`,
+      `Estimasi: Rp ${Number(order.total || 0).toLocaleString("id-ID")}`,
+      `Status: *${order.status || "TERVERIFIKASI"}*`,
+      ``,
+      `Tim operasional kami akan segera berkoordinasi untuk jadwal penjemputan/pengantaran.`
+    ].join("\n");
+  }
+
+  function buildAdminWaText(order) {
+    return [
+      `Halo Admin ASAS Group Global (${ADMIN_NAME}),`,
+      `Ada pesanan baru berstatus *MENUNGGU_VERIFIKASI*:`,
+      ``,
+      `ID Order: *${order.id}*`,
+      `Nama: ${order.nama}`,
+      `No WA: ${order.noHp || "-"}`,
+      `Layanan: ${order.layanan} (${order.qty})`,
+      `Zona/Alamat: ${order.zona} - ${order.alamat}`,
+      `Estimasi: Rp ${Number(order.total || 0).toLocaleString("id-ID")}`,
+      `Catatan: ${order.catatan || "-"}`
+    ].join("\n");
+  }
+
+  window.ASAS_HOLISTIC = {
+    ADMIN_WA,
+    ADMIN_NAME,
+    STORAGE_KEY,
+    normalizePhone,
+    loadAllOrders,
+    saveAllOrders,
+    upsertOrder,
+    buildCustomerWaText,
+    buildAdminWaText
+  };
+
+  // Tangkap submit form pemesanan jika ada di halaman pelanggan
+  document.addEventListener("submit", function (e) {
+    const form = e.target;
+    if (!form || form.id === "loginForm") return;
+    if (window.location.pathname.includes("super-admin")) return;
+
+    const getVal = (selectors) => {
+      for (const s of selectors) {
+        const el = form.querySelector(s) || document.querySelector(s);
+        if (el && String(el.value || "").trim()) return String(el.value).trim();
+      }
+      return "";
+    };
+
+    const nama = getVal(["#nama", "#customerName", 'input[name*="nama" i]', 'input[placeholder*="nama" i]']);
+    const noHp = getVal(["#noHp", "#phone", "#wa", 'input[type="tel"]', 'input[name*="hp" i]', 'input[name*="wa" i]']);
+    if (!nama && !noHp) return;
+
+    const zona = getVal(["#zona", "#area", 'select[name*="zona" i]', 'select[name*="area" i]']) || "Pilot Zona 1";
+    const alamat = getVal(["#alamat", "#lokasiInfo", "#address", 'textarea[name*="alamat" i]', 'input[name*="alamat" i]']) || "-";
+    const layanan = getVal(["#layanan", "#service", 'select[name*="layanan" i]', 'select']) || "Jasa Setrika";
+    const qty = getVal(["#jumlah", "#qty", 'input[type="number"]']) || "1";
+    const catatan = getVal(["#catatan", "#notes", 'textarea[name*="catatan" i]']) || "-";
+
+    const saved = upsertOrder({
+      nama: nama || "Pelanggan",
+      noHp,
+      zona,
+      alamat,
+      layanan,
+      qty,
+      catatan,
+      status: "MENUNGGU_VERIFIKASI"
+    });
+
+    const banner = document.getElementById("asas-order-status-banner") || (() => {
+      const div = document.createElement("div");
+      div.id = "asas-order-status-banner";
+      div.style.cssText = "margin:14px 0;padding:12px 14px;border-radius:12px;background:#ecfdf5;border:1px solid #10b981;color:#065f46;font-size:13px;line-height:1.5;";
+      form.parentElement.insertBefore(div, form.nextSibling);
+      return div;
+    })();
+
+    const adminLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(buildAdminWaText(saved))}`;
+    banner.innerHTML = `
+      <strong>Order Tercatat: ${saved.id}</strong> — Status: <strong>${saved.status}</strong><br/>
+      Menunggu verifikasi Super Admin (<strong>${ADMIN_NAME}</strong>).<br/>
+      <a href="${adminLink}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;padding:6px 12px;border-radius:8px;background:#059669;color:#fff;text-decoration:none;font-weight:700;font-size:12px;">Kirim / Konfirmasi ke WA Admin (${ADMIN_WA})</a>
+    `;
+  }, true);
+
+  // Jika halaman adalah super-admin.html, aktifkan panel verifikasi & balasan WA pelanggan
+  if (window.location.pathname.includes("super-admin")) {
+    window.addEventListener("DOMContentLoaded", function () {
+      const container = document.querySelector(".wrap, .container, main, body");
+      if (!container || document.getElementById("asas-super-verification-panel")) return;
+
+      const panel = document.createElement("section");
+      panel.id = "asas-super-verification-panel";
+      panel.style.cssText = "max-width:860px;margin:16px auto;padding:16px;border-radius:16px;background:#ffffff;border:1px solid #cbd5e1;box-shadow:0 4px 16px rgba(15,23,42,0.06);font-family:system-ui,-apple-system,sans-serif;";
+      panel.innerHTML = `
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+          <div>
+            <span style="display:inline-block;padding:3px 9px;border-radius:999px;background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;">VERIFIKASI & BALASAN PELANGGAN</span>
+            <h2 style="margin:6px 0 2px;font-size:18px;color:#0f172a;">Antrean Order — ${ADMIN_NAME}</h2>
+            <p style="margin:0;font-size:12px;color:#475569;">Pantau status <strong>MENUNGGU_VERIFIKASI</strong> dan kirim balasan verifikasi langsung ke WhatsApp pelanggan.</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span id="asas-pending-badge" style="padding:6px 10px;border-radius:10px;background:#0f172a;color:#fff;font-size:12px;font-weight:700;">Menunggu: 0</span>
+            <button type="button" id="asas-refresh-orders" style="padding:7px 12px;border-radius:10px;border:1px solid #cbd5e1;background:#f8fafc;color:#0f172a;font-size:12px;font-weight:700;cursor:pointer;">Refresh</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead>
+              <tr style="background:#f1f5f9;color:#0f172a;text-align:left;">
+                <th style="padding:8px;border-bottom:1px solid #e2e8f0;">ID & Waktu</th>
+                <th style="padding:8px;border-bottom:1px solid #e2e8f0;">Pelanggan & WA</th>
+                <th style="padding:8px;border-bottom:1px solid #e2e8f0;">Layanan & Area</th>
+                <th style="padding:8px;border-bottom:1px solid #e2e8f0;">Status</th>
+                <th style="padding:8px;border-bottom:1px solid #e2e8f0;">Aksi Balasan</th>
+              </tr>
+            </thead>
+            <tbody id="asas-verification-tbody"></tbody>
+          </table>
+        </div>
+      `;
+
+      const footer = container.querySelector("footer");
+      if (footer) container.insertBefore(panel, footer);
+      else container.appendChild(panel);
+
+      let prevPending = -1;
+
+      function renderQueue() {
+        const orders = loadAllOrders();
+        const pendingCount = orders.filter((o) => (o.status || "MENUNGGU_VERIFIKASI") === "MENUNGGU_VERIFIKASI").length;
+        const badge = document.getElementById("asas-pending-badge");
+        const tbody = document.getElementById("asas-verification-tbody");
+        if (badge) badge.textContent = `Menunggu: ${pendingCount}`;
+
+        if (prevPending !== -1 && pendingCount > prevPending) {
+          badge.style.background = "#dc2626";
+        } else {
+          badge.style.background = "#0f172a";
+        }
+        prevPending = pendingCount;
+
+        if (!tbody) return;
+        if (!orders.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="padding:12px;color:#64748b;text-align:center;">Belum ada pesanan di penyimpanan lokal (<code>serviceOrders</code>).</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = orders.map((o) => {
+          const isPending = (o.status || "MENUNGGU_VERIFIKASI") === "MENUNGGU_VERIFIKASI";
+          const statusStyle = isPending
+            ? "background:#fef3c7;color:#92400e;"
+            : "background:#d1fae5;color:#065f46;";
+          const waHref = o.noHp
+            ? `https://wa.me/${o.noHp}?text=${encodeURIComponent(buildCustomerWaText({ ...o, status: "TERVERIFIKASI" }))}`
+            : "#";
+
+          return `
+            <tr data-order-id="${o.id}">
+              <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+                <strong>${o.id}</strong><br/>
+                <span style="color:#64748b;font-size:11px;">${String(o.createdAt || "").slice(0, 16).replace("T", " ")}</span>
+              </td>
+              <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+                <strong>${o.nama}</strong><br/>
+                <span style="color:#334155;">${o.noHp || "No HP kosong"}</span>
+              </td>
+              <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+                ${o.layanan} (${o.qty})<br/>
+                <span style="color:#64748b;font-size:11px;">${o.zona} — ${o.alamat}</span>
+              </td>
+              <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+                <span style="display:inline-block;padding:3px 8px;border-radius:999px;font-weight:700;font-size:11px;${statusStyle}">${o.status || "MENUNGGU_VERIFIKASI"}</span>
+              </td>
+              <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+                <button type="button" class="asas-btn-verify" data-id="${o.id}" style="padding:5px 9px;border-radius:7px;border:none;background:#059669;color:#fff;font-weight:700;font-size:11px;cursor:pointer;margin-bottom:4px;">Verifikasi & Balas WA</button><br/>
+                ${o.noHp ? `<a href="${waHref}" target="_blank" rel="noopener" style="font-size:11px;color:#047857;font-weight:600;text-decoration:underline;">Buka WA Pelanggan</a>` : `<span style="font-size:11px;color:#94a3b8;">WA tidak tersedia</span>`}
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        tbody.querySelectorAll(".asas-btn-verify").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const oid = this.getAttribute("data-id");
+            const current = loadAllOrders();
+            const target = current.find((x) => x.id === oid);
+            if (!target) return;
+            target.status = "TERVERIFIKASI";
+            saveAllOrders(current);
+            renderQueue();
+            if (target.noHp) {
+              const url = `https://wa.me/${target.noHp}?text=${encodeURIComponent(buildCustomerWaText(target))}`;
+              window.open(url, "_blank", "noopener");
+            } else {
+              alert(`Order ${target.id} ditandai TERVERIFIKASI, namun nomor WA pelanggan belum terisi.`);
+            }
+          });
+        });
+      }
+
+      document.getElementById("asas-refresh-orders").addEventListener("click", renderQueue);
+      window.addEventListener("storage", renderQueue);
+      window.addEventListener("focus", renderQueue);
+      setInterval(renderQueue, 5000);
+      renderQueue();
+    });
+  }
+})();
+</script>
 </body>
 </html>
