@@ -1,0 +1,123 @@
+<!-- === MULAI PANEL KASIR SATU HUB & ASISTEN AI === -->
+<section id="asas-kasir-ai-hub" style="margin:24px 0;padding:16px;border:1px solid #d1d5db;border-radius:12px;background:#ffffff;font-family:system-ui,sans-serif;">
+  <h2 style="margin:0 0 12px;font-size:18px;">SATU HUB • Kasir &amp; Verifikasi Timbangan</h2>
+
+  <div style="display:grid;gap:8px;max-width:480px;">
+    <input id="kasirOrderId" type="text" placeholder="ID Order (contoh: ORD-001)" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;" />
+    <input id="kasirWeightKg" type="number" step="0.1" min="0" placeholder="Berat Timbangan (kg)" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;" />
+    <input id="kasirRatePerKg" type="number" step="500" min="0" value="5000" placeholder="Tarif / kg (Rp)" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;" />
+    <select id="kasirStatus" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;">
+      <option value="verifikasi_timbangan_billing">verifikasi_timbangan_billing</option>
+      <option value="sedang_disetrika">sedang_disetrika</option>
+      <option value="siap_antar_ambil">siap_antar_ambil</option>
+      <option value="selesai">selesai</option>
+    </select>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="btnHitungBilling" type="button" style="padding:8px 12px;border:none;border-radius:6px;background:#334155;color:#fff;cursor:pointer;">Hitung Billing</button>
+      <button id="btnSimpanVerifikasi" type="button" style="padding:8px 12px;border:none;border-radius:6px;background:#0f766e;color:#fff;cursor:pointer;">Simpan Verifikasi</button>
+      <button id="btnBuatStruk" type="button" style="padding:8px 12px;border:none;border-radius:6px;background:#1d4ed8;color:#fff;cursor:pointer;">Buat Struk</button>
+    </div>
+  </div>
+
+  <p id="kasirInfo" style="margin:10px 0;font-weight:600;color:#0f172a;">Total Billing: Rp0</p>
+  <pre id="kasirReceiptBox" style="padding:10px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:6px;white-space:pre-wrap;font-size:12px;">Struk akan muncul di sini...</pre>
+
+  <hr style="margin:20px 0;border:none;border-top:1px solid #e2e8f0;" />
+
+  <h2 style="margin:0 0 10px;font-size:18px;">Asisten AI / Auto-Jawab Pelanggan</h2>
+  <div style="display:flex;gap:8px;max-width:480px;">
+    <input id="asasAiInput" type="text" placeholder="Tanya tarif, timbangan, cara pesan, cek order..." style="flex:1;padding:8px;border:1px solid #cbd5e1;border-radius:6px;" />
+    <button id="btnAskAsasAi" type="button" style="padding:8px 14px;border:none;border-radius:6px;background:#111827;color:#fff;cursor:pointer;">Kirim</button>
+  </div>
+  <p id="asasAiReply" style="margin:10px 0 0;padding:10px;background:#f1f5f9;border-radius:6px;color:#1e293b;">Silakan ketik pertanyaan Anda seputar layanan Jasa Setrika.</p>
+</section>
+
+<script type="module">
+  import {
+    calculateBilling,
+    formatRupiah,
+    buildReceiptText,
+    summarizeDailyOrders,
+    updateOrderVerification,
+    askAsasAssistant
+  } from "./portal/asas-upgrade.js";
+
+  window.ASASUpgrade = {
+    calculateBilling,
+    formatRupiah,
+    buildReceiptText,
+    summarizeDailyOrders,
+    updateOrderVerification,
+    askAsasAssistant
+  };
+
+  const elOrderId = document.getElementById("kasirOrderId");
+  const elWeight = document.getElementById("kasirWeightKg");
+  const elRate = document.getElementById("kasirRatePerKg");
+  const elStatus = document.getElementById("kasirStatus");
+  const elInfo = document.getElementById("kasirInfo");
+  const elReceipt = document.getElementById("kasirReceiptBox");
+  const elAiInput = document.getElementById("asasAiInput");
+  const elAiReply = document.getElementById("asasAiReply");
+
+  function ambilDataForm() {
+    const calc = calculateBilling(elWeight?.value, elRate?.value, 0);
+    return {
+      id: (elOrderId?.value || "").trim() || "ORD-DRAFT",
+      weightKg: calc.weightKg,
+      ratePerKg: calc.ratePerKg,
+      billingTotal: calc.totalBilling,
+      status: elStatus?.value || "verifikasi_timbangan_billing"
+    };
+  }
+
+  document.getElementById("btnHitungBilling")?.addEventListener("click", () => {
+    const data = ambilDataForm();
+    if (elInfo) elInfo.textContent = "Total Billing: " + formatRupiah(data.billingTotal) + " (" + data.weightKg + " kg)";
+  });
+
+  document.getElementById("btnBuatStruk")?.addEventListener("click", () => {
+    const data = ambilDataForm();
+    if (elInfo) elInfo.textContent = "Total Billing: " + formatRupiah(data.billingTotal);
+    if (elReceipt) elReceipt.textContent = buildReceiptText(data);
+  });
+
+  document.getElementById("btnSimpanVerifikasi")?.addEventListener("click", async () => {
+    const orderId = (elOrderId?.value || "").trim();
+    const data = ambilDataForm();
+    if (elInfo) elInfo.textContent = "Total Billing: " + formatRupiah(data.billingTotal);
+    if (elReceipt) elReceipt.textContent = buildReceiptText(data);
+
+    if (!orderId) {
+      if (elInfo) elInfo.textContent += " • Isi ID Order untuk menyimpan ke Firestore.";
+      return;
+    }
+
+    try {
+      const saved = await updateOrderVerification(orderId, {
+        weightKg: data.weightKg,
+        ratePerKg: data.ratePerKg,
+        status: data.status
+      });
+      if (elInfo) elInfo.textContent = "Tersimpan (" + saved.status + "): " + formatRupiah(saved.billingTotal);
+    } catch (err) {
+      if (elInfo) elInfo.textContent = "Gagal simpan Firestore: " + (err?.message || err);
+    }
+  });
+
+  async function jalankanAsistenAi() {
+    const q = elAiInput?.value || "";
+    const res = await askAsasAssistant(q);
+    if (elAiReply) elAiReply.textContent = res.reply;
+  }
+
+  document.getElementById("btnAskAsasAi")?.addEventListener("click", jalankanAsistenAi);
+  elAiInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      jalankanAsistenAi();
+    }
+  });
+</script>
+<!-- === AKHIR PANEL KASIR SATU HUB & ASISTEN AI === -->
+git add dashboard.html
