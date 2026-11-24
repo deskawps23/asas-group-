@@ -215,6 +215,72 @@
         "Bagi Hasil -> Kasir (15%): Rp " + rekap.kasir.toLocaleString("id-ID") +
         " | Ops (25%): Rp " + rekap.operasional.toLocaleString("id-ID") +
         " | Pusat (60%): Rp " + rekap.pusat.toLocaleString("id-ID");
+
+      const getRolePct = (id, fallback) => {
+        const val = Number(document.getElementById(id)?.value);
+        return Number.isFinite(val) && val >= 0 ? val : fallback;
+      };
+      const pctSetrika = getRolePct("pctSetrika", 40);
+      const pctKurir = getRolePct("pctKurir", 25);
+      const pctAdmin = getRolePct("pctAdmin", 20);
+      const pctPic = getRolePct("pctPic", 15);
+      const totalPctRole = pctSetrika + pctKurir + pctAdmin + pctPic || 100;
+
+      const rekapPeran = { penyetrika: 0, kurir: 0, admin: 0, pic: 0 };
+      const rekapOrang = {};
+
+      lunas.forEach((o) => {
+        const nominal = Number(o.totalBilling ?? o.nominal ?? o.total ?? 0) || 0;
+        const bh = o.bagiHasil || hitungBagiHasilDashboard(nominal);
+        const porsiTim = Number(bh.kasir || 0);
+        const ops = o.operators || {};
+
+        const namaSetrika = (ops.penyetrika || "Tim Setrika").trim() || "Tim Setrika";
+        const namaKurir = (ops.kurir || "Tim Kurir").trim() || "Tim Kurir";
+        const namaAdmin = (ops.admin || "Admin Kasir").trim() || "Admin Kasir";
+        const namaPic = (ops.pic || "PIC Lapangan").trim() || "PIC Lapangan";
+
+        const gSetrika = Math.round((porsiTim * pctSetrika) / totalPctRole);
+        const gKurir = Math.round((porsiTim * pctKurir) / totalPctRole);
+        const gAdmin = Math.round((porsiTim * pctAdmin) / totalPctRole);
+        const gPic = Math.round((porsiTim * pctPic) / totalPctRole);
+
+        rekapPeran.penyetrika += gSetrika;
+        rekapPeran.kurir += gKurir;
+        rekapPeran.admin += gAdmin;
+        rekapPeran.pic += gPic;
+
+        const addOrang = (nama, peranLabel, rupiah) => {
+          const key = nama + " (" + peranLabel + ")";
+          rekapOrang[key] = (rekapOrang[key] || 0) + rupiah;
+        };
+        addOrang(namaSetrika, "Setrika", gSetrika);
+        addOrang(namaKurir, "Kurir", gKurir);
+        addOrang(namaAdmin, "Admin", gAdmin);
+        addOrang(namaPic, "PIC", gPic);
+      });
+
+      const rincianOrangTeks = Object.entries(rekapOrang)
+        .map(([k, v]) => k + ": Rp " + v.toLocaleString("id-ID"))
+        .join(" | ");
+
+      const detailEl =
+        document.getElementById("rekapOperatorSetrika") ||
+        (() => {
+          const d = document.createElement("div");
+          d.id = "rekapOperatorSetrika";
+          d.style.marginTop = "6px";
+          d.style.fontSize = "13px";
+          el.insertAdjacentElement("afterend", d);
+          return d;
+        })();
+
+      detailEl.textContent =
+        "Rekap Peran -> Setrika: Rp " + rekapPeran.penyetrika.toLocaleString("id-ID") +
+        " | Kurir: Rp " + rekapPeran.kurir.toLocaleString("id-ID") +
+        " | Admin: Rp " + rekapPeran.admin.toLocaleString("id-ID") +
+        " | PIC: Rp " + rekapPeran.pic.toLocaleString("id-ID") +
+        (rincianOrangTeks ? "\nRekap per Orang -> " + rincianOrangTeks : "");
     }
   });
 </script>
