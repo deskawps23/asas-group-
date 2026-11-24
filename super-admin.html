@@ -770,5 +770,59 @@
   }
 })();
 </script>
+<div id="asas-live-order-alert" style="max-width:860px;margin:12px auto;padding:12px 16px;border-radius:12px;background:#fffbeb;border:1px solid #f59e0b;color:#78350f;font-family:system-ui,-apple-system,sans-serif;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;">
+  <div>
+    <strong id="asas-notif-title">Notifikasi Order: Memeriksa antrean...</strong>
+    <div id="asas-notif-detail" style="font-size:12px;margin-top:2px;color:#92400e;">Status MENUNGGU_VERIFIKASI akan muncul di sini dan siap dibalas ke WA pelanggan.</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button type="button" id="asas-notif-check-btn" style="padding:7px 12px;border-radius:8px;border:none;background:#d97706;color:#fff;font-weight:700;font-size:12px;cursor:pointer;">Cek Order Baru</button>
+    <a href="order.html" style="padding:7px 12px;border-radius:8px;background:#0f172a;color:#fff;text-decoration:none;font-weight:700;font-size:12px;">Buka Form Pelanggan</a>
+  </div>
+</div>
+<script id="asas-notif-watcher">
+(function () {
+  function scanOrders() {
+    let list = [];
+    try {
+      const raw = JSON.parse(localStorage.getItem("serviceOrders") || "[]");
+      if (Array.isArray(raw)) list = raw;
+    } catch (_) {}
+    const pending = list.filter((x) => (x && x.status) === "MENUNGGU_VERIFIKASI");
+    const titleEl = document.getElementById("asas-notif-title");
+    const detailEl = document.getElementById("asas-notif-detail");
+    const boxEl = document.getElementById("asas-live-order-alert");
+    if (!titleEl || !detailEl || !boxEl) return;
+
+    if (pending.length > 0) {
+      const top = pending[0];
+      boxEl.style.background = "#fef2f2";
+      boxEl.style.borderColor = "#ef4444";
+      boxEl.style.color = "#7f1d1d";
+      titleEl.textContent = `🔔 ${pending.length} Pesanan Baru MENUNGGU_VERIFIKASI!`;
+      detailEl.textContent = `Terbaru: ${top.id || "-"} — ${top.nama || "Pelanggan"} (${top.layanan || "Jasa Setrika"}, ${top.zona || "Pilot Zona 1"})`;
+    } else {
+      boxEl.style.background = "#ecfdf5";
+      boxEl.style.borderColor = "#10b981";
+      boxEl.style.color = "#065f46";
+      titleEl.textContent = `✅ Notifikasi Aktif — Tidak ada antrean MENUNGGU_VERIFIKASI (Total order: ${list.length})`;
+      detailEl.textContent = `Admin: Deska Wiata Praja (WA 6285695272863). Order baru dari pelanggan akan otomatis terdeteksi.`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const alertBox = document.getElementById("asas-live-order-alert");
+    const wrap = document.querySelector(".wrap, .container, main");
+    if (alertBox && wrap && alertBox.parentElement !== wrap) {
+      wrap.insertBefore(alertBox, wrap.firstChild);
+    }
+    const btn = document.getElementById("asas-notif-check-btn");
+    if (btn) btn.addEventListener("click", scanOrders);
+    scanOrders();
+    setInterval(scanOrders, 3000);
+    window.addEventListener("storage", scanOrders);
+  });
+})();
+</script>
 </body>
 </html>
