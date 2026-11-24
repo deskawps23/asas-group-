@@ -242,5 +242,149 @@
       }
     });
   </script>
+
+<!-- AI_SMART_DISPATCH_START -->
+<section id="aiSmartDispatch" style="margin-top:18px;padding:16px;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#f8fafc;border-radius:12px;border:1px solid #334155;font-family:sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#38bdf8;font-weight:bold;">AI Dispatch & Live Radar</div>
+      <h3 style="margin:2px 0 0;font-size:16px;">Notifikasi Pintar ke Admin (6285695272863)</h3>
+    </div>
+    <span style="padding:4px 10px;border-radius:999px;background:#064e3b;color:#6ee7b7;font-size:12px;font-weight:bold;">Radar Aktif</span>
+  </div>
+
+  <div id="radarNewOrderCard" style="display:none;margin-top:12px;padding:12px;background:rgba(251,191,36,0.14);border:1px solid #f59e0b;border-radius:8px;">
+    <div id="radarNewOrderText" style="font-size:13px;color:#fef3c7;margin-bottom:8px;font-weight:bold;"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="btnRadarSendWa" type="button" style="padding:7px 12px;background:#22c55e;color:#052e16;border:none;border-radius:6px;cursor:pointer;font-weight:bold;font-size:12px;">Kirim ke WA Admin</button>
+      <button id="btnRadarDismiss" type="button" style="padding:7px 12px;background:#334155;color:#f8fafc;border:none;border-radius:6px;cursor:pointer;font-size:12px;">Tutup Alert</button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+    <button id="btnAiGenerateMsg" type="button" style="padding:8px 12px;background:#38bdf8;color:#0f172a;border:none;border-radius:7px;cursor:pointer;font-weight:bold;font-size:12px;">Rakit Pesan AI</button>
+    <a id="linkAiWaAdmin" href="https://wa.me/6285695272863" target="_blank" rel="noopener" style="display:inline-block;padding:8px 12px;background:#22c55e;color:#052e16;border-radius:7px;text-decoration:none;font-weight:bold;font-size:12px;">Buka WA Admin</a>
+    <button id="btnAiCopyMsg" type="button" style="padding:8px 12px;background:#334155;color:#f8fafc;border:none;border-radius:7px;cursor:pointer;font-size:12px;">Salin Teks</button>
+  </div>
+
+  <div id="aiDispatchPreview" style="margin-top:12px;padding:12px;background:#020617;border:1px solid #1e293b;border-radius:8px;white-space:pre-line;font-size:12.5px;line-height:1.5;color:#e2e8f0;">
+Klik "Rakit Pesan AI" untuk menyusun pesan otomatis ke admin (6285695272863), atau tunggu pesanan baru masuk lewat radar real-time.
+  </div>
+</section>
+
+<script type="module">
+  import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const ADMIN_WA = "6285695272863";
+  const previewEl = document.getElementById("aiDispatchPreview");
+  const waLinkEl = document.getElementById("linkAiWaAdmin");
+  const radarCardEl = document.getElementById("radarNewOrderCard");
+  const radarTextEl = document.getElementById("radarNewOrderText");
+
+  let latestRadarOrder = null;
+  let initialSnapshotDone = false;
+
+  const rp = (n) => "Rp " + Number(n || 0).toLocaleString("id-ID");
+
+  function susunPesanAi(orderData = {}) {
+    const orderId = orderData.orderId || (document.getElementById("orderId")?.value || "").trim() || "-";
+    const status = orderData.status || "MENUNGGU_VERIFIKASI";
+    const customerName = orderData.customerName || "-";
+    const customerWa = orderData.customerWa || "-";
+    const pickupAddress = orderData.pickupAddress || "-";
+    const weight = Number(orderData.actualWeight ?? orderData.estimatedWeight ?? document.getElementById("actualWeight")?.value ?? document.getElementById("weight")?.value ?? 0);
+    const tariff = Number(orderData.tariffPerKg ?? document.getElementById("tariff")?.value ?? 6000);    const total = Number(orderData.total ?? orderData.estimatedTotal ?? Math.round(weight * tariff));
+    const paymentMethod = (orderData.paymentMethod || document.getElementById("paymentMethod")?.value || "CASH").toUpperCase();
+
+    const tim = Math.round(total * 0.15);
+    const ops = Math.round(total * 0.25);
+    const pusat = total - tim - ops;
+
+    const pSetrika = Math.round(tim * 0.40);
+    const pKurir = Math.round(tim * 0.25);
+    const pAdmin = Math.round(tim * 0.20);
+    const pPic = tim - pSetrika - pKurir - pAdmin;
+
+    const teks =
+      "[AI SMART DISPATCH — SETRIKA]\n" +
+      "Order: " + orderId + " | Status: " + status + "\n" +
+      "Pelanggan: " + customerName + " (" + customerWa + ")\n" +
+      "Alamat: " + pickupAddress + "\n" +
+      "Berat: " + weight + " kg x " + rp(tariff) + " = " + rp(total) + " (" + paymentMethod + ")\n" +
+      "Bagi Hasil (15/25/60): Tim " + rp(tim) + " | Ops " + rp(ops) + " | Pusat " + rp(pusat) + "\n" +
+      "Tim (40/25/20/15): Setrika " + rp(pSetrika) + ", Kurir " + rp(pKurir) + ", Admin " + rp(pAdmin) + ", PIC " + rp(pPic);
+
+    return { teks, waUrl: "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent(teks) };
+  }
+
+  function mainkanNadaAlert() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(784, ctx.currentTime);
+      osc.frequency.setValueAtTime(1046.5, ctx.currentTime + 0.09);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.22);
+    } catch (_) {}
+  }
+
+  document.getElementById("btnAiGenerateMsg")?.addEventListener("click", () => {
+    const res = susunPesanAi(latestRadarOrder || {});
+    previewEl.textContent = res.teks;
+    waLinkEl.href = res.waUrl;
+  });
+
+  document.getElementById("btnAiCopyMsg")?.addEventListener("click", async () => {
+    const res = susunPesanAi(latestRadarOrder || {});
+    previewEl.textContent = res.teks;
+    waLinkEl.href = res.waUrl;
+    try {
+      await navigator.clipboard.writeText(res.teks);
+      previewEl.textContent = res.teks + "\n\n[Teks berhasil disalin]";
+    } catch (_) {}
+  });
+
+  document.getElementById("btnRadarSendWa")?.addEventListener("click", () => {
+    const res = susunPesanAi(latestRadarOrder || {});
+    previewEl.textContent = res.teks;
+    window.open(res.waUrl, "_blank", "noopener");
+  });
+
+  document.getElementById("btnRadarDismiss")?.addEventListener("click", () => {
+    radarCardEl.style.display = "none";
+  });
+
+  const dbInstance = window.db || (typeof db !== "undefined" ? db : null);
+  if (dbInstance) {
+    const qPending = query(collection(dbInstance, "serviceOrders"), where("status", "==", "MENUNGGU_VERIFIKASI"));
+    onSnapshot(qPending, (snap) => {
+      if (!initialSnapshotDone) {
+        initialSnapshotDone = true;
+        return;
+      }
+      snap.docChanges().forEach((chg) => {
+        if (chg.type === "added") {
+          const data = { id: chg.doc.id, ...chg.doc.data() };
+          latestRadarOrder = data;
+          const res = susunPesanAi(data);
+          radarTextEl.textContent = "Order baru masuk: " + (data.orderId || chg.doc.id) + " — " + (data.customerName || "Pelanggan") + " (" + (data.estimatedWeight || 0) + " kg)";
+          radarCardEl.style.display = "block";
+          previewEl.textContent = res.teks;
+          waLinkEl.href = res.waUrl;
+          mainkanNadaAlert();
+        }
+      });
+    });
+  }
+</script>
+<!-- AI_SMART_DISPATCH_END -->
+
+<script src="auto-jawab-ai.js"></script>
 </body>
 </html>
