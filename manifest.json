@@ -1,0 +1,26 @@
+{
+  "name": "ASAS Nexus & Tata Kelola (2026–2041)",
+  "short_name": "ASAS Nexus",
+  "description": "Portal tata kelola, siklus pelaporan, dan operasional ASAS Nexus dengan prinsip NO FAKE KPI.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1120",
+  "theme_color": "#0f172a",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

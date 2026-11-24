@@ -7,6 +7,8 @@
   <meta name="description" content="ASAS Nexus — Strategic Assets. Connected Intelligence. Real Impact.">
   <title>ASAS Nexus | Aggregate Strategic Asset Solutions</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
 </head>
 
 <body>
@@ -928,3 +930,13 @@
 </div>
 
 <script src="script.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch((err) => {
+        console.error("Gagal mendaftarkan service worker:", err);
+      });
+    });
+  }
+</script>
