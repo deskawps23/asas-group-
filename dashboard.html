@@ -1,6 +1,6 @@
 <!-- === MULAI PANEL KASIR SATU HUB & ASISTEN AI === -->
 <section id="asas-kasir-ai-hub" style="margin:24px 0;padding:16px;border:1px solid #d1d5db;border-radius:12px;background:#ffffff;font-family:system-ui,sans-serif;">
-  <h2 style="margin:0 0 12px;font-size:18px;">SATU HUB • Kasir &amp; Verifikasi Timbangan</h2>
+  <h2 style="margin:0 0 12px;font-size:18px;">SATU HUB - Kasir &amp; Verifikasi Timbangan</h2>
 
   <div style="display:grid;gap:8px;max-width:480px;">
     <input id="kasirOrderId" type="text" placeholder="ID Order (contoh: ORD-001)" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;" />
@@ -89,7 +89,7 @@
     if (elReceipt) elReceipt.textContent = buildReceiptText(data);
 
     if (!orderId) {
-      if (elInfo) elInfo.textContent += " • Isi ID Order untuk menyimpan ke Firestore.";
+      if (elInfo) elInfo.textContent += " - Isi ID Order untuk menyimpan ke Firestore.";
       return;
     }
 
